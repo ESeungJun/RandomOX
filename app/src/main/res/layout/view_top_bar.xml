@@ -3,8 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/color_ffffff"
-    android:id="@+id/topbar_parent"
     android:layout_height="48dp">
+
+    <ImageView
+        android:id="@+id/top_back"
+        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:scaleType="centerInside"
+        android:padding="10dp"
+        android:src="@drawable/back"/>
 
     <TextView
         style="@style/commonTextStyle"
