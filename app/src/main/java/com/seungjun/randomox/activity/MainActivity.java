@@ -83,13 +83,13 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, OXActivity.class);
         startActivity(intent);
 
-        if(preferenceUtils.isLoginSuccess()){
+//        if(preferenceUtils.isLoginSuccess()){
 //            Intent intent = new Intent(this, OXActivity.class);
 //            startActivity(intent);
-        }
-        else{
-            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
-        }
+//        }
+//        else{
+//            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 

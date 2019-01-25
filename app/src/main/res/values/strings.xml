@@ -7,4 +7,7 @@
     <string name="error_nonok_pw">비밀번호는 영문+숫자+특수문자 를 조합하여 4 ~ 10자까지만 가능해요.</string>
 
     <string name="error_network_unkonw">죄송해요. 알 수 없는 에러가 발생했어요. 잠시 후에 다시 해주세요.</string>
+
+    <string name="default_good_text">정답이에요 !\n+ 5점</string>
+    <string name="default_bad_text">틀렸어요..\n- 5점</string>
 </resources>
