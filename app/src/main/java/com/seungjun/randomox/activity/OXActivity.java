@@ -1,4 +1,4 @@
-package com.seungjun.randomox;
+package com.seungjun.randomox.activity;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.seungjun.randomox.BaseActivity;
+import com.seungjun.randomox.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OXActivity extends AppCompatActivity {
+public class OXActivity extends BaseActivity {
 
     @BindView(R.id.btn_o)
     ImageView btnO;

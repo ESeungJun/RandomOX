@@ -1,19 +1,20 @@
-package com.seungjun.randomox;
+package com.seungjun.randomox.activity;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.seungjun.randomox.BaseActivity;
+import com.seungjun.randomox.R;
+import com.seungjun.randomox.data.PreferenceUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.main_start)
     TextView btnStart;
@@ -32,8 +33,16 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.main_start)
     public void clickStart(){
-        Intent intent = new Intent(this, OXActivity.class);
-        startActivity(intent);
+
+
+        if(preferenceUtils.isLoginSuccess()){
+            Intent intent = new Intent(this, OXActivity.class);
+            startActivity(intent);
+        }
+        else{
+
+        }
+
     }
 
 }
