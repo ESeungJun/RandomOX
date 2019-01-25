@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:gravity="center"
               android:layout_width="match_parent"
@@ -27,12 +28,15 @@
                 android:layout_marginBottom="5dp"
                 android:text="로딩중..."/>
 
-            <ProgressBar
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/join_progress"
+                style="@style/AVLoadingIndicatorView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:progressTint="@color/color_282828"
+                android:layout_height="40dp"
                 android:layout_marginBottom="10dp"
-                android:progressBackgroundTint="@color/color_282828"/>
+                android:layout_marginTop="10dp"
+                app:indicatorColor="@color/color_282828"
+                app:indicatorName="BallPulseIndicator" />
 
         </LinearLayout>
 

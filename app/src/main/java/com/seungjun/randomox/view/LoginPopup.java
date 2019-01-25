@@ -7,11 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seungjun.randomox.R;
+import com.seungjun.randomox.data.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class JoinPopup extends Dialog {
+public class LoginPopup extends Dialog {
 
     private Context context;
 
@@ -33,22 +33,22 @@ public class JoinPopup extends Dialog {
     @BindView(R.id.error_text)
     TextView errorText;
 
-    @BindView(R.id.join_progress)
-    AVLoadingIndicatorView joinProgress;
+    @BindView(R.id.login_progress)
+    AVLoadingIndicatorView loginProgress;
 
-    @BindView(R.id.btn_join)
-    TextView btnJoin;
+    @BindView(R.id.btn_login)
+    TextView btnLogin;
 
 
     private RetrofitClient networkClient;
 
 
-    public JoinPopup(Context context) {
+    public LoginPopup(Context context) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.view_join_dialog);
+        setContentView(R.layout.view_login_dialog);
 
         this.context = context;
 
@@ -57,8 +57,8 @@ public class JoinPopup extends Dialog {
         networkClient = RetrofitClient.getInstance(context).createBaseApi();
     }
 
-    @OnClick(R.id.btn_join)
-    public void clickJoin(){
+    @OnClick(R.id.btn_login)
+    public void clickLogin(){
 
         if(TextUtils.isEmpty(inputNickName.getText().toString())){
             errorText.setVisibility(View.VISIBLE);
@@ -81,8 +81,8 @@ public class JoinPopup extends Dialog {
         inputPw.setEnabled(false);
         inputPw.setFocusable(false);
 
-        btnJoin.setVisibility(View.GONE);
-        joinProgress.setVisibility(View.VISIBLE);
+        btnLogin.setVisibility(View.GONE);
+        loginProgress.setVisibility(View.VISIBLE);
         this.setCancelable(false);
 
 
@@ -96,9 +96,9 @@ public class JoinPopup extends Dialog {
                 inputPw.setEnabled(true);
                 inputPw.setFocusable(true);
 
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
+                btnLogin.setVisibility(View.VISIBLE);
+                loginProgress.setVisibility(View.GONE);
+                LoginPopup.this.setCancelable(true);
 
                 errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
             }
@@ -106,7 +106,11 @@ public class JoinPopup extends Dialog {
             @Override
             public void onSuccess(int code, Object resultData) {
 
-                Toast.makeText(context, "가입 성공!", Toast.LENGTH_SHORT).show();
+                PreferenceUtils.getInstance(context).setLoginSuccess(true);
+
+                Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+
+                LoginPopup.this.dismiss();
             }
 
             @Override
@@ -119,9 +123,9 @@ public class JoinPopup extends Dialog {
                 inputPw.setEnabled(true);
                 inputPw.setFocusable(true);
 
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
+                btnLogin.setVisibility(View.VISIBLE);
+                loginProgress.setVisibility(View.GONE);
+                LoginPopup.this.setCancelable(true);
 
             }
         });
