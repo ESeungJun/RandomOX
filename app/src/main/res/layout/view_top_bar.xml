@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_ffffff"
+    android:id="@+id/topbar_parent"
+    android:layout_height="48dp">
+
+    <TextView
+        style="@style/commonTextStyle"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/title_text_size"
+        android:text="랜덤 OX"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_959595"/>
+
+</RelativeLayout>
