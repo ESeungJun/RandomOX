@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.data.PreferenceUtils;
+import com.seungjun.randomox.view.JoinPopup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +41,8 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
         }
         else{
-
+            JoinPopup popup = new JoinPopup(this);
+            popup.show();
         }
 
     }
