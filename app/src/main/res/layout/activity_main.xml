@@ -17,8 +17,45 @@
         android:layout_weight="1">
 
 
+        <ImageView
+            android:id="@+id/hide_postbox"
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/postbox"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/hide_view1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/color_ffffff"/>
+
+            <View
+                android:id="@+id/hide_view2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/color_ffffff"/>
+
+            <View
+                android:id="@+id/hide_view3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/color_ffffff"/>
+
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/main_title"
+            android:layout_below="@+id/hide_postbox"
             android:layout_centerHorizontal="true"
             android:text="랜덤 OX"
             android:textSize="@dimen/big_text_size"

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_top_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/commonTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:text="@string/send_mail_info"
+            android:clickable="false"
+            android:textSize="@dimen/smaill_text_size" />
+
+        <TextView
+            style="@style/commonTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:text="@string/send_mail_info1"
+            android:clickable="false"
+            android:textSize="@dimen/smaill_text_size" />
+
+        <EditText
+            android:id="@+id/input_story"
+            style="@style/commonTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_back"
+            android:gravity="left"
+            android:hint="이 곳에 여러분의 이야기를 적어주세요"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColorHint="@color/color_bebebe" />
+
+        <TextView
+            android:id="@+id/send_mail"
+            style="@style/commonTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:text="보내기"
+            android:textSize="@dimen/normal_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

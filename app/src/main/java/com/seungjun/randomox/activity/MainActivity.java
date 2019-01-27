@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,19 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.main_login)
     TextView mainLogin;
+
+    @BindView(R.id.hide_postbox)
+    ImageView hidePostbox;
+
+    @BindView(R.id.hide_view1)
+    View hideView1;
+
+    @BindView(R.id.hide_view2)
+    View hideView2;
+
+    @BindView(R.id.hide_view3)
+    View hideView3;
+
 
     private boolean isLogin = false;
 
@@ -93,4 +108,34 @@ public class MainActivity extends BaseActivity {
 
     }
 
+
+    @OnClick(R.id.main_title)
+    public void clickMainTitle(){
+
+        if(hideView3.getVisibility() == View.VISIBLE){
+            hideView3.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+        if(hideView2.getVisibility() == View.VISIBLE){
+            hideView2.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+        if(hideView1.getVisibility() == View.VISIBLE){
+            hideView1.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+    }
+
+
+    @OnClick(R.id.hide_postbox)
+    public void clickPostbox(){
+        Intent intent = new Intent(this, PostMailOXActivity.class);
+        startActivity(intent);
+    }
 }

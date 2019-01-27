@@ -17,14 +17,6 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            style="@style/commonTextStyle"
-            android:id="@+id/ox_tag"
-            android:layout_centerHorizontal="true"
-            android:text="#태그 #태그 #태그"
-            android:layout_above="@+id/content_view"
-            android:layout_marginBottom="10dp"/>
-
         <android.support.v7.widget.CardView
             android:id="@+id/content_view"
             android:layout_width="match_parent"
@@ -40,46 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:text="문제 내용"/>
-
-
-            <LinearLayout
-                android:id="@+id/answer_view"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/ox_answer_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/emoji"/>
-
-                <TextView
-                    android:id="@+id/ox_answer"
-                    android:layout_width="match_parent"
-                    android:layout_below="@+id/ox_answer_img"
-                    style="@style/commonTextStyle"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"/>
-
-
-            </LinearLayout>
+                android:text="@string/post_mail_ox_content"/>
 
         </android.support.v7.widget.CardView>
-
-        <TextView
-            android:id="@+id/ox_next"
-            android:visibility="gone"
-            style="@style/commonTextStyle"
-            android:layout_centerHorizontal="true"
-            android:text="다음 문제"
-            android:layout_below="@+id/content_view"
-            android:layout_marginTop="20dp"/>
-
     </RelativeLayout>
 
 

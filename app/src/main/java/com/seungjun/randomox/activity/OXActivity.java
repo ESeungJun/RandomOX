@@ -72,7 +72,7 @@ public class OXActivity extends BaseActivity {
         if(TextUtils.isEmpty(goodText))
             answerContent.setText(getResources().getString(R.string.default_good_text));
         else
-            answerContent.setText(goodText +"\n+ 5점");
+            answerContent.setText(goodText +"\n+ 1점");
 
         if(TextUtils.isEmpty(goodImage))
             answerImg.setImageDrawable(getResources().getDrawable(R.drawable.emoji));
@@ -95,7 +95,7 @@ public class OXActivity extends BaseActivity {
         if(TextUtils.isEmpty(badText))
             answerContent.setText(getResources().getString(R.string.default_bad_text));
         else
-            answerContent.setText(badText +"\n- 5점");
+            answerContent.setText(badText);
 
         if(TextUtils.isEmpty(badImage))
             answerImg.setImageDrawable(getResources().getDrawable(R.drawable.unhappy));

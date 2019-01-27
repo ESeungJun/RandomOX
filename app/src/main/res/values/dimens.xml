@@ -4,4 +4,5 @@
     <dimen name="normal_text_size">20sp</dimen>
     <dimen name="title_text_size">26sp</dimen>
     <dimen name="big_text_size">46sp</dimen>
+    <dimen name="smaill_text_size">17sp</dimen>
 </resources>

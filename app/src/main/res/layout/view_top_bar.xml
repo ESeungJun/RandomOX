@@ -14,6 +14,7 @@
         android:src="@drawable/back"/>
 
     <TextView
+        android:id="@+id/top_title"
         style="@style/commonTextStyle"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
