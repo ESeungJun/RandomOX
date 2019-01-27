@@ -2,6 +2,7 @@ package com.seungjun.randomox.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,6 +45,12 @@ public class SendMailActivity extends BaseActivity{
     @OnClick(R.id.send_mail)
     public void clickSendMail(){
         //서버에 보내는 로직
+
+        if(TextUtils.isEmpty(inputStory.getText().toString())){
+            Toast.makeText(this, "이야기를 적어주시면 접수가 가능합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         Toast.makeText(this, "접수 되었습니다! 곧 답장 보내줄게요 :)", Toast.LENGTH_SHORT).show();
         finish();
