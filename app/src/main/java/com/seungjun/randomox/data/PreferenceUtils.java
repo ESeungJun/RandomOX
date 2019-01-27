@@ -13,6 +13,8 @@ public class PreferenceUtils {
 
 
     private static final String LOGIN_SUCCESS = "login_success";
+    private static final String USER_ID = "user_id";
+    private static final String USER_PW = "user_pw";
 
 
     private PreferenceUtils(Context context){
@@ -58,5 +60,52 @@ public class PreferenceUtils {
         }
 
         return false;
+    }
+
+    /**
+     * 유저 아이디 저장
+     * @param userId
+     */
+    public void setUserId(String userId){
+        if(preEditor != null){
+            preEditor.putString(USER_ID, userId);
+            preEditor.commit();
+        }
+    }
+
+    /**
+     * 유저 아이디 반환
+     * @return
+     */
+    public String getUserId(){
+
+        if(preferences != null)
+            return preferences.getString(USER_ID, "");
+
+        return "";
+    }
+
+
+    /**
+     * 유저 비번 저장
+     * @param userPw
+     */
+    public void setUserPw(String userPw){
+        if(preEditor != null){
+            preEditor.putString(USER_PW, userPw);
+            preEditor.commit();
+        }
+    }
+
+    /**
+     * 유저 비번 반환
+     * @return
+     */
+    public String getUserPw(){
+
+        if(preferences != null)
+            return preferences.getString(USER_PW, "");
+
+        return "";
     }
 }
