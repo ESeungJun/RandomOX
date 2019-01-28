@@ -107,7 +107,7 @@
             android:id="@+id/btn_o"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="5dp"
             android:src="@drawable/circle"
             android:tint="@color/selector_color_o"
             android:layout_weight="1"/>
@@ -116,7 +116,7 @@
             android:id="@+id/btn_x"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="5dp"
             android:src="@drawable/cross"
             android:tint="@color/selector_color_x"
             android:layout_weight="1"/>
