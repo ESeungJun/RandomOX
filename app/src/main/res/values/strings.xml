@@ -8,8 +8,8 @@
 
     <string name="error_network_unkonw">죄송해요. 알 수 없는 에러가 발생했어요. 잠시 후에 다시 해주세요.</string>
 
-    <string name="default_good_text">정답이에요 !\n+ 1점</string>
-    <string name="default_bad_text">틀렸어요..</string>
+    <string name="default_good_text"><![CDATA[<b><font color=#4482ff>정답이에요! +1점</font></b>]]></string>
+    <string name="default_bad_text"><![CDATA[<b><font color=#ff4f60>틀렸어요..</font></b>]]></string>
 
     <string name="post_mail_ox_content">
         혹시 누군가에게 하고 싶은 이야기나\n

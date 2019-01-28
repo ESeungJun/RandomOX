@@ -3,7 +3,6 @@ package com.seungjun.randomox.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,9 +10,11 @@ import android.widget.Toast;
 
 import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
-import com.seungjun.randomox.data.PreferenceUtils;
+import com.seungjun.randomox.network.RetrofitApiCallback;
+import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.view.JoinPopup;
 import com.seungjun.randomox.view.LoginPopup;
+import com.seungjun.randomox.view.NormalPopup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +45,9 @@ public class MainActivity extends BaseActivity {
 
 
     private boolean isLogin = false;
+
+    private NormalPopup popup;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,9 +98,70 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.main_start)
     public void clickStart(){
 
-        //for test
-        Intent intent = new Intent(this, OXActivity.class);
-        startActivity(intent);
+        netProgress.show();
+
+        networkClient.callPostGetOX(new RetrofitApiCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+                netProgress.dismiss();
+
+                popup = new NormalPopup(MainActivity.this);
+                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
+                popup.setOKClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popup.dismiss();
+                    }
+                });
+                popup.show();
+            }
+
+            @Override
+            public void onSuccess(int code, Object resultData) {
+
+                netProgress.dismiss();
+
+                if(resultData != null){
+                    OxContentInfo oxContentInfo = (OxContentInfo) resultData;
+
+                    if(oxContentInfo.reqCode == 0){
+
+                        //for test
+                        Intent intent = new Intent(MainActivity.this, OXActivity.class);
+                        intent.putParcelableArrayListExtra("oxList", oxContentInfo.oxList);
+                        startActivity(intent);
+
+                    }else{
+
+                        popup = new NormalPopup(MainActivity.this);
+                        popup.setPopupText(oxContentInfo.reqMsg);
+                        popup.setOKClick(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                popup.dismiss();
+                            }
+                        });
+                        popup.show();
+                    }
+                }
+            }
+            @Override
+            public void onFailed(int code) {
+
+                netProgress.dismiss();
+
+                popup = new NormalPopup(MainActivity.this);
+                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
+                popup.setOKClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popup.dismiss();
+                    }
+                });
+                popup.show();
+            }
+        }, preferenceUtils.getUserSindex());
 
 //        if(preferenceUtils.isLoginSuccess()){
 //            Intent intent = new Intent(this, OXActivity.class);

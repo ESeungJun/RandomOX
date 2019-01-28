@@ -1,8 +1,7 @@
-package com.seungjun.randomox.data;
+package com.seungjun.randomox.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class PreferenceUtils {
 
@@ -15,6 +14,8 @@ public class PreferenceUtils {
     private static final String LOGIN_SUCCESS = "login_success";
     private static final String USER_ID = "user_id";
     private static final String USER_PW = "user_pw";
+    private static final String USER_SINDEX = "user_sindex";
+    private static final String USER_SCORE = "user_score";
 
 
     private PreferenceUtils(Context context){
@@ -107,5 +108,39 @@ public class PreferenceUtils {
             return preferences.getString(USER_PW, "");
 
         return "";
+    }
+
+
+    public void setUserSindex(int sIndex){
+        if(preEditor != null){
+            preEditor.putInt(USER_SINDEX, sIndex);
+            preEditor.commit();
+
+        }
+    }
+
+
+    public int getUserSindex(){
+        if(preferences != null)
+            return preferences.getInt(USER_SINDEX, 0);
+
+        return 0;
+    }
+
+
+    public void setUserScore(int score){
+        if(preEditor != null){
+            preEditor.putInt(USER_SCORE, score);
+            preEditor.commit();
+
+        }
+    }
+
+
+    public int getUserScore(){
+        if(preferences != null)
+            return preferences.getInt(USER_SCORE, 0);
+
+        return 0;
     }
 }

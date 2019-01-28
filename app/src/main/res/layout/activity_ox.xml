@@ -34,46 +34,47 @@
             android:layout_marginRight="25dp"
             app:cardCornerRadius="10dp">
 
-            <TextView
-                android:id="@+id/ox_content"
-                style="@style/commonTextStyle"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:text="문제 내용"/>
-
-
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/answer_view"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ox_answer_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_centerHorizontal="true"
                     android:src="@drawable/emoji"/>
 
                 <TextView
                     android:id="@+id/ox_answer"
-                    android:layout_width="match_parent"
                     android:layout_below="@+id/ox_answer_img"
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
                     style="@style/commonTextStyle"
                     android:gravity="center"
                     android:layout_marginTop="10dp"/>
+            </RelativeLayout>
 
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/ox_content"
+                style="@style/commonTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@color/color_ffffff"
+                android:text="문제 내용"/>
 
         </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/ox_next"
-            android:visibility="gone"
+            android:visibility="invisible"
             style="@style/commonTextStyle"
             android:layout_centerHorizontal="true"
             android:text="다음 문제"

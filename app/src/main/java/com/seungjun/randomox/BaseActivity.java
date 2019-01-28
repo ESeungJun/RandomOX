@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.seungjun.randomox.data.PreferenceUtils;
+import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitClient;
 import com.seungjun.randomox.view.NetworkProgressDialog;
 

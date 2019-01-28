@@ -86,45 +86,45 @@ public class JoinPopup extends Dialog {
         this.setCancelable(false);
 
 
-        networkClient.callGetTest(new RetrofitApiCallback() {
-            @Override
-            public void onError(Throwable t) {
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
-
-                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
-            }
-
-            @Override
-            public void onSuccess(int code, Object resultData) {
-
-                Toast.makeText(context, "가입 성공!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailed(int code) {
-
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
-
-            }
-        });
+//        networkClient.callGetTest(new RetrofitApiCallback() {
+//            @Override
+//            public void onError(Throwable t) {
+//
+//                inputNickName.setEnabled(true);
+//                inputNickName.setFocusable(true);
+//
+//                inputPw.setEnabled(true);
+//                inputPw.setFocusable(true);
+//
+//                btnJoin.setVisibility(View.VISIBLE);
+//                joinProgress.setVisibility(View.GONE);
+//                JoinPopup.this.setCancelable(true);
+//
+//                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+//            }
+//
+//            @Override
+//            public void onSuccess(int code, Object resultData) {
+//
+//                Toast.makeText(context, "가입 성공!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailed(int code) {
+//
+//
+//                inputNickName.setEnabled(true);
+//                inputNickName.setFocusable(true);
+//
+//                inputPw.setEnabled(true);
+//                inputPw.setFocusable(true);
+//
+//                btnJoin.setVisibility(View.VISIBLE);
+//                joinProgress.setVisibility(View.GONE);
+//                JoinPopup.this.setCancelable(true);
+//
+//            }
+//        });
     }
 
 

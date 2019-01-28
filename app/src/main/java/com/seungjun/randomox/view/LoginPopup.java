@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seungjun.randomox.R;
-import com.seungjun.randomox.data.PreferenceUtils;
+import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -86,49 +86,49 @@ public class LoginPopup extends Dialog {
         this.setCancelable(false);
 
 
-        networkClient.callGetTest(new RetrofitApiCallback() {
-            @Override
-            public void onError(Throwable t) {
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnLogin.setVisibility(View.VISIBLE);
-                loginProgress.setVisibility(View.GONE);
-                LoginPopup.this.setCancelable(true);
-
-                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
-            }
-
-            @Override
-            public void onSuccess(int code, Object resultData) {
-
-                PreferenceUtils.getInstance(context).setLoginSuccess(true);
-
-                Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
-
-                LoginPopup.this.dismiss();
-            }
-
-            @Override
-            public void onFailed(int code) {
-
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnLogin.setVisibility(View.VISIBLE);
-                loginProgress.setVisibility(View.GONE);
-                LoginPopup.this.setCancelable(true);
-
-            }
-        });
+//        networkClient.callGetTest(new RetrofitApiCallback() {
+//            @Override
+//            public void onError(Throwable t) {
+//
+//                inputNickName.setEnabled(true);
+//                inputNickName.setFocusable(true);
+//
+//                inputPw.setEnabled(true);
+//                inputPw.setFocusable(true);
+//
+//                btnLogin.setVisibility(View.VISIBLE);
+//                loginProgress.setVisibility(View.GONE);
+//                LoginPopup.this.setCancelable(true);
+//
+//                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+//            }
+//
+//            @Override
+//            public void onSuccess(int code, Object resultData) {
+//
+//                PreferenceUtils.getInstance(context).setLoginSuccess(true);
+//
+//                Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+//
+//                LoginPopup.this.dismiss();
+//            }
+//
+//            @Override
+//            public void onFailed(int code) {
+//
+//
+//                inputNickName.setEnabled(true);
+//                inputNickName.setFocusable(true);
+//
+//                inputPw.setEnabled(true);
+//                inputPw.setFocusable(true);
+//
+//                btnLogin.setVisibility(View.VISIBLE);
+//                loginProgress.setVisibility(View.GONE);
+//                LoginPopup.this.setCancelable(true);
+//
+//            }
+//        });
     }
 
 

@@ -4,6 +4,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seungjun.randomox.network.data.OxContentInfo;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -22,6 +27,8 @@ public class RetrofitClient {
     private RetrofitApiService apiService;
     private static Retrofit retrofit;
     private static Context mContext;
+
+    public static final int JSON_MAKE_ERROR = 9999;
 
     /**
      * 싱글톤 객체 홀더 설정
@@ -49,7 +56,7 @@ public class RetrofitClient {
 
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("http://13.209.214.110:8080/yourMentor/")
+                .baseUrl("http://13.209.214.110:6050/randomOX/")
                 .client(client)
                 .build();
     }
@@ -100,25 +107,27 @@ public class RetrofitClient {
 
 
     /**
-     * Test 용 api 호출
-     * 방식 : GET
+     * OX 문제 받아오기 API
+     * 방식 : POST
      * @param callback
      */
-    public void callGetTest(final RetrofitApiCallback callback){
+    public void callPostGetOX(final RetrofitApiCallback callback, int sIndex){
 
-        apiService.getTest().enqueue(new Callback<String>() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("sIndex", sIndex);
+
+        apiService.getOXContent(body).enqueue(new Callback<OxContentInfo>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<OxContentInfo> call, Response<OxContentInfo> response) {
                 if(response.isSuccessful()){
                     callback.onSuccess(response.code(), response.body());
                 }else{
                     callback.onFailed(response.code());
                 }
-
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<OxContentInfo> call, Throwable t) {
                 callback.onError(t);
             }
         });

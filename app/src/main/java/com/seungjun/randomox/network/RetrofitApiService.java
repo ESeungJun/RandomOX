@@ -1,7 +1,17 @@
 package com.seungjun.randomox.network;
 
+import com.seungjun.randomox.network.data.OxContentInfo;
+
+import java.util.HashMap;
+
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Retrofit 을 활용하여 요청할 api 목록 인터페이스
@@ -14,9 +24,8 @@ import retrofit2.http.GET;
  */
 public interface RetrofitApiService {
 
-
-    @GET("test")
-    Call<String> getTest();
+    @POST("getOX")
+    Call<OxContentInfo> getOXContent(@Body HashMap<String, Object> body);
 
 
 }
