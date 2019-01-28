@@ -24,7 +24,7 @@
             android:text="#태그 #태그 #태그"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="15dp"/>
 
         <android.support.v7.widget.CardView
             android:id="@+id/content_view"
@@ -90,7 +90,7 @@
             android:layout_centerHorizontal="true"
             android:text="다음 문제"
             android:layout_below="@+id/content_view"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"/>
 
     </RelativeLayout>
 
@@ -98,7 +98,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
