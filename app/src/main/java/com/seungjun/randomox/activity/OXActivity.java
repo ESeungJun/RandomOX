@@ -175,7 +175,7 @@ public class OXActivity extends BaseActivity {
 
         if(answerValue.equalsIgnoreCase(oxList.get(sIndex).quiz_ox)){
 
-            visibleGood(oxList.get(sIndex).quiz_coment, oxList.get(sIndex).quiz_img);
+            visibleGood(oxList.get(sIndex).quiz_g_coment, oxList.get(sIndex).quiz_g_img);
 
         }else{
             visibleBad(oxList.get(sIndex).quiz_coment, oxList.get(sIndex).quiz_img);
