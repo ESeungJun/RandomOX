@@ -2,9 +2,13 @@ package com.seungjun.randomox.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +33,11 @@ public class PostMailOXActivity extends BaseActivity {
     @BindView(R.id.my_score)
     TextView myScore;
 
+    @BindView(R.id.ox_content)
+    TextView oxContent;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +47,32 @@ public class PostMailOXActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         myScore.setVisibility(View.GONE);
+
+        oxContent.setAlpha(0f);
+
+        btnO.setAlpha(0f);
+        btnX.setAlpha(0f);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                oxContent.startAnimation(AnimationUtils.loadAnimation(PostMailOXActivity.this, R.anim.fadein));
+                oxContent.setAlpha(1f);
+            }
+        }, 1000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btnO.startAnimation(AnimationUtils.loadAnimation(PostMailOXActivity.this, R.anim.fadein));
+                btnX.startAnimation(AnimationUtils.loadAnimation(PostMailOXActivity.this, R.anim.fadein));
+
+                btnO.setAlpha(1f);
+                btnX.setAlpha(1f);
+
+            }
+        }, 2000);
     }
 
 
