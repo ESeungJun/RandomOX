@@ -46,6 +46,9 @@ public class OXActivity extends BaseActivity {
     @BindView(R.id.ox_answer)
     TextView answerContent;
 
+    @BindView(R.id.ox_answer_check)
+    TextView answerCheckView;
+
     @BindView(R.id.ox_next)
     TextView btnNext;
 
@@ -94,14 +97,17 @@ public class OXActivity extends BaseActivity {
     public void visibleGood(String goodText, String goodImage) {
 
         if (TextUtils.isEmpty(goodText))
-            answerContent.setText(Html.fromHtml(getResources().getString(R.string.default_good_text)));
+            answerContent.setText("");
         else
-            answerContent.setText(goodText + "\n" + Html.fromHtml(getResources().getString(R.string.default_good_text)));
+            answerContent.setText(goodText);
 
         if (TextUtils.isEmpty(goodImage))
             answerImg.setImageDrawable(getResources().getDrawable(R.drawable.emoji));
         else
             Glide.with(this).load(goodImage).into(answerImg);
+
+        answerCheckView.setText(getResources().getString(R.string.default_good_text));
+        answerCheckView.setTextColor(getResources().getColor(R.color.color_4482ff));
 
         answerView.setVisibility(View.VISIBLE);
         oxContent.setVisibility(View.GONE);
@@ -122,14 +128,17 @@ public class OXActivity extends BaseActivity {
     public void visibleBad(String badText, String badImage) {
 
         if (TextUtils.isEmpty(badText))
-            answerContent.setText(Html.fromHtml(getResources().getString(R.string.default_bad_text)));
+            answerContent.setText("");
         else
-            answerContent.setText(badText + "\n" + Html.fromHtml(getResources().getString(R.string.default_bad_text)));
+            answerContent.setText(badText);
 
         if (TextUtils.isEmpty(badImage))
             answerImg.setImageDrawable(getResources().getDrawable(R.drawable.unhappy));
         else
             Glide.with(this).load(badImage).into(answerImg);
+
+        answerCheckView.setText(getResources().getString(R.string.default_bad_text));
+        answerCheckView.setTextColor(getResources().getColor(R.color.color_ff4f60));
 
         answerView.setVisibility(View.VISIBLE);
         oxContent.setVisibility(View.GONE);
