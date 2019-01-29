@@ -3,6 +3,7 @@ package com.seungjun.randomox.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +50,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
     private boolean isLogin = false;
 
+    private String textData = "";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,17 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainLogin.setText("로그아웃");
         }else{
             mainLogin.setText("로그인");
+        }
+
+
+        if(getIntent() != null && getIntent().getExtras() != null){
+            textData = getIntent().getStringExtra("textData");
+
+            hideView1.setVisibility(View.INVISIBLE);
+            hideView2.setVisibility(View.INVISIBLE);
+            hideView3.setVisibility(View.INVISIBLE);
+
+            hidePostbox.setImageDrawable(getResources().getDrawable(R.drawable.mail));
         }
     }
 
@@ -143,8 +158,14 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             return;
         }
 
+        Intent intent = null;
 
-        Intent intent = new Intent(this, PostMailOXActivity.class);
+        if(!TextUtils.isEmpty(textData)){
+
+        }else{
+            intent = new Intent(this, PostMailOXActivity.class);
+        }
+
         startActivity(intent);
     }
 

@@ -3,6 +3,7 @@ package com.seungjun.randomox.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -10,10 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.activity.MainActivity;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
+import com.seungjun.randomox.utils.D;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
@@ -24,6 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginPopup extends Dialog {
+
+    private static final String TAG = "LoginPopup";
 
     private Context context;
 
@@ -124,17 +132,7 @@ public class LoginPopup extends Dialog {
             @Override
             public void onError(Throwable t) {
 
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnLogin.setVisibility(View.VISIBLE);
-                loginProgress.setVisibility(View.GONE);
-                LoginPopup.this.setCancelable(true);
-
-                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+                failedLogin();
             }
 
             @Override
@@ -150,23 +148,11 @@ public class LoginPopup extends Dialog {
                     PreferenceUtils.getInstance(context).setUserPw(password);
                     PreferenceUtils.getInstance(context).setLoginSuccess(true);
 
-                    Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+                    updateFCM();
 
-                    callBack.onLogin(true);
-
-                    LoginPopup.this.dismiss();
                 }else{
 
-                    inputNickName.setEnabled(true);
-                    inputNickName.setFocusable(true);
-
-                    inputPw.setEnabled(true);
-                    inputPw.setFocusable(true);
-
-                    btnLogin.setVisibility(View.VISIBLE);
-                    loginProgress.setVisibility(View.GONE);
-                    LoginPopup.this.setCancelable(true);
-
+                    failedLogin();
 
                     errorText.setText(userInfo.reqMsg);
                 }
@@ -177,18 +163,7 @@ public class LoginPopup extends Dialog {
             @Override
             public void onFailed(int code) {
 
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnLogin.setVisibility(View.VISIBLE);
-                loginProgress.setVisibility(View.GONE);
-                LoginPopup.this.setCancelable(true);
-
-                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+                failedLogin();
 
             }
         }, nickname, password);
@@ -204,8 +179,70 @@ public class LoginPopup extends Dialog {
         super.show();
     }
 
+    public void failedLogin(){
+
+        inputNickName.setEnabled(true);
+        inputNickName.setFocusable(true);
+
+        inputPw.setEnabled(true);
+        inputPw.setFocusable(true);
+
+        btnLogin.setVisibility(View.VISIBLE);
+        loginProgress.setVisibility(View.GONE);
+        LoginPopup.this.setCancelable(true);
+
+        errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+    }
+
+
     @Override
     public void dismiss() {
         super.dismiss();
+    }
+
+
+    public void updateFCM(){
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            D.error(TAG, "getInstanceId failed", task.getException());
+
+                            failedLogin();
+
+                            return;
+                        }
+
+                        // 보내기전에 비교해보기
+                        if(!PreferenceUtils.getInstance(context).getUserFcmKey().equals(task.getResult().getToken())){
+                            PreferenceUtils.getInstance(context).setUserFcmKey(task.getResult().getToken());
+                        }
+
+                        networkClient.callPostFcmUpdate(new RetrofitApiCallback() {
+                            @Override
+                            public void onError(Throwable t) {
+
+                                failedLogin();
+                            }
+
+                            @Override
+                            public void onSuccess(int code, Object resultData) {
+
+                                Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+                                callBack.onLogin(true);
+                                LoginPopup.this.dismiss();
+
+                            }
+
+                            @Override
+                            public void onFailed(int code) {
+                                failedLogin();
+                            }
+                        }, PreferenceUtils.getInstance(context).getUserKey(), PreferenceUtils.getInstance(context).getUserFcmKey());
+                    }
+                });
+
     }
 }
