@@ -25,7 +25,7 @@ public class CommonUtils {
      * @return 유효성 여부
      */
     public static boolean isValidName(String nickname) {
-        String stricterFilterString = "^[ㄱ-힣\\s]*$";
+        String stricterFilterString = "^[ㄱ-힣\\s]*.{2,12}$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(stricterFilterString);
         java.util.regex.Matcher m = p.matcher(nickname);
         return m.matches();

@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBack {
 
     @BindView(R.id.main_start)
     TextView btnStart;
@@ -78,10 +78,23 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.main_login)
     public void clickLogin(){
 
+        // 로그인 되있는 상태 -> 로그아웃이 눌림 (로그아웃 시키기)
         if(isLogin){
 
-        }else{
-            LoginPopup loginPopup = new LoginPopup(this);
+            // 데이터 초기화
+            preferenceUtils.setUserPw("");
+            preferenceUtils.setUserId("");
+            preferenceUtils.setUserScore(0);
+            preferenceUtils.setUserSindex(1);
+
+            Toast.makeText(this, "로그아웃 되었어요.", Toast.LENGTH_SHORT).show();
+
+            mainLogin.setText("로그인");
+
+        }
+        // 로그아웃 되어있는 상태 -> 로그인이 눌림 (로그인 팝업)
+        else{
+            LoginPopup loginPopup = new LoginPopup(this, this);
             loginPopup.show();
         }
 
@@ -98,6 +111,56 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.main_start)
     public void clickStart(){
 
+        if(preferenceUtils.isLoginSuccess()){
+            callOxData();
+        }
+        else{
+            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    @OnClick(R.id.main_title)
+    public void clickMainTitle(){
+
+        if(hideView3.getVisibility() == View.VISIBLE){
+            hideView3.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+        if(hideView2.getVisibility() == View.VISIBLE){
+            hideView2.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+        if(hideView1.getVisibility() == View.VISIBLE){
+            hideView1.setVisibility(View.INVISIBLE);
+
+            return;
+        }
+
+    }
+
+    @OnClick(R.id.hide_postbox)
+    public void clickPostbox(){
+
+        if(hideView1.getVisibility() == View.VISIBLE ||
+                hideView2.getVisibility() == View.VISIBLE ||
+                hideView3.getVisibility() == View.VISIBLE)
+            return;
+
+        Intent intent = new Intent(this, PostMailOXActivity.class);
+        startActivity(intent);
+    }
+
+
+    /**
+     * 문제 요청 후 화면 진입하는 함수
+     */
+    public void callOxData(){
         netProgress.show();
 
         networkClient.callPostGetOX(new RetrofitApiCallback() {
@@ -162,51 +225,21 @@ public class MainActivity extends BaseActivity {
                 popup.show();
             }
         }, preferenceUtils.getUserSindex());
-
-//        if(preferenceUtils.isLoginSuccess()){
-//            Intent intent = new Intent(this, OXActivity.class);
-//            startActivity(intent);
-//        }
-//        else{
-//            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
-//        }
-
     }
 
+    @Override
+    public void onLogin(boolean isLogin) {
 
-    @OnClick(R.id.main_title)
-    public void clickMainTitle(){
 
-        if(hideView3.getVisibility() == View.VISIBLE){
-            hideView3.setVisibility(View.INVISIBLE);
+        this.isLogin = isLogin;
 
-            return;
+        if (this.isLogin) {
+            mainLogin.setText("로그아웃");
+
+        } else {
+            mainLogin.setText("로그인");
         }
 
-        if(hideView2.getVisibility() == View.VISIBLE){
-            hideView2.setVisibility(View.INVISIBLE);
 
-            return;
-        }
-
-        if(hideView1.getVisibility() == View.VISIBLE){
-            hideView1.setVisibility(View.INVISIBLE);
-
-            return;
-        }
-
-    }
-
-
-    @OnClick(R.id.hide_postbox)
-    public void clickPostbox(){
-
-        if(hideView1.getVisibility() == View.VISIBLE ||
-                hideView2.getVisibility() == View.VISIBLE ||
-                hideView3.getVisibility() == View.VISIBLE)
-            return;
-
-        Intent intent = new Intent(this, PostMailOXActivity.class);
-        startActivity(intent);
     }
 }

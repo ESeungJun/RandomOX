@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seungjun.randomox.R;
+import com.seungjun.randomox.activity.MainActivity;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.PreferenceUtils;
@@ -44,8 +45,16 @@ public class LoginPopup extends Dialog {
 
     private RetrofitClient networkClient;
 
+    private LoginCallBack callBack;
 
-    public LoginPopup(Context context) {
+
+    public interface LoginCallBack {
+        public void onLogin(boolean isLogin);
+    }
+
+
+
+    public LoginPopup(Context context, LoginCallBack callBack) {
 
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
@@ -53,6 +62,8 @@ public class LoginPopup extends Dialog {
         setContentView(R.layout.view_login_dialog);
 
         this.context = context;
+
+        this.callBack = callBack;
 
         ButterKnife.bind(this);
 
@@ -140,6 +151,8 @@ public class LoginPopup extends Dialog {
                     PreferenceUtils.getInstance(context).setLoginSuccess(true);
 
                     Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+
+                    callBack.onLogin(true);
 
                     LoginPopup.this.dismiss();
                 }else{
