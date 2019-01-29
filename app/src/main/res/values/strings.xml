@@ -10,6 +10,7 @@
 
     <string name="default_good_text">정답이에요! +1점</string>
     <string name="default_bad_text">틀렸어요..</string>
+    <string name="default_special_text">이벤트 문제! +1점</string>
 
     <string name="post_mail_ox_content">
         혹시 누군가에게 하고 싶은 이야기나\n

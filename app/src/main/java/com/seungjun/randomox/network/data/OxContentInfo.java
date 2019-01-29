@@ -42,6 +42,9 @@ public class OxContentInfo extends HeaderInfo{
         @SerializedName("quiz_g_img")
         public String quiz_g_img = "";
 
+        @SerializedName("quiz_special")
+        public int quiz_special = 0;
+
 
         protected OxData(Parcel in) {
             quiz_index = in.readInt();
@@ -53,6 +56,7 @@ public class OxContentInfo extends HeaderInfo{
             quiz_tag = in.readString();
             quiz_g_coment = in.readString();
             quiz_g_img = in.readString();
+            quiz_special = in.readInt();
         }
 
         public static final Creator<OxData> CREATOR = new Creator<OxData>() {
@@ -83,6 +87,7 @@ public class OxContentInfo extends HeaderInfo{
             parcel.writeString(quiz_tag);
             parcel.writeString(quiz_g_coment);
             parcel.writeString(quiz_g_img);
+            parcel.writeInt(quiz_special);
         }
     }
 
