@@ -46,7 +46,7 @@ public class PostMailOXActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        myScore.setVisibility(View.GONE);
+        myScore.setText("편지 목록");
 
         oxContent.setAlpha(0f);
 
@@ -84,6 +84,12 @@ public class PostMailOXActivity extends BaseActivity {
         finish();
     }
 
+    @OnClick(R.id.my_score)
+    public void clickLetterList(){
+        Intent intent = new Intent(this, ReqMailActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @OnClick(R.id.btn_x)
     public void clickX(){
