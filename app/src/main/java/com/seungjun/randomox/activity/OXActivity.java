@@ -187,16 +187,20 @@ public class OXActivity extends BaseActivity {
             visibleBad(oxList.get(count).quiz_coment, oxList.get(count).quiz_img);
         }
 
+        // 사용자가 정답을 체크하면 다음 문제 인덱스 대기
         count++;
         D.log(TAG, "Next count > " + count);
+
+        // sIndex도 증가시킨다
+        callSIndex += 1;
+
+        preferenceUtils.setUserSindex(callSIndex);
+        D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
     }
 
 
     @Override
     protected void onDestroy() {
-        preferenceUtils.setUserSindex(callSIndex + 1);
-
-        D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
 
         super.onDestroy();
 
@@ -276,7 +280,7 @@ public class OXActivity extends BaseActivity {
                     });
                     popup.show();
                 }
-            }, callSIndex + 1);
+            }, callSIndex);
 
 
         }else{
