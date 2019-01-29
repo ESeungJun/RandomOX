@@ -35,4 +35,7 @@
 
     <string name="auto_login_success">자동 로그인 성공!</string>
     <string name="auto_login_failed">자동 로그인이 실패했어요. 메인에서 다시 로그인 해주세요.</string>
+
+    <string name="invalid_character_entered">이모티콘은 입력이 불가능해요. 다른 글자로 입력해주세요.</string>
+    <string name="error_send_mail">편지 전송을  실패했어요 :(\n혹시 특수문자나 이모티콘을 사용하셨나요?\n일부 특수문자나 이모티콘은 오류가 날 수 있어요!\n다시 한 번 확인해주세요 :)</string>
 </resources>

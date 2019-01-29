@@ -2,6 +2,7 @@ package com.seungjun.randomox.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.utils.CommonUtils;
+import com.seungjun.randomox.utils.EmojiInputFilter;
 import com.seungjun.randomox.view.NormalPopup;
 
 import butterknife.BindView;
@@ -41,6 +43,7 @@ public class SendMailActivity extends BaseActivity{
         topTitle.setText("랜덤OX 상담소");
         myScore.setVisibility(View.GONE);
 
+        inputStory.setFilters(new InputFilter[]{new EmojiInputFilter(this)});
 
     }
 
@@ -71,7 +74,7 @@ public class SendMailActivity extends BaseActivity{
 
                 netProgress.dismiss();
 
-                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), true);
+                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), false);
             }
 
             @Override
@@ -81,7 +84,10 @@ public class SendMailActivity extends BaseActivity{
 
                 HeaderInfo result = (HeaderInfo) resultData;
 
-                CommonUtils.showErrorPopup(SendMailActivity.this, result.reqMsg, true);
+                if(result.reqCode != 0)
+                    CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_send_mail), false);
+                else
+                    CommonUtils.showErrorPopup(SendMailActivity.this, result.reqMsg, true);
             }
 
             @Override
@@ -89,7 +95,7 @@ public class SendMailActivity extends BaseActivity{
 
                 netProgress.dismiss();
 
-                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), true);
+                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), false);
 
             }
 
