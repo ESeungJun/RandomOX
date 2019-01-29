@@ -34,4 +34,10 @@ public interface RetrofitApiService {
 
     @POST("join")
     Call<HeaderInfo> reqJoin(@Body HashMap<String, Object> body);
+
+    @POST("fcmUpdate")
+    Call<HeaderInfo> reqFcmUpdate(@Body HashMap<String, Object> body);
+
+    @POST("updateUserInfo")
+    Call<HeaderInfo> reqUpdateUserInfo(@Body HashMap<String, Object> body);
 }

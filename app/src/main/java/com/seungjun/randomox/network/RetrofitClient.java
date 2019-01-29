@@ -205,4 +205,65 @@ public class RetrofitClient {
         });
 
     }
+
+    /**
+     * fcm 키 업데이트용 api
+     * @param callback
+     * @param user_key
+     * @param user_fcm
+     */
+    public void callPostFcmUpdate(RetrofitApiCallback callback, String user_key, String user_fcm){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_key", user_key);
+        body.put("user_fcm", user_fcm);
+
+        apiService.reqFcmUpdate(body).enqueue(new Callback<HeaderInfo>() {
+            @Override
+            public void onResponse(Call<HeaderInfo> call, Response<HeaderInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HeaderInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
+
+
+    /**
+     * 사용자 점수랑 인덱스 업뎃 api
+     * @param callback
+     * @param user_key
+     * @param user_point
+     * @param user_sIndex
+     */
+    public void callPostUpdateUserInfo(RetrofitApiCallback callback, String user_key, int user_point, int user_sIndex){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_key", user_key);
+        body.put("user_point", user_point);
+        body.put("user_sIndex", user_sIndex);
+
+        apiService.reqUpdateUserInfo(body).enqueue(new Callback<HeaderInfo>() {
+            @Override
+            public void onResponse(Call<HeaderInfo> call, Response<HeaderInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HeaderInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
 }

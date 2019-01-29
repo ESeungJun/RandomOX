@@ -12,6 +12,7 @@ public class PreferenceUtils {
 
 
     private static final String LOGIN_SUCCESS = "login_success";
+    private static final String USER_KEY = "user_key";
     private static final String USER_ID = "user_id";
     private static final String USER_PW = "user_pw";
     private static final String USER_SINDEX = "user_sindex";
@@ -186,4 +187,33 @@ public class PreferenceUtils {
 
         return "";
     }
+
+
+    /**
+     * 유저 키 저장
+     * @param key
+     */
+    public void setUserKey(String key){
+
+        if(preEditor != null){
+            preEditor.putString(USER_KEY, key);
+            preEditor.commit();
+        }
+
+    }
+
+
+    /**
+     * 유저 키 반환
+     * @return
+     */
+    public String getUserKey(){
+
+        if(preferences != null)
+            return preferences.getString(USER_KEY, "");
+
+        return "";
+    }
+
+
 }

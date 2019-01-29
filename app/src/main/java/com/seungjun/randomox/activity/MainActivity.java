@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
+import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.PreferenceUtils;
@@ -252,6 +253,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
                     preferenceUtils.setLoginSuccess(true);
                     preferenceUtils.setUserSindex(userInfo.user_sIndex);
                     preferenceUtils.setUserScore(userInfo.user_point);
+                    preferenceUtils.setUserKey(userInfo.user_key);
 
                     isLogin = true;
 
@@ -310,13 +312,13 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         preferenceUtils.setUserScore(0);
         preferenceUtils.setUserSindex(1);
         preferenceUtils.setUserFcmKey("");
+        preferenceUtils.setUserKey("");
         preferenceUtils.setLoginSuccess(false);
 
         isLogin = false;
 
         mainLogin.setText("로그인");
     }
-
 
     @Override
     public void onLogin(boolean isLogin) {

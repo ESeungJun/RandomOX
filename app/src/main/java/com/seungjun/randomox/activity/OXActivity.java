@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
+import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.utils.D;
 import com.seungjun.randomox.view.NormalPopup;
@@ -73,6 +74,7 @@ public class OXActivity extends BaseActivity {
 
     private NormalPopup popup;
 
+    private boolean isError = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,8 +120,6 @@ public class OXActivity extends BaseActivity {
         answerView.setVisibility(View.VISIBLE);
         oxContent.setVisibility(View.GONE);
 
-        btnNext.setVisibility(View.VISIBLE);
-
         preferenceUtils.setUserScore(preferenceUtils.getUserScore() + 1 );
 
         myScoreView.setText("내 점수 : " + preferenceUtils.getUserScore() +"점");
@@ -148,8 +148,6 @@ public class OXActivity extends BaseActivity {
 
         answerView.setVisibility(View.VISIBLE);
         oxContent.setVisibility(View.GONE);
-
-        btnNext.setVisibility(View.VISIBLE);
     }
 
 
@@ -175,8 +173,6 @@ public class OXActivity extends BaseActivity {
 
         answerView.setVisibility(View.VISIBLE);
         oxContent.setVisibility(View.GONE);
-
-        btnNext.setVisibility(View.VISIBLE);
 
         preferenceUtils.setUserScore(preferenceUtils.getUserScore() + 1 );
 
@@ -237,14 +233,21 @@ public class OXActivity extends BaseActivity {
 
         preferenceUtils.setUserSindex(callSIndex);
         D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
+
+        updateMyInfo();
     }
 
 
     @Override
     protected void onDestroy() {
+        // 에러 났을땐 비정상적으로 처리 됬으니 종료시
+        // 점수랑 인덱스 -1 씩
+        if(isError){
+            preferenceUtils.setUserScore(preferenceUtils.getUserScore() - 1);
+            preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() - 1);
+        }
 
         super.onDestroy();
-
     }
 
     @OnClick(R.id.ox_next)
@@ -258,12 +261,13 @@ public class OXActivity extends BaseActivity {
         if (count == oxList.size()) {
 
             //새롭게 oxList를 요청한다.
-            netProgress.setProgressText("문제 요청 중...");
+            netProgress.setProgressText("문제 요청 중");
             netProgress.show();
 
             networkClient.callPostGetOX(new RetrofitApiCallback() {
                 @Override
                 public void onError(Throwable t) {
+
                     netProgress.dismiss();
 
                     popup = new NormalPopup(OXActivity.this);
@@ -282,28 +286,29 @@ public class OXActivity extends BaseActivity {
                 public void onSuccess(int code, Object resultData) {
                     netProgress.dismiss();
 
-                    if (resultData != null) {
-                        OxContentInfo oxContentInfo = (OxContentInfo) resultData;
+                    OxContentInfo oxContentInfo = (OxContentInfo) resultData;
 
-                        if (oxContentInfo.reqCode == 0) {
-                            oxList.addAll(oxContentInfo.oxList);
-                            setNextOX(oxList.get(count));
+                    if (oxContentInfo.reqCode == 0) {
 
-                        } else {
+                        isError = false;
 
-                            popup = new NormalPopup(OXActivity.this);
-                            popup.setPopupText(oxContentInfo.reqMsg);
-                            popup.setOKClick(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+                        oxList.addAll(oxContentInfo.oxList);
+                        setNextOX(oxList.get(count));
 
-                                    popup.dismiss();
-                                    finish();
-                                }
-                            });
-                            popup.show();
-                        }
+                    } else {
+                        popup = new NormalPopup(OXActivity.this);
+                        popup.setPopupText(oxContentInfo.reqMsg);
+                        popup.setOKClick(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                popup.dismiss();
+                                finish();
+                            }
+                        });
+                        popup.show();
                     }
+
                 }
 
                 @Override
@@ -333,6 +338,81 @@ public class OXActivity extends BaseActivity {
     @OnClick(R.id.top_back)
     public void back() {
         finish();
+    }
+
+
+    public void updateMyInfo(){
+
+        networkClient.callPostUpdateUserInfo(new RetrofitApiCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+                isError = true;
+
+                popup = new NormalPopup(OXActivity.this);
+                popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
+                popup.setOKClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        popup.dismiss();
+
+                        finish();
+                    }
+                });
+                popup.show();
+            }
+
+            @Override
+            public void onSuccess(int code, Object resultData) {
+
+                netProgress.dismiss();
+
+                HeaderInfo headerInfo = (HeaderInfo) resultData;
+
+                if(headerInfo.reqCode != 0){
+
+                    isError = true;
+
+                    popup = new NormalPopup(OXActivity.this);
+                    popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
+                    popup.setOKClick(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            popup.dismiss();
+
+                            finish();
+                        }
+                    });
+                    popup.show();
+                }else{
+
+                    isError = false;
+
+                    btnNext.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailed(int code) {
+
+                isError = true;
+
+                popup = new NormalPopup(OXActivity.this);
+                popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
+                popup.setOKClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        popup.dismiss();
+
+                        finish();
+                    }
+                });
+                popup.show();
+            }
+        }, preferenceUtils.getUserKey(), preferenceUtils.getUserScore(), preferenceUtils.getUserSindex());
     }
 
 
