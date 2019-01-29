@@ -65,7 +65,11 @@ public class OXActivity extends BaseActivity {
 
     private ArrayList<OxContentInfo.OxData> oxList = new ArrayList<>();
 
-    private int sIndex = 0;
+    // 사용자가 몇문제나 풀었는지 계산하는 카운트
+    private int count = 0;
+
+    // 서버에 요청할때 쓰이는 sIndex
+    private int callSIndex = 0;
 
     private NormalPopup popup;
 
@@ -83,9 +87,11 @@ public class OXActivity extends BaseActivity {
             oxList = getIntent().getParcelableArrayListExtra("oxList");
         }
 
-        setNextOX(oxList.get(sIndex));
+        setNextOX(oxList.get(count));
 
         myScoreView.setText("내 점수 : " + preferenceUtils.getUserScore() +"점");
+
+        callSIndex = preferenceUtils.getUserSindex();
     }
 
     /**
@@ -173,20 +179,22 @@ public class OXActivity extends BaseActivity {
 
     public void checkAnswer(){
 
-        if(answerValue.equalsIgnoreCase(oxList.get(sIndex).quiz_ox)){
+        if(answerValue.equalsIgnoreCase(oxList.get(count).quiz_ox)){
 
-            visibleGood(oxList.get(sIndex).quiz_g_coment, oxList.get(sIndex).quiz_g_img);
+            visibleGood(oxList.get(count).quiz_g_coment, oxList.get(count).quiz_g_img);
 
         }else{
-            visibleBad(oxList.get(sIndex).quiz_coment, oxList.get(sIndex).quiz_img);
+            visibleBad(oxList.get(count).quiz_coment, oxList.get(count).quiz_img);
         }
 
+        count++;
+        D.log(TAG, "Next count > " + count);
     }
 
 
     @Override
     protected void onDestroy() {
-        preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() + sIndex);
+        preferenceUtils.setUserSindex(callSIndex + 1);
 
         D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
 
@@ -201,13 +209,8 @@ public class OXActivity extends BaseActivity {
 
         btnNext.setVisibility(View.GONE);
 
-        sIndex++;
-
-        D.log(TAG, "Next sIndex > " + sIndex);
-
-
-        //다음으로 시작해야할 인덱스가 현재 가지고 있는 것과 동일하면
-        if (sIndex == oxList.size()) {
+        // 현재 가지고 있는 문제를 다 풀어서 더이상 가져올 게 없으면
+        if (count == oxList.size()) {
 
             //새롭게 oxList를 요청한다.
             netProgress.setProgressText("문제 요청 중...");
@@ -238,12 +241,8 @@ public class OXActivity extends BaseActivity {
                         OxContentInfo oxContentInfo = (OxContentInfo) resultData;
 
                         if (oxContentInfo.reqCode == 0) {
-
-                            // 정상 상황이면
-                            // 현재까지 진행된 인덱스 + 받아온 아이템 총 길이
-
                             oxList.addAll(oxContentInfo.oxList);
-                            setNextOX(oxList.get(sIndex));
+                            setNextOX(oxList.get(count));
 
                         } else {
 
@@ -277,11 +276,11 @@ public class OXActivity extends BaseActivity {
                     });
                     popup.show();
                 }
-            }, preferenceUtils.getUserSindex() + sIndex);
+            }, callSIndex + 1);
 
 
         }else{
-            setNextOX(oxList.get(sIndex));
+            setNextOX(oxList.get(count));
         }
 
     }
@@ -293,6 +292,10 @@ public class OXActivity extends BaseActivity {
 
 
     public void setNextOX(OxContentInfo.OxData oxData) {
+
+        //문제를 셋팅할 때마다 callSIndex에 문제의 인덱스 셋팅
+        callSIndex = oxData.quiz_index;
+
         oxContent.setText(oxData.quiz_text);
         oxTag.setText(oxData.quiz_tag);
 

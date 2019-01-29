@@ -122,7 +122,7 @@ public class PreferenceUtils {
 
     public int getUserSindex(){
         if(preferences != null)
-            return preferences.getInt(USER_SINDEX, 0);
+            return preferences.getInt(USER_SINDEX, 1);
 
         return 0;
     }

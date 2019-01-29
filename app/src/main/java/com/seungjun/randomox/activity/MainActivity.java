@@ -200,6 +200,12 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.hide_postbox)
     public void clickPostbox(){
+
+        if(hideView1.getVisibility() == View.VISIBLE ||
+                hideView2.getVisibility() == View.VISIBLE ||
+                hideView3.getVisibility() == View.VISIBLE)
+            return;
+
         Intent intent = new Intent(this, PostMailOXActivity.class);
         startActivity(intent);
     }
