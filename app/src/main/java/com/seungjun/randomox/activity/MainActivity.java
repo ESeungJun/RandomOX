@@ -86,6 +86,10 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             preferenceUtils.setUserId("");
             preferenceUtils.setUserScore(0);
             preferenceUtils.setUserSindex(1);
+            preferenceUtils.setUserFcmKey("");
+            preferenceUtils.setLoginSuccess(false);
+
+            isLogin = false;
 
             Toast.makeText(this, "로그아웃 되었어요.", Toast.LENGTH_SHORT).show();
 
