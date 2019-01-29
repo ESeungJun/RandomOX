@@ -84,7 +84,7 @@ public class SendMailActivity extends BaseActivity{
 
                 HeaderInfo result = (HeaderInfo) resultData;
 
-                if(result.reqCode != 0)
+                if(result.reqCode != 6001)
                     CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_send_mail), false);
                 else
                     CommonUtils.showErrorPopup(SendMailActivity.this, result.reqMsg, true);

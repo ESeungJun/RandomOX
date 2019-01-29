@@ -189,7 +189,7 @@ public class IntroActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1000);
+        }, 1500);
 
     }
 }
