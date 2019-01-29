@@ -266,4 +266,36 @@ public class RetrofitClient {
             }
         });
     }
+
+
+    /**
+     * 상담소 편지 보내기 api
+     * @param callback
+     * @param user_key
+     * @param user_nick
+     * @param letter_text
+     */
+    public void callPostSendLetter(RetrofitApiCallback callback, String user_key, String user_nick, String letter_text){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_key", user_key);
+        body.put("user_nick", user_nick);
+        body.put("letter_text", letter_text);
+
+        apiService.reqSendLetter(body).enqueue(new Callback<HeaderInfo>() {
+            @Override
+            public void onResponse(Call<HeaderInfo> call, Response<HeaderInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HeaderInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
 }

@@ -40,4 +40,7 @@ public interface RetrofitApiService {
 
     @POST("updateUserInfo")
     Call<HeaderInfo> reqUpdateUserInfo(@Body HashMap<String, Object> body);
+
+    @POST("sendLetter")
+    Call<HeaderInfo> reqSendLetter(@Body HashMap<String, Object> body);
 }

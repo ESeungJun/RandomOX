@@ -23,9 +23,18 @@
         <TextView
             style="@style/commonTextStyle"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/send_mail_info1"
             android:clickable="false"
+            android:textSize="@dimen/smaill_text_size" />
+
+        <TextView
+            style="@style/commonTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:text="@string/send_mail_info2"
+            android:clickable="false"
+            android:textColor="@color/color_ff4f60"
             android:textSize="@dimen/smaill_text_size" />
 
         <EditText
