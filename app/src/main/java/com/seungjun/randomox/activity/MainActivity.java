@@ -161,7 +161,8 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         Intent intent = null;
 
         if(!TextUtils.isEmpty(textData)){
-
+            intent = new Intent(this, ReqMailActivity.class);
+            intent.putExtra("textData", textData);
         }else{
             intent = new Intent(this, PostMailOXActivity.class);
         }

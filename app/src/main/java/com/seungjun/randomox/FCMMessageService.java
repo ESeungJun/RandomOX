@@ -14,6 +14,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.seungjun.randomox.activity.IntroActivity;
 import com.seungjun.randomox.activity.MainActivity;
+import com.seungjun.randomox.db.LetterDBUtils;
+import com.seungjun.randomox.db.RandomOxDBHelper;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
 import com.seungjun.randomox.network.data.HeaderInfo;
@@ -49,6 +51,7 @@ public class FCMMessageService extends FirebaseMessagingService {
                 D.log(TAG, "Message Data Type > " + remoteMessage.getData().get("type"));
 
                 sendNotification(remoteMessage.getData().get("message"), Integer.parseInt(remoteMessage.getData().get("type")));
+
             }
 
 
@@ -118,8 +121,11 @@ public class FCMMessageService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, IntroActivity.class);
 
-        if(type == FCM_TYPE_LETTER)
+        if(type == FCM_TYPE_LETTER){
             intent.putExtra("textData", messageBody);
+            LetterDBUtils.getInstance(RandomOXApplication.getAppContext()).saveLetterData(messageBody);
+        }
+
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

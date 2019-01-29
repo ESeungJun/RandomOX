@@ -40,6 +40,9 @@
         <activity android:name=".activity.PostMailOXActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.ReqMailActivity"
+                  android:screenOrientation="portrait"/>
+
         <service android:name=".FCMMessageService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
