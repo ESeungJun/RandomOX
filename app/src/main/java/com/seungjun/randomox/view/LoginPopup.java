@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seungjun.randomox.R;
+import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitApiCallback;
@@ -108,49 +109,76 @@ public class LoginPopup extends Dialog {
         this.setCancelable(false);
 
 
-//        networkClient.callGetTest(new RetrofitApiCallback() {
-//            @Override
-//            public void onError(Throwable t) {
-//
-//                inputNickName.setEnabled(true);
-//                inputNickName.setFocusable(true);
-//
-//                inputPw.setEnabled(true);
-//                inputPw.setFocusable(true);
-//
-//                btnLogin.setVisibility(View.VISIBLE);
-//                loginProgress.setVisibility(View.GONE);
-//                LoginPopup.this.setCancelable(true);
-//
-//                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
-//            }
-//
-//            @Override
-//            public void onSuccess(int code, Object resultData) {
-//
-//                PreferenceUtils.getInstance(context).setLoginSuccess(true);
-//
-//                Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
-//
-//                LoginPopup.this.dismiss();
-//            }
-//
-//            @Override
-//            public void onFailed(int code) {
-//
-//
-//                inputNickName.setEnabled(true);
-//                inputNickName.setFocusable(true);
-//
-//                inputPw.setEnabled(true);
-//                inputPw.setFocusable(true);
-//
-//                btnLogin.setVisibility(View.VISIBLE);
-//                loginProgress.setVisibility(View.GONE);
-//                LoginPopup.this.setCancelable(true);
-//
-//            }
-//        });
+        networkClient.callPostLogin(new RetrofitApiCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+                inputNickName.setEnabled(true);
+                inputNickName.setFocusable(true);
+
+                inputPw.setEnabled(true);
+                inputPw.setFocusable(true);
+
+                btnLogin.setVisibility(View.VISIBLE);
+                loginProgress.setVisibility(View.GONE);
+                LoginPopup.this.setCancelable(true);
+
+                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+            }
+
+            @Override
+            public void onSuccess(int code, Object resultData) {
+
+                UserInfo userInfo = (UserInfo)resultData;
+
+                if(userInfo.reqCode == 0){
+
+                    PreferenceUtils.getInstance(context).setUserSindex(userInfo.user_sIndex);
+                    PreferenceUtils.getInstance(context).setUserScore(userInfo.user_point);
+                    PreferenceUtils.getInstance(context).setUserId(nickname);
+                    PreferenceUtils.getInstance(context).setUserPw(password);
+                    PreferenceUtils.getInstance(context).setLoginSuccess(true);
+
+                    Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show();
+
+                    LoginPopup.this.dismiss();
+                }else{
+
+                    inputNickName.setEnabled(true);
+                    inputNickName.setFocusable(true);
+
+                    inputPw.setEnabled(true);
+                    inputPw.setFocusable(true);
+
+                    btnLogin.setVisibility(View.VISIBLE);
+                    loginProgress.setVisibility(View.GONE);
+                    LoginPopup.this.setCancelable(true);
+
+
+                    errorText.setText(userInfo.reqMsg);
+                }
+
+
+            }
+
+            @Override
+            public void onFailed(int code) {
+
+
+                inputNickName.setEnabled(true);
+                inputNickName.setFocusable(true);
+
+                inputPw.setEnabled(true);
+                inputPw.setFocusable(true);
+
+                btnLogin.setVisibility(View.VISIBLE);
+                loginProgress.setVisibility(View.GONE);
+                LoginPopup.this.setCancelable(true);
+
+                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+
+            }
+        }, nickname, password);
     }
 
 

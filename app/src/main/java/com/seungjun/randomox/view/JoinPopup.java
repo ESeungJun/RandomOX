@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
+import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -128,9 +130,27 @@ public class JoinPopup extends Dialog {
 
             @Override
             public void onSuccess(int code, Object resultData) {
-                Toast.makeText(context, "가입 성공! 로그인 해주세요!", Toast.LENGTH_SHORT).show();
 
-                JoinPopup.this.dismiss();
+                HeaderInfo result = (HeaderInfo)resultData;
+
+                if(result.reqCode == 0){
+                    Toast.makeText(context, "가입 성공! 로그인 해주세요!", Toast.LENGTH_SHORT).show();
+
+                    JoinPopup.this.dismiss();
+                }else{
+
+                    inputNickName.setEnabled(true);
+                    inputNickName.setFocusable(true);
+
+                    inputPw.setEnabled(true);
+                    inputPw.setFocusable(true);
+
+                    btnJoin.setVisibility(View.VISIBLE);
+                    joinProgress.setVisibility(View.GONE);
+                    JoinPopup.this.setCancelable(true);
+
+                    errorText.setText(result.reqMsg);
+                }
             }
 
             @Override
