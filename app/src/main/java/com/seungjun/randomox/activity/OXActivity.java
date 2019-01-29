@@ -183,6 +183,17 @@ public class OXActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() + sIndex);
+
+        D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
+
+        super.onDestroy();
+
+    }
+
     @OnClick(R.id.ox_next)
     public void clickNext() {
 
@@ -195,8 +206,8 @@ public class OXActivity extends BaseActivity {
         D.log(TAG, "Next sIndex > " + sIndex);
 
 
-        //다음으로 시작해야할 인덱스가 현재 가지고 있는 것과 동일하거나 크면
-        if (sIndex >= oxList.size() - 1) {
+        //다음으로 시작해야할 인덱스가 현재 가지고 있는 것과 동일하면
+        if (sIndex == oxList.size()) {
 
             //새롭게 oxList를 요청한다.
             netProgress.setProgressText("문제 요청 중...");
@@ -209,16 +220,9 @@ public class OXActivity extends BaseActivity {
 
                     popup = new NormalPopup(OXActivity.this);
                     popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                    popup.setPopupTitle("알 수 없는 에러");
                     popup.setOKClick(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
-                            // 뭔가 에러가 난 상황이면
-                            // 현재까지 진행된 인덱스 + 원래 있던 인덱스
-                            preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() + sIndex);
-                            D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
-
                             popup.dismiss();
                             finish();
                         }
@@ -237,9 +241,6 @@ public class OXActivity extends BaseActivity {
 
                             // 정상 상황이면
                             // 현재까지 진행된 인덱스 + 받아온 아이템 총 길이
-                            preferenceUtils.setUserSindex(oxContentInfo.oxList.size() + preferenceUtils.getUserSindex());
-
-                            D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
 
                             oxList.addAll(oxContentInfo.oxList);
                             setNextOX(oxList.get(sIndex));
@@ -248,15 +249,9 @@ public class OXActivity extends BaseActivity {
 
                             popup = new NormalPopup(OXActivity.this);
                             popup.setPopupText(oxContentInfo.reqMsg);
-                            popup.setPopupTitle(oxContentInfo.reqCode == 6000 ? "문제를 다 푸셨군요!" : "서버 에러");
                             popup.setOKClick(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-
-                                    // 뭔가 에러가 난 상황이면
-                                    // 현재까지 진행된 인덱스 + 원래 있던 인덱스
-                                    preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() + sIndex);
-                                    D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
 
                                     popup.dismiss();
                                     finish();
@@ -273,23 +268,16 @@ public class OXActivity extends BaseActivity {
 
                     popup = new NormalPopup(OXActivity.this);
                     popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                    popup.setPopupTitle("알 수 없는 에러");
                     popup.setOKClick(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
-                            // 뭔가 에러가 난 상황이면
-                            // 현재까지 진행된 인덱스 + 원래 있던 인덱스
-                            preferenceUtils.setUserSindex(preferenceUtils.getUserSindex() + sIndex);
-                            D.log(TAG, "set sIndex > " + preferenceUtils.getUserSindex());
-
                             popup.dismiss();
                             finish();
                         }
                     });
                     popup.show();
                 }
-            }, preferenceUtils.getUserSindex());
+            }, preferenceUtils.getUserSindex() + sIndex);
 
 
         }else{
