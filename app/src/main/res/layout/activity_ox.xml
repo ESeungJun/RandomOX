@@ -67,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_centerHorizontal="true"
                     style="@style/commonTextStyle"
+                    android:textSize="23sp"
                     android:gravity="center"
                     android:layout_marginTop="5dp"/>
             </RelativeLayout>

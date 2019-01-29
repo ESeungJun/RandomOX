@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+              android:background="@color/color_ffffff"
     android:orientation="vertical">
 
     <include layout="@layout/view_top_bar" />
@@ -40,6 +41,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:padding="8dp"
+            android:textColor="@color/color_282828"
             android:textColorHint="@color/color_bebebe" />
 
         <TextView
