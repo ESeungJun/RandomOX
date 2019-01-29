@@ -3,6 +3,7 @@ package com.seungjun.randomox.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
+import com.seungjun.randomox.utils.CommonUtils;
+import com.seungjun.randomox.utils.PreferenceUtils;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
@@ -60,16 +63,36 @@ public class JoinPopup extends Dialog {
     @OnClick(R.id.btn_join)
     public void clickJoin(){
 
-        if(TextUtils.isEmpty(inputNickName.getText().toString())){
+        String nickname = inputNickName.getText().toString();
+        String password = inputPw.getText().toString();
+
+        if(TextUtils.isEmpty(nickname)){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_empty_name));
 
             return;
         }
 
-        if (TextUtils.isEmpty(inputPw.getText().toString())){
+
+        if(!CommonUtils.isValidName(nickname)){
+            errorText.setVisibility(View.VISIBLE);
+            errorText.setText(context.getResources().getString(R.string.error_nonok_name));
+
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(password)){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_empty_pw));
+
+            return;
+        }
+
+
+        if(!CommonUtils.isValidPw(password)){
+            errorText.setVisibility(View.VISIBLE);
+            errorText.setText(context.getResources().getString(R.string.error_nonok_pw));
 
             return;
         }
@@ -86,45 +109,46 @@ public class JoinPopup extends Dialog {
         this.setCancelable(false);
 
 
-//        networkClient.callGetTest(new RetrofitApiCallback() {
-//            @Override
-//            public void onError(Throwable t) {
-//
-//                inputNickName.setEnabled(true);
-//                inputNickName.setFocusable(true);
-//
-//                inputPw.setEnabled(true);
-//                inputPw.setFocusable(true);
-//
-//                btnJoin.setVisibility(View.VISIBLE);
-//                joinProgress.setVisibility(View.GONE);
-//                JoinPopup.this.setCancelable(true);
-//
-//                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
-//            }
-//
-//            @Override
-//            public void onSuccess(int code, Object resultData) {
-//
-//                Toast.makeText(context, "가입 성공!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailed(int code) {
-//
-//
-//                inputNickName.setEnabled(true);
-//                inputNickName.setFocusable(true);
-//
-//                inputPw.setEnabled(true);
-//                inputPw.setFocusable(true);
-//
-//                btnJoin.setVisibility(View.VISIBLE);
-//                joinProgress.setVisibility(View.GONE);
-//                JoinPopup.this.setCancelable(true);
-//
-//            }
-//        });
+        networkClient.callPostJoin(new RetrofitApiCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+                inputNickName.setEnabled(true);
+                inputNickName.setFocusable(true);
+
+                inputPw.setEnabled(true);
+                inputPw.setFocusable(true);
+
+                btnJoin.setVisibility(View.VISIBLE);
+                joinProgress.setVisibility(View.GONE);
+                JoinPopup.this.setCancelable(true);
+
+                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+            }
+
+            @Override
+            public void onSuccess(int code, Object resultData) {
+                Toast.makeText(context, "가입 성공! 로그인 해주세요!", Toast.LENGTH_SHORT).show();
+
+                JoinPopup.this.dismiss();
+            }
+
+            @Override
+            public void onFailed(int code) {
+
+
+                inputNickName.setEnabled(true);
+                inputNickName.setFocusable(true);
+
+                inputPw.setEnabled(true);
+                inputPw.setFocusable(true);
+
+                btnJoin.setVisibility(View.VISIBLE);
+                joinProgress.setVisibility(View.GONE);
+                JoinPopup.this.setCancelable(true);
+
+            }
+        }, nickname, password, PreferenceUtils.getInstance(context).getUserFcmKey());
     }
 
 

@@ -15,7 +15,6 @@ import com.seungjun.randomox.view.NetworkProgressDialog;
  */
 public class BaseActivity extends AppCompatActivity {
 
-
     protected NetworkProgressDialog netProgress;
     protected RetrofitClient networkClient;
 

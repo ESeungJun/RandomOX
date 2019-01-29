@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="left|center_vertical"
-                    android:hint="한글 / 영어 / 숫자 활용 2 ~ 12자"
+                    android:hint="한글 2 ~ 12자"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:maxLength="12"

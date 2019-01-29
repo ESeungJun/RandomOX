@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.network.data.UserInfo;
 
 import org.json.JSONObject;
 
@@ -128,6 +130,76 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(Call<OxContentInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+
+    }
+
+
+    /**
+     * 로그인 요청 API
+     * 방식 : POST
+     *
+     * @param callback
+     * @param user_nick 닉네임
+     * @param user_pw 패스워드
+     */
+    public void callPostLogin(RetrofitApiCallback callback, String user_nick, String user_pw){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_nick", user_nick);
+        body.put("user_pw", user_pw);
+
+
+        apiService.reqLogin(body).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+
+    }
+
+
+    /**
+     * 가입 요청 API
+     * 방식 : POST
+     *
+     * @param callback
+     * @param user_nick 닉네임
+     * @param user_pw 패스워드
+     * @param user_fcm fcm 키 값
+     */
+    public void callPostJoin(RetrofitApiCallback callback, String user_nick, String user_pw, String user_fcm){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_nick", user_nick);
+        body.put("user_pw", user_pw);
+        body.put("user_fcm", user_fcm);
+
+
+        apiService.reqJoin(body).enqueue(new Callback<HeaderInfo>() {
+            @Override
+            public void onResponse(Call<HeaderInfo> call, Response<HeaderInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HeaderInfo> call, Throwable t) {
                 callback.onError(t);
             }
         });

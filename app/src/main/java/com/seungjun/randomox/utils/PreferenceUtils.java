@@ -16,6 +16,7 @@ public class PreferenceUtils {
     private static final String USER_PW = "user_pw";
     private static final String USER_SINDEX = "user_sindex";
     private static final String USER_SCORE = "user_score";
+    private static final String USER_FCM_KEY = "user_fcm_key";
 
 
     private PreferenceUtils(Context context){
@@ -110,7 +111,10 @@ public class PreferenceUtils {
         return "";
     }
 
-
+    /**
+     * 유저 문제 시작 인덱스 저장
+     * @param sIndex
+     */
     public void setUserSindex(int sIndex){
         if(preEditor != null){
             preEditor.putInt(USER_SINDEX, sIndex);
@@ -120,6 +124,10 @@ public class PreferenceUtils {
     }
 
 
+    /**
+     * 유저 문제 시작 인덱스 반환
+     * @return
+     */
     public int getUserSindex(){
         if(preferences != null)
             return preferences.getInt(USER_SINDEX, 1);
@@ -128,6 +136,10 @@ public class PreferenceUtils {
     }
 
 
+    /**
+     * 유저 점수 저장
+     * @param score
+     */
     public void setUserScore(int score){
         if(preEditor != null){
             preEditor.putInt(USER_SCORE, score);
@@ -137,10 +149,41 @@ public class PreferenceUtils {
     }
 
 
+    /**
+     * 유저 점수 반환
+     * @return
+     */
     public int getUserScore(){
         if(preferences != null)
             return preferences.getInt(USER_SCORE, 0);
 
         return 0;
+    }
+
+
+    /**
+     * fcm 키 저장
+     * @param fcmKey
+     */
+    public void setUserFcmKey(String fcmKey){
+
+        if(preEditor != null){
+            preEditor.putString(USER_FCM_KEY, fcmKey);
+            preEditor.commit();
+        }
+
+    }
+
+
+    /**
+     * fcm 키 반환
+     * @return
+     */
+    public String getUserFcmKey(){
+
+        if(preferences != null)
+            return preferences.getString(USER_FCM_KEY, "");
+
+        return "";
     }
 }

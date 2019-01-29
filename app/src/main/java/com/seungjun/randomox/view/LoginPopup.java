@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seungjun.randomox.R;
+import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.RetrofitClient;
@@ -60,19 +61,40 @@ public class LoginPopup extends Dialog {
     @OnClick(R.id.btn_login)
     public void clickLogin(){
 
-        if(TextUtils.isEmpty(inputNickName.getText().toString())){
+        String nickname = inputNickName.getText().toString();
+        String password = inputPw.getText().toString();
+
+        if(TextUtils.isEmpty(nickname)){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_empty_name));
 
             return;
         }
 
-        if (TextUtils.isEmpty(inputPw.getText().toString())){
+
+        if(!CommonUtils.isValidName(nickname)){
+            errorText.setVisibility(View.VISIBLE);
+            errorText.setText(context.getResources().getString(R.string.error_nonok_name));
+
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(password)){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_empty_pw));
 
             return;
         }
+
+
+        if(!CommonUtils.isValidPw(password)){
+            errorText.setVisibility(View.VISIBLE);
+            errorText.setText(context.getResources().getString(R.string.error_nonok_pw));
+
+            return;
+        }
+
 
 
         inputNickName.setEnabled(false);

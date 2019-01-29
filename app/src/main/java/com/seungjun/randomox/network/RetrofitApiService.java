@@ -1,6 +1,8 @@
 package com.seungjun.randomox.network;
 
+import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.network.data.UserInfo;
 
 import java.util.HashMap;
 
@@ -27,5 +29,9 @@ public interface RetrofitApiService {
     @POST("getOX")
     Call<OxContentInfo> getOXContent(@Body HashMap<String, Object> body);
 
+    @POST("login")
+    Call<UserInfo> reqLogin(@Body HashMap<String, Object> body);
 
+    @POST("join")
+    Call<HeaderInfo> reqJoin(@Body HashMap<String, Object> body);
 }
