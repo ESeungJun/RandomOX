@@ -146,6 +146,12 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
                 hideView3.getVisibility() == View.VISIBLE)
             return;
 
+        if(!isLogin){
+            Toast.makeText(this, "로그인을 하면 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         Intent intent = new Intent(this, PostMailOXActivity.class);
         startActivity(intent);
     }
