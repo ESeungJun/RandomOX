@@ -12,6 +12,7 @@ import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.view.NormalPopup;
 
 import butterknife.BindView;
@@ -28,9 +29,6 @@ public class SendMailActivity extends BaseActivity{
 
     @BindView(R.id.input_story)
     EditText inputStory;
-
-    private NormalPopup popup;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,16 +71,7 @@ public class SendMailActivity extends BaseActivity{
 
                 netProgress.dismiss();
 
-                popup = new NormalPopup(SendMailActivity.this);
-                popup.setPopupText(SendMailActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                        finish();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), true);
             }
 
             @Override
@@ -92,17 +81,7 @@ public class SendMailActivity extends BaseActivity{
 
                 HeaderInfo result = (HeaderInfo) resultData;
 
-                popup = new NormalPopup(SendMailActivity.this);
-                popup.setPopupText(result.reqMsg);
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                        finish();
-                    }
-                });
-
-                popup.show();
+                CommonUtils.showErrorPopup(SendMailActivity.this, result.reqMsg, true);
             }
 
             @Override
@@ -110,16 +89,7 @@ public class SendMailActivity extends BaseActivity{
 
                 netProgress.dismiss();
 
-                popup = new NormalPopup(SendMailActivity.this);
-                popup.setPopupText(SendMailActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                        finish();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(SendMailActivity.this, getResources().getString(R.string.error_network_unkonw), true);
 
             }
 

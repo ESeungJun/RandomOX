@@ -25,6 +25,9 @@ public class NormalPopup extends Dialog {
     @BindView(R.id.btn_ok)
     TextView btnOk;
 
+    @BindView(R.id.btn_cancel)
+    TextView btn_cancel;
+
     public NormalPopup(Context context) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
@@ -50,6 +53,14 @@ public class NormalPopup extends Dialog {
 
     public void setOKClick(View.OnClickListener listener){
         btnOk.setOnClickListener(listener);
+    }
+
+    public void setCancelClick(View.OnClickListener listener){
+        btn_cancel.setOnClickListener(listener);
+    }
+
+    public void setCancelVisible(int visible){
+        btn_cancel.setVisibility(visible);
     }
 
     @Override

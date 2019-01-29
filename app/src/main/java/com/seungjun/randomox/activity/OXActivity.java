@@ -19,6 +19,7 @@ import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.D;
 import com.seungjun.randomox.view.NormalPopup;
 
@@ -270,16 +271,7 @@ public class OXActivity extends BaseActivity {
 
                     netProgress.dismiss();
 
-                    popup = new NormalPopup(OXActivity.this);
-                    popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                    popup.setOKClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            popup.dismiss();
-                            finish();
-                        }
-                    });
-                    popup.show();
+                    CommonUtils.showErrorPopup(OXActivity.this, getResources().getString(R.string.error_network_unkonw), true);
                 }
 
                 @Override
@@ -296,17 +288,8 @@ public class OXActivity extends BaseActivity {
                         setNextOX(oxList.get(count));
 
                     } else {
-                        popup = new NormalPopup(OXActivity.this);
-                        popup.setPopupText(oxContentInfo.reqMsg);
-                        popup.setOKClick(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
 
-                                popup.dismiss();
-                                finish();
-                            }
-                        });
-                        popup.show();
+                        CommonUtils.showErrorPopup(OXActivity.this, oxContentInfo.reqMsg, true);
                     }
 
                 }
@@ -315,16 +298,7 @@ public class OXActivity extends BaseActivity {
                 public void onFailed(int code) {
                     netProgress.dismiss();
 
-                    popup = new NormalPopup(OXActivity.this);
-                    popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                    popup.setOKClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            popup.dismiss();
-                            finish();
-                        }
-                    });
-                    popup.show();
+                    CommonUtils.showErrorPopup(OXActivity.this, getResources().getString(R.string.error_network_unkonw), true);
                 }
             }, callSIndex);
 
@@ -349,18 +323,7 @@ public class OXActivity extends BaseActivity {
 
                 isError = true;
 
-                popup = new NormalPopup(OXActivity.this);
-                popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        popup.dismiss();
-
-                        finish();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(OXActivity.this, getResources().getString(R.string.error_network_unkonw), true);
             }
 
             @Override
@@ -374,18 +337,8 @@ public class OXActivity extends BaseActivity {
 
                     isError = true;
 
-                    popup = new NormalPopup(OXActivity.this);
-                    popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                    popup.setOKClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                    CommonUtils.showErrorPopup(OXActivity.this, getResources().getString(R.string.error_network_unkonw), true);
 
-                            popup.dismiss();
-
-                            finish();
-                        }
-                    });
-                    popup.show();
                 }else{
 
                     isError = false;
@@ -399,18 +352,7 @@ public class OXActivity extends BaseActivity {
 
                 isError = true;
 
-                popup = new NormalPopup(OXActivity.this);
-                popup.setPopupText(OXActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        popup.dismiss();
-
-                        finish();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(OXActivity.this, getResources().getString(R.string.error_network_unkonw), true);
             }
         }, preferenceUtils.getUserKey(), preferenceUtils.getUserScore(), preferenceUtils.getUserSindex());
     }

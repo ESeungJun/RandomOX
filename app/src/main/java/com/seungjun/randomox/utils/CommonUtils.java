@@ -1,5 +1,12 @@
 package com.seungjun.randomox.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
+
+import com.seungjun.randomox.R;
+import com.seungjun.randomox.view.NormalPopup;
+
 public class CommonUtils {
 
     /**
@@ -29,5 +36,31 @@ public class CommonUtils {
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(stricterFilterString);
         java.util.regex.Matcher m = p.matcher(nickname);
         return m.matches();
+    }
+
+    /**
+     * 에러 팝업 노출
+     * 버튼은 확인 하나만 나옴
+     * @param context
+     * @param text
+     */
+    public static void showErrorPopup(Context context, String text, boolean isFinish){
+
+        NormalPopup popup = new NormalPopup(context);
+        popup.setPopupText(text);
+
+        popup.setOKClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup.dismiss();
+
+                if(isFinish)
+                    ((Activity)context).finish();
+            }
+        });
+
+        popup.setCancelVisible(View.GONE);
+        popup.show();
+
     }
 }

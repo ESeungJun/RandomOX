@@ -14,6 +14,7 @@ import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.network.data.UserInfo;
+import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.view.JoinPopup;
 import com.seungjun.randomox.view.LoginPopup;
@@ -46,11 +47,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
     @BindView(R.id.hide_view3)
     View hideView3;
 
-
     private boolean isLogin = false;
-
-    private NormalPopup popup;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,12 +60,6 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         isLogin = preferenceUtils.isLoginSuccess();
 
         if(isLogin){
-
-            netProgress.setProgressText("자동 로그인 중");
-            netProgress.show();
-
-            callLogin();
-
             mainLogin.setText("로그아웃");
         }else{
             mainLogin.setText("로그인");
@@ -85,6 +76,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             setLogOut();
 
             Toast.makeText(this, "로그아웃 되었어요.", Toast.LENGTH_SHORT).show();
+
         }
         // 로그아웃 되어있는 상태 -> 로그인이 눌림 (로그인 팝업)
         else{
@@ -169,15 +161,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
                 netProgress.dismiss();
 
-                popup = new NormalPopup(MainActivity.this);
-                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(MainActivity.this, getResources().getString(R.string.error_network_unkonw), false);
             }
 
             @Override
@@ -197,15 +181,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
                     }else{
 
-                        popup = new NormalPopup(MainActivity.this);
-                        popup.setPopupText(oxContentInfo.reqMsg);
-                        popup.setOKClick(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                popup.dismiss();
-                            }
-                        });
-                        popup.show();
+                        CommonUtils.showErrorPopup(MainActivity.this, oxContentInfo.reqMsg, false);
                     }
                 }
             }
@@ -214,98 +190,10 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
                 netProgress.dismiss();
 
-                popup = new NormalPopup(MainActivity.this);
-                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                    }
-                });
-                popup.show();
+                CommonUtils.showErrorPopup(MainActivity.this, getResources().getString(R.string.error_network_unkonw), false);
             }
         }, preferenceUtils.getUserSindex());
     }
-
-    /**
-     * 로그인 요청 함수
-     */
-    public void callLogin(){
-        networkClient.callPostLogin(new RetrofitApiCallback() {
-            @Override
-            public void onError(Throwable t) {
-                netProgress.dismiss();
-
-                setLogOut();
-
-                popup = new NormalPopup(MainActivity.this);
-                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popup.dismiss();
-                    }
-                });
-                popup.show();
-            }
-
-            @Override
-            public void onSuccess(int code, Object resultData) {
-                netProgress.dismiss();
-
-                UserInfo userInfo = (UserInfo)resultData;
-
-                if(userInfo.reqCode == 0){
-                    preferenceUtils.setLoginSuccess(true);
-                    preferenceUtils.setUserSindex(userInfo.user_sIndex);
-                    preferenceUtils.setUserScore(userInfo.user_point);
-                    preferenceUtils.setUserKey(userInfo.user_key);
-
-                    isLogin = true;
-
-                    mainLogin.setText("로그아웃");
-
-                }else{
-
-                    setLogOut();
-
-                    popup = new NormalPopup(MainActivity.this);
-                    popup.setPopupText(userInfo.reqMsg);
-                    popup.setOKClick(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            popup.dismiss();
-                        }
-                    });
-                    popup.show();
-
-                }
-
-
-            }
-
-            @Override
-            public void onFailed(int code) {
-                netProgress.dismiss();
-
-                setLogOut();
-
-                popup = new NormalPopup(MainActivity.this);
-                popup.setPopupText(MainActivity.this.getResources().getString(R.string.error_network_unkonw));
-                popup.setOKClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        popup.dismiss();
-                    }
-                });
-                popup.show();
-
-            }
-        }, preferenceUtils.getUserId(), preferenceUtils.getUserPw());
-    }
-
 
     /**
      * 로그아웃 함수
@@ -326,6 +214,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         mainLogin.setText("로그인");
     }
 
+
     @Override
     public void onLogin(boolean isLogin) {
 
@@ -336,8 +225,6 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
         } else {
             setLogOut();
-
-            Toast.makeText(this, "로그아웃 되었어요.", Toast.LENGTH_SHORT).show();
         }
 
     }
