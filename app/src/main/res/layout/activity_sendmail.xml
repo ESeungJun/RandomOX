@@ -48,9 +48,10 @@
             android:gravity="left"
             android:hint="이 곳에 여러분의 이야기를 적어주세요"
             android:imeOptions="actionDone"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:padding="8dp"
             android:textColor="@color/color_282828"
+            android:scrollbars="vertical"
             android:textColorHint="@color/color_bebebe" />
 
         <TextView

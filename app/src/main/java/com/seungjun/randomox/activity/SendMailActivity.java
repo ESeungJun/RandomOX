@@ -47,6 +47,11 @@ public class SendMailActivity extends BaseActivity{
     }
 
 
+    @OnClick(R.id.top_back)
+    public void back(){
+        finish();
+    }
+
     @OnClick(R.id.send_mail)
     public void clickSendMail(){
         //서버에 보내는 로직
