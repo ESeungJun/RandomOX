@@ -2,10 +2,13 @@ package com.seungjun.randomox.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
     @BindView(R.id.main_login)
     TextView mainLogin;
+
+    @BindView(R.id.main_start_view)
+    LinearLayout mainStartView;
 
     @BindView(R.id.hide_postbox)
     ImageView hidePostbox;
@@ -79,6 +85,17 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
             hidePostbox.setImageDrawable(getResources().getDrawable(R.drawable.mail));
         }
+
+        mainStartView.setAlpha(0f);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainStartView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
+                mainStartView.setAlpha(1f);
+            }
+        }, 700);
+
     }
 
 

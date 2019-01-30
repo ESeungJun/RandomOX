@@ -25,6 +25,7 @@ import com.seungjun.randomox.utils.D;
 import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.view.LoginPopup;
 import com.seungjun.randomox.view.NormalPopup;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,9 @@ public class IntroActivity extends BaseActivity {
 
     @BindView(R.id.intro_title)
     TextView introTitle;
+
+    @BindView(R.id.intro_progress)
+    AVLoadingIndicatorView introProgress;
 
     private String textData = "";
 
@@ -54,22 +58,24 @@ public class IntroActivity extends BaseActivity {
 
                 introTitle.startAnimation(AnimationUtils.loadAnimation(IntroActivity.this, R.anim.fadein));
                 introTitle.setAlpha(1f);
+
+
+                if(getIntent() != null && getIntent().getExtras() != null){
+                    textData = getIntent().getStringExtra("textData");
+                }
+
+                // 로그인 되있는 상태
+                // 자동로그인 요청
+                if(preferenceUtils.isLoginSuccess()){
+                    callLogin();
+
+                }else{
+
+                    moveMain();
+                }
             }
         }, 700);
 
-        if(getIntent() != null && getIntent().getExtras() != null){
-            textData = getIntent().getStringExtra("textData");
-        }
-
-        // 로그인 되있는 상태
-        // 자동로그인 요청
-        if(preferenceUtils.isLoginSuccess()){
-            callLogin();
-
-        }else{
-
-            moveMain();
-        }
     }
 
 
@@ -181,13 +187,19 @@ public class IntroActivity extends BaseActivity {
             @Override
             public void run() {
 
-                Intent intent =new Intent(IntroActivity.this, MainActivity.class);
+                introProgress.startAnimation(AnimationUtils.loadAnimation(IntroActivity.this, R.anim.fadeout));
+                introProgress.setAlpha(0f);
+
+                Intent intent = new Intent(IntroActivity.this, MainActivity.class);
 
                 if(!TextUtils.isEmpty(textData))
                     intent.putExtra("textData", textData);
 
                 startActivity(intent);
+                overridePendingTransition(0, 0);
+
                 finish();
+                overridePendingTransition(0, 0);
             }
         }, 1500);
 

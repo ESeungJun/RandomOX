@@ -18,14 +18,14 @@
 
         <TextView
             android:id="@+id/intro_title"
-            android:layout_below="@+id/hide_postbox"
+            android:layout_marginTop="9dp"
             android:layout_centerHorizontal="true"
             android:text="랜덤 OX"
             android:textSize="@dimen/big_text_size"
             style="@style/commonTextStyle"/>
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/join_progress"
+            android:id="@+id/intro_progress"
             android:layout_below="@+id/intro_title"
             style="@style/AVLoadingIndicatorView"
             android:layout_width="wrap_content"
