@@ -23,6 +23,7 @@
 ##---------------Begin: proguard configuration for APP  ----------
 
 -dontwarn org.apache.**
+-dontwarn okhttp3.internal.**
 -keep class android.support.v4.** #support 라이브러리 난독화 방지
 -keep class android.support.v7.** #support 라이브러리 난독화 방지
 -keep class com.google.** {*;}
@@ -45,7 +46,7 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 ##---------------End: proguard configuration for Glide  ----------
 
 
