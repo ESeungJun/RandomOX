@@ -124,7 +124,7 @@ public class IntroActivity extends BaseActivity {
 
                             }else{
                                 NormalPopup notiPoup = new NormalPopup(IntroActivity.this);
-                                notiPoup.setPopupText(notice.noti_text + "\n"+ notice.noti_date);
+                                notiPoup.setPopupText(notice.noti_text);
                                 notiPoup.setPopupTitle("공지사항");
 
                                 // 서버점검이나 강제업뎃 같이
