@@ -115,17 +115,7 @@ public class JoinPopup extends Dialog {
             @Override
             public void onError(Throwable t) {
 
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
-
-                errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+                failedJoin(context.getResources().getString(R.string.error_network_unkonw));
             }
 
             @Override
@@ -138,37 +128,36 @@ public class JoinPopup extends Dialog {
 
                     JoinPopup.this.dismiss();
                 }else{
-
-                    inputNickName.setEnabled(true);
-                    inputNickName.setFocusable(true);
-
-                    inputPw.setEnabled(true);
-                    inputPw.setFocusable(true);
-
-                    btnJoin.setVisibility(View.VISIBLE);
-                    joinProgress.setVisibility(View.GONE);
-                    JoinPopup.this.setCancelable(true);
-
-                    errorText.setText(result.reqMsg);
+                    failedJoin(result.reqMsg);
                 }
             }
 
             @Override
             public void onFailed(int code) {
 
-
-                inputNickName.setEnabled(true);
-                inputNickName.setFocusable(true);
-
-                inputPw.setEnabled(true);
-                inputPw.setFocusable(true);
-
-                btnJoin.setVisibility(View.VISIBLE);
-                joinProgress.setVisibility(View.GONE);
-                JoinPopup.this.setCancelable(true);
+                failedJoin(context.getResources().getString(R.string.error_network_unkonw));
 
             }
         }, nickname, CommonUtils.getAES256(context, password), PreferenceUtils.getInstance(context).getUserFcmKey());
+    }
+
+
+    public void failedJoin(String msg){
+
+        inputNickName.setEnabled(true);
+        inputNickName.setFocusableInTouchMode(true);
+        inputNickName.setFocusable(true);
+
+        inputPw.setEnabled(true);
+        inputPw.setFocusableInTouchMode(true);
+        inputPw.setFocusable(true);
+
+        btnJoin.setVisibility(View.VISIBLE);
+        joinProgress.setVisibility(View.GONE);
+        JoinPopup.this.setCancelable(true);
+
+        errorText.setVisibility(View.VISIBLE);
+        errorText.setText(msg);
     }
 
 

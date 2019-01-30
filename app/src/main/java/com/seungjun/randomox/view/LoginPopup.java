@@ -131,8 +131,7 @@ public class LoginPopup extends Dialog {
         networkClient.callPostLogin(new RetrofitApiCallback() {
             @Override
             public void onError(Throwable t) {
-
-                failedLogin();
+                failedLogin(context.getResources().getString(R.string.error_network_unkonw));
             }
 
             @Override
@@ -153,9 +152,7 @@ public class LoginPopup extends Dialog {
 
                 }else{
 
-                    failedLogin();
-
-                    errorText.setText(userInfo.reqMsg);
+                    failedLogin(userInfo.reqMsg);
                 }
 
 
@@ -164,7 +161,7 @@ public class LoginPopup extends Dialog {
             @Override
             public void onFailed(int code) {
 
-                failedLogin();
+                failedLogin(context.getResources().getString(R.string.error_network_unkonw));
 
             }
         }, nickname, CommonUtils.getAES256(context, password));
@@ -180,19 +177,22 @@ public class LoginPopup extends Dialog {
         super.show();
     }
 
-    public void failedLogin(){
+    public void failedLogin(String msg){
 
         inputNickName.setEnabled(true);
+        inputNickName.setFocusableInTouchMode(true);
         inputNickName.setFocusable(true);
 
         inputPw.setEnabled(true);
+        inputPw.setFocusableInTouchMode(true);
         inputPw.setFocusable(true);
 
         btnLogin.setVisibility(View.VISIBLE);
         loginProgress.setVisibility(View.GONE);
         LoginPopup.this.setCancelable(true);
 
-        errorText.setText(context.getResources().getString(R.string.error_network_unkonw));
+        errorText.setVisibility(View.VISIBLE);
+        errorText.setText(msg);
     }
 
 
@@ -211,7 +211,7 @@ public class LoginPopup extends Dialog {
                         if (!task.isSuccessful()) {
                             D.error(TAG, "getInstanceId failed", task.getException());
 
-                            failedLogin();
+                            failedLogin(context.getResources().getString(R.string.error_network_unkonw));
 
                             return;
                         }
@@ -224,8 +224,7 @@ public class LoginPopup extends Dialog {
                         networkClient.callPostFcmUpdate(new RetrofitApiCallback() {
                             @Override
                             public void onError(Throwable t) {
-
-                                failedLogin();
+                                failedLogin(context.getResources().getString(R.string.error_network_unkonw));
                             }
 
                             @Override
@@ -239,7 +238,7 @@ public class LoginPopup extends Dialog {
 
                             @Override
                             public void onFailed(int code) {
-                                failedLogin();
+                                failedLogin(context.getResources().getString(R.string.error_network_unkonw));;
                             }
                         }, PreferenceUtils.getInstance(context).getUserKey(), PreferenceUtils.getInstance(context).getUserFcmKey());
                     }
