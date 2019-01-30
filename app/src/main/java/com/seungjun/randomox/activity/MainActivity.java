@@ -39,6 +39,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
     @BindView(R.id.main_login)
     TextView mainLogin;
 
+    @BindView(R.id.main_join)
+    TextView mainJoin;
+
     @BindView(R.id.main_start_view)
     LinearLayout mainStartView;
 
@@ -71,8 +74,10 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
         if(isLogin){
             mainLogin.setText("로그아웃");
+            mainJoin.setText("탈퇴하기");
         }else{
             mainLogin.setText("로그인");
+            mainJoin.setText("가입하기");
         }
 
 
@@ -121,8 +126,36 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
     @OnClick(R.id.main_join)
     public void clickJoin(){
-        JoinPopup joinPopup = new JoinPopup(this);
-        joinPopup.show();
+
+        // 로그인 되있는 상태 -> 탈퇴하기 눌림 (탈퇴 시키기)
+        if(isLogin) {
+            NormalPopup exitPopup = new NormalPopup(this);
+            exitPopup.setPopupTitle("탈퇴하기");
+            exitPopup.setPopupText("탈퇴 하시겠어요?\n탈퇴 시, 받았던 편지와 모든 데이터가 삭제되며 복구는 불가능해요.");
+            exitPopup.setCancelVisible(View.VISIBLE);
+            exitPopup.setCancelClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    exitPopup.dismiss();
+                }
+            });
+            exitPopup.setOKClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    exitPopup.dismiss();
+
+                    netProgress.setProgressText("탈퇴 요청 중");
+                    netProgress.show();
+                }
+            });
+
+            exitPopup.show();
+
+        }else{
+            JoinPopup joinPopup = new JoinPopup(this);
+            joinPopup.show();
+        }
     }
 
 
@@ -251,6 +284,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         isLogin = false;
 
         mainLogin.setText("로그인");
+        mainJoin.setText("가입하기");
     }
 
 
@@ -261,6 +295,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
         if (this.isLogin) {
             mainLogin.setText("로그아웃");
+            mainJoin.setText("탈퇴하기");
 
         } else {
             setLogOut();
