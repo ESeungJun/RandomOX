@@ -147,6 +147,44 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
                     netProgress.setProgressText("탈퇴 요청 중");
                     netProgress.show();
+
+                    networkClient.callPostDeleteInfo(new RetrofitApiCallback() {
+                        @Override
+                        public void onError(Throwable t) {
+
+                            netProgress.dismiss();
+                            CommonUtils.showErrorPopup(MainActivity.this, getResources().getString(R.string.error_network_unkonw), false);
+                        }
+
+                        @Override
+                        public void onSuccess(int code, Object resultData) {
+
+                            netProgress.dismiss();
+
+                            HeaderInfo result = (HeaderInfo) resultData;
+
+                            if(result.reqCode == 0){
+
+
+                                Toast.makeText(MainActivity.this, "즐거웠어요! 또 놀러오세요 ! :)", Toast.LENGTH_SHORT).show();
+
+                                setLogOut();
+
+                            }else{
+                                CommonUtils.showErrorPopup(MainActivity.this, result.reqMsg, false);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailed(int code) {
+
+                            netProgress.dismiss();
+                            CommonUtils.showErrorPopup(MainActivity.this, getResources().getString(R.string.error_network_unkonw), false);
+                        }
+
+                    }, preferenceUtils.getUserKey(), preferenceUtils.getUserId(), preferenceUtils.getUserPw());
                 }
             });
 

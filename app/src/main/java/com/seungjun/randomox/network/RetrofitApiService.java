@@ -43,4 +43,7 @@ public interface RetrofitApiService {
 
     @POST("sendLetter")
     Call<HeaderInfo> reqSendLetter(@Body HashMap<String, Object> body);
+
+    @POST("deleteInfo")
+    Call<HeaderInfo> reqDeleteInfo(@Body HashMap<String, Object> body);
 }
