@@ -1,7 +1,20 @@
 package com.seungjun.randomox.network;
 
+import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.network.data.NoticesInfo;
+import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.network.data.UserInfo;
+
+import java.util.HashMap;
+
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Retrofit 을 활용하여 요청할 api 목록 인터페이스
@@ -14,9 +27,27 @@ import retrofit2.http.GET;
  */
 public interface RetrofitApiService {
 
+    @POST("getOX")
+    Call<OxContentInfo> getOXContent(@Body HashMap<String, Object> body);
 
-    @GET("test")
-    Call<String> getTest();
+    @POST("login")
+    Call<UserInfo> reqLogin(@Body HashMap<String, Object> body);
 
+    @POST("join")
+    Call<HeaderInfo> reqJoin(@Body HashMap<String, Object> body);
 
+    @POST("fcmUpdate")
+    Call<HeaderInfo> reqFcmUpdate(@Body HashMap<String, Object> body);
+
+    @POST("updateUserInfo")
+    Call<HeaderInfo> reqUpdateUserInfo(@Body HashMap<String, Object> body);
+
+    @POST("sendLetter")
+    Call<HeaderInfo> reqSendLetter(@Body HashMap<String, Object> body);
+
+    @POST("deleteInfo")
+    Call<HeaderInfo> reqDeleteInfo(@Body HashMap<String, Object> body);
+
+    @GET("getNotices")
+    Call<NoticesInfo> reqGetNotices();
 }

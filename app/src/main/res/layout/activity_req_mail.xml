@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/view_top_bar_mail"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/commonTextStyle"
+        android:textSize="@dimen/smaill_text_size"
+        android:textColor="@color/color_ff4f60"
+        android:text="*앱을 지우거나 탈퇴시 받았던 편지도 지워집니다.\n복구는 불가능하니 참고해주세요 :)"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_letter">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    tools:context=".activity.OXActivity">
+
+    <include layout="@layout/view_top_bar"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            style="@style/commonTextStyle"
+            android:id="@+id/ox_tag"
+            android:layout_centerHorizontal="true"
+            android:text="#태그 #태그 #태그"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/content_view"
+            android:layout_below="@+id/ox_tag"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            app:cardCornerRadius="10dp">
+
+            <RelativeLayout
+                android:id="@+id/answer_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ox_answer_img"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/emoji"/>
+
+                <TextView
+                    android:id="@+id/ox_answer"
+                    android:layout_below="@+id/ox_answer_img"
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    style="@style/commonTextStyle"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/ox_answer_check"
+                    android:layout_below="@+id/ox_answer"
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    style="@style/commonTextStyle"
+                    android:textSize="23sp"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/ox_content"
+                style="@style/commonTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@color/color_ffffff"
+                android:text="문제 내용"/>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/ox_next"
+            android:visibility="invisible"
+            style="@style/commonTextStyle"
+            android:layout_centerHorizontal="true"
+            android:text="다음 문제"
+            android:layout_below="@+id/content_view"
+            android:layout_marginTop="15dp"/>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/btn_o"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:src="@drawable/circle"
+            android:tint="@color/selector_color_o"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btn_x"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:src="@drawable/cross"
+            android:tint="@color/selector_color_x"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

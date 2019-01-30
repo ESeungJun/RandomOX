@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">랜덤OX</string>
+    <string name="default_notification_channel_id">com.seungjun.randomox</string>
+
+    <string name="error_empty_name">닉네임을 입력해 주세요.</string>
+    <string name="error_empty_pw">비밀번호를 입력해 주세요.</string>
+    <string name="error_nonok_name">닉네임은 한글 2 ~ 12자까지만 가능해요.</string>
+    <string name="error_nonok_pw">비밀번호는 영문+숫자+특수문자 조합 4 ~ 10자까지만 가능해요.</string>
+
+    <string name="error_network_unkonw">죄송해요. 알 수 없는 에러가 발생했어요. 잠시 후에 다시 해주세요.</string>
+
+    <string name="default_good_text">정답이에요! +1점</string>
+    <string name="default_bad_text">틀렸어요..</string>
+    <string name="default_special_text">이벤트 문제! +1점</string>
+
+    <string name="post_mail_ox_content">
+        혹시 누군가에게 하고 싶은 이야기나\n
+        고민이 있으신가요?</string>
+
+    <string name="send_mail_info">
+        여러분의 고민이나 생각, 개발자에게 한마디 등등\n
+        그 어떤 것도 좋아요. 상담소에 여러분의 이야기를 접수해 주시면\n
+        제가 여러분에게 답변을 보내드릴게요.
+    </string>
+
+    <string name="send_mail_info1">
+        닉네임을 제외한 그 어떤 것도 저는 알 수 없으니 안심하세요 :)\n
+        또한, 여러분의 이야기는 제가 답장을 보내고 바로 삭제합니다.
+    </string>
+
+    <string name="send_mail_info2">
+        !주의! 만약, 앱을 삭제하거나 탈퇴를 하면 답장을 받을 수 없습니다.!
+    </string>
+
+
+    <string name="auto_login_success">자동 로그인 성공!</string>
+    <string name="auto_login_failed">자동 로그인이 실패했어요. 메인에서 다시 로그인 해주세요.</string>
+
+    <string name="invalid_character_entered">이모티콘은 입력이 불가능해요. 다른 글자로 입력해주세요.</string>
+    <string name="error_send_mail">편지 전송을  실패했어요 :(\n혹시 특수문자나 이모티콘을 사용하셨나요?\n일부 특수문자나 이모티콘은 오류가 날 수 있어요!\n다시 한 번 확인해주세요 :)</string>
+
+    <string name="lnfo_glide">
+        Glide\npart MIT and Apache 2.0\nhttps://github.com/bumptech/glide
+    </string>
 </resources>

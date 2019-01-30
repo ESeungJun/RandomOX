@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_ffffff"
+    android:layout_height="48dp">
+
+    <ImageView
+        android:id="@+id/top_back"
+        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:scaleType="centerInside"
+        android:padding="10dp"
+        android:src="@drawable/back"/>
+
+    <TextView
+        android:id="@+id/top_title"
+        style="@style/commonTextStyle"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/title_text_size"
+        android:text="개발자의 편지"/>
+
+    <TextView
+        style="@style/commonTextStyle"
+        android:id="@+id/send_mail"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/normal_text_size"
+        android:layout_marginRight="5dp"
+        android:text="편지쓰기"/>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_959595"/>
+
+</RelativeLayout>

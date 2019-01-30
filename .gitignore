@@ -19,3 +19,4 @@ build
 *~
 *.swp
 /app/outputs
+/app/apk

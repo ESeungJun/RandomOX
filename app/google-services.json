@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "245516957114",
+    "firebase_url": "https://randomox.firebaseio.com",
+    "project_id": "randomox",
+    "storage_bucket": "randomox.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245516957114:android:a386f75d63cc2de1",
+        "android_client_info": {
+          "package_name": "com.seungjun.randomox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245516957114-g6ltvcfkacqvq6ufoh65k1u00lmje6ne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4HGMUElc2X-QX_tedgp1xM-90WCs4POc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
