@@ -9,6 +9,8 @@ import com.seungjun.randomox.view.NormalPopup;
 
 public class CommonUtils {
 
+    private static final String TAG = "CommonUtils";
+
     /**
      * 비밀번호 유효성 체크
      * 영어 + 숫자 + 특수문자 조합 4 ~ 10자
@@ -62,5 +64,37 @@ public class CommonUtils {
         popup.setCancelVisible(View.GONE);
         popup.show();
 
+    }
+
+    /**
+     * AES256 암호화
+     * @param text 암호화
+     * @return
+     */
+    public static String getAES256(Context context, String text) {
+        AESUtils aes = null;
+        try {
+            aes = new AESUtils(context);
+            return aes.encrypt(text);
+        } catch (Exception e) {
+            D.log(TAG, "AES256 e : "+ e.toString());
+            return "";
+        }
+    }
+
+    /**
+     * AES256 복호화
+     * @param text 복호화
+     * @return
+     */
+    public static String setAES256(Context context, String text) {
+        AESUtils aes = null;
+        try {
+            aes = new AESUtils(context);
+            return aes.decrypt(text);
+        } catch (Exception e) {
+            D.log(TAG, "AES256 e : "+ e.toString());
+            return "";
+        }
     }
 }
