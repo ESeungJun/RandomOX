@@ -112,10 +112,10 @@
 
 
     <TextView
-        android:id="@+id/send_email"
+        android:id="@+id/main_app_info"
         android:layout_alignParentBottom="true"
-        android:text="개발자 tel.\n6951004@gmail.com"
-        android:layout_marginBottom="5dp"
-        android:textSize="15sp"
+        android:text="앱 정보"
+        android:layout_marginBottom="15dp"
+        android:textSize="@dimen/normal_text_size"
         style="@style/commonTextStyle"/>
 </LinearLayout>

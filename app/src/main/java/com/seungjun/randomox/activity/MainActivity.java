@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainJoin.setText("탈퇴하기");
 
             mainMyScore.setVisibility(View.VISIBLE);
-            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
 
             mainMyScore.setAlpha(0f);
         }else{
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainJoin.setText("탈퇴하기");
 
             mainMyScore.setVisibility(View.VISIBLE);
-            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
 
         } else {
             setLogOut();
@@ -291,23 +291,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         startActivity(intent);
     }
 
-    @OnClick(R.id.send_email)
-    public void clickSendEmail(){
-        Intent it = new Intent(Intent.ACTION_SEND);
-
-        it.putExtra(Intent.EXTRA_EMAIL, new String[]{"6951004@gmail.com"});
-        it.putExtra(Intent.EXTRA_TEXT, "문의나 건의사항을 보내주세요");
-        it.setType("text/plain");
-
-        try{
-
-            it.setPackage("com.google.android.gm");
-            startActivity(it);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            startActivity(Intent.createChooser(it, "이메일을 보낼 앱을 선택해주세요."));
-        }
+    @OnClick(R.id.main_app_info)
+    public void clickAppInfo(){
+        startActivity(new Intent(this, AppInfoActivity.class));
     }
 
 
@@ -390,7 +376,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainJoin.setText("탈퇴하기");
 
             mainMyScore.setVisibility(View.VISIBLE);
-            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
         } else {
             setLogOut();
         }
