@@ -157,17 +157,30 @@ public class OXActivity extends BaseActivity {
      * @param goodText
      * @param goodImage
      */
-    public void visibleSpecial(String goodText, String goodImage) {
+    public void visibleSpecial(String goodText, String goodImage, String badText, String badImage) {
 
-        if (TextUtils.isEmpty(goodText))
-            answerContent.setText("");
-        else
-            answerContent.setText(goodText);
+        if(answerValue.equalsIgnoreCase("o")){
+            if (TextUtils.isEmpty(goodText))
+                answerContent.setText("");
+            else
+                answerContent.setText(goodText);
 
-        if (TextUtils.isEmpty(goodImage))
-            answerImg.setImageDrawable(getResources().getDrawable(R.drawable.emoji));
-        else
-            Glide.with(this).load(goodImage).into(answerImg);
+            if (TextUtils.isEmpty(goodImage))
+                answerImg.setImageDrawable(getResources().getDrawable(R.drawable.emoji));
+            else
+                Glide.with(this).load(goodImage).into(answerImg);
+
+        }else{
+            if (TextUtils.isEmpty(badText))
+                answerContent.setText("");
+            else
+                answerContent.setText(badText);
+
+            if (TextUtils.isEmpty(badImage))
+                answerImg.setImageDrawable(getResources().getDrawable(R.drawable.unhappy));
+            else
+                Glide.with(this).load(badImage).into(answerImg);
+        }
 
         answerCheckView.setText(getResources().getString(R.string.default_special_text));
         answerCheckView.setTextColor(getResources().getColor(R.color.color_8cba23));
@@ -208,9 +221,8 @@ public class OXActivity extends BaseActivity {
     public void checkAnswer(){
 
         // 스페셜 타입의 퀴즈인 경우
-        // 뭘 선택하던 정답으로 처리
         if(oxList.get(count).quiz_special == 1){
-            visibleSpecial(oxList.get(count).quiz_g_coment, oxList.get(count).quiz_g_img);
+            visibleSpecial(oxList.get(count).quiz_g_coment, oxList.get(count).quiz_g_img, oxList.get(count).quiz_coment, oxList.get(count).quiz_img);
         }
         // 일반 문제는 정답 가르기
         else{
