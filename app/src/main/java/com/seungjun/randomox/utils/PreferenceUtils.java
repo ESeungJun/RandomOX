@@ -19,6 +19,9 @@ public class PreferenceUtils {
     private static final String USER_SCORE = "user_score";
     private static final String USER_FCM_KEY = "user_fcm_key";
 
+    private static final String NOTI_NO_SHOW = "noti_no_show";
+    private static final String NOTI_DATE = "";
+
 
     private PreferenceUtils(Context context){
 
@@ -216,4 +219,37 @@ public class PreferenceUtils {
     }
 
 
+    public void setNotiNoShow(boolean isShow){
+        if(preEditor != null){
+            preEditor.putBoolean(NOTI_NO_SHOW, isShow);
+            preEditor.commit();
+        }
+    }
+
+    public boolean isNotiNoShow(){
+        if (preferences != null)
+            return preferences.getBoolean(NOTI_NO_SHOW, false);
+
+        return false;
+    }
+
+
+    public void setNotiDate(String date){
+
+        if(preEditor != null){
+            preEditor.putString(NOTI_DATE, date);
+            preEditor.commit();
+
+        }
+
+    }
+
+
+    public String getNotiDate(){
+
+        if(preferences != null)
+            return preferences.getString(NOTI_DATE, "");
+
+        return "";
+    }
 }

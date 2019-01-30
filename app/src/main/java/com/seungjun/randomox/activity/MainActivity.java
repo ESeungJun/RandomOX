@@ -258,6 +258,25 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         startActivity(intent);
     }
 
+    @OnClick(R.id.send_email)
+    public void clickSendEmail(){
+        Intent it = new Intent(Intent.ACTION_SEND);
+
+        it.putExtra(Intent.EXTRA_EMAIL, new String[]{"6951004@gmail.com"});
+        it.putExtra(Intent.EXTRA_TEXT, "문의나 건의사항을 보내주세요");
+        it.setType("text/plain");
+
+        try{
+
+            it.setPackage("com.google.android.gm");
+            startActivity(it);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            startActivity(Intent.createChooser(it, "이메일을 보낼 앱을 선택해주세요."));
+        }
+    }
+
 
     /**
      * 문제 요청 후 화면 진입하는 함수

@@ -28,6 +28,10 @@ import com.seungjun.randomox.view.LoginPopup;
 import com.seungjun.randomox.view.NormalPopup;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -89,51 +93,105 @@ public class IntroActivity extends BaseActivity {
                         if(notice.reqCode == 0 &&
                                 !TextUtils.isEmpty(notice.noti_text)){
 
-                            NormalPopup notiPoup = new NormalPopup(IntroActivity.this);
-                            notiPoup.setPopupText(notice.noti_text + "\n"+ notice.noti_date);
-                            notiPoup.setPopupTitle("공지사항");
-                            notiPoup.setCancelVisible(View.GONE);
+                            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            try {
+                                Date serverDate = transFormat.parse(notice.noti_date);
+                                Date localDate = transFormat.parse(preferenceUtils.getNotiDate());
 
-                            // 서버점검이나 강제업뎃 같이
-                            // 무조건 무언가를 해야하는 경우
-                            if(notice.noti_yn.equals("y")){
+                                // 서버 공지 추가 일이 로컬에 저장된 일 수 보다
+                                // 더 나중인 경우
+                                // 다시 보지 않기해도 노출시킨다
+                                if(serverDate.compareTo(localDate) > 0){
+                                    preferenceUtils.setNotiNoShow(false);
+                                }
 
-                                notiPoup.setOKClick(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                        // 업데이트라는 문구가 들어간 경우는 강제 업뎃으로 판단
-                                        if(notice.noti_text.contains("업데이트")){
-
-
-                                        }
-
-                                        notiPoup.dismiss();
-                                        finish();
-                                    }
-                                });
-                            }else{
-
-                                notiPoup.setOKClick(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        notiPoup.dismiss();
-
-                                        // 로그인 되있는 상태
-                                        // 자동로그인 요청
-                                        if(preferenceUtils.isLoginSuccess()){
-                                            callLogin();
-
-                                        }else{
-
-                                            moveMain();
-                                        }
-
-                                    }
-                                });
-
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                            notiPoup.show();
+
+
+
+                            if(preferenceUtils.isNotiNoShow()){
+                                // 로그인 되있는 상태
+                                // 자동로그인 요청
+                                if(preferenceUtils.isLoginSuccess()){
+                                    callLogin();
+
+                                }else{
+
+                                    moveMain();
+                                }
+
+                            }else{
+                                NormalPopup notiPoup = new NormalPopup(IntroActivity.this);
+                                notiPoup.setPopupText(notice.noti_text + "\n"+ notice.noti_date);
+                                notiPoup.setPopupTitle("공지사항");
+
+                                // 서버점검이나 강제업뎃 같이
+                                // 무조건 무언가를 해야하는 경우
+                                if(notice.noti_yn.equals("y")){
+
+                                    notiPoup.setCancelVisible(View.GONE);
+                                    notiPoup.setOKClick(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            // 업데이트라는 문구가 들어간 경우는 강제 업뎃으로 판단
+                                            if(notice.noti_text.contains("업데이트")){
+
+
+                                            }
+
+                                            notiPoup.dismiss();
+                                            finish();
+                                        }
+                                    });
+                                }else{
+
+                                    notiPoup.setCancelVisible(View.VISIBLE);
+                                    notiPoup.setCancelText("그만 볼래요");
+                                    notiPoup.setCancelClick(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            notiPoup.dismiss();
+
+                                            preferenceUtils.setNotiNoShow(true);
+
+                                            // 로그인 되있는 상태
+                                            // 자동로그인 요청
+                                            if(preferenceUtils.isLoginSuccess()){
+                                                callLogin();
+
+                                            }else{
+
+                                                moveMain();
+                                            }
+                                        }
+                                    });
+                                    notiPoup.setOKClick(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            notiPoup.dismiss();
+
+                                            // 로그인 되있는 상태
+                                            // 자동로그인 요청
+                                            if(preferenceUtils.isLoginSuccess()){
+                                                callLogin();
+
+                                            }else{
+
+                                                moveMain();
+                                            }
+
+                                        }
+                                    });
+
+                                }
+                                notiPoup.show();
+
+                                preferenceUtils.setNotiDate(notice.noti_date);
+                            }
+
                         }
 
                     }

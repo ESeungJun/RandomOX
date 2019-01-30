@@ -63,6 +63,10 @@ public class NormalPopup extends Dialog {
         btn_cancel.setVisibility(visible);
     }
 
+    public void setCancelText(String text){
+        btn_cancel.setText(text);
+    }
+
     @Override
     public void show() {
 
