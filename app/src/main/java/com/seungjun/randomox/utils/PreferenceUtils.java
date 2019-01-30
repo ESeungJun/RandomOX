@@ -90,7 +90,7 @@ public class PreferenceUtils {
 
 
     /**
-     * 유저 비번 저장
+     * 유저 암호화된 비번 저장
      * @param userPw
      */
     public void setUserPw(String userPw){
@@ -101,7 +101,7 @@ public class PreferenceUtils {
     }
 
     /**
-     * 유저 비번 반환
+     * 유저 암호화된 비번 반환
      * @return
      */
     public String getUserPw(){

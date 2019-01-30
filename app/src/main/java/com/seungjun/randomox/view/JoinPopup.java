@@ -168,7 +168,7 @@ public class JoinPopup extends Dialog {
                 JoinPopup.this.setCancelable(true);
 
             }
-        }, nickname, password, PreferenceUtils.getInstance(context).getUserFcmKey());
+        }, nickname, CommonUtils.getAES256(context, password), PreferenceUtils.getInstance(context).getUserFcmKey());
     }
 
 

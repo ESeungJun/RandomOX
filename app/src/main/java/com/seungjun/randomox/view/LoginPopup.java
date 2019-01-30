@@ -146,6 +146,7 @@ public class LoginPopup extends Dialog {
                     PreferenceUtils.getInstance(context).setUserScore(userInfo.user_point);
                     PreferenceUtils.getInstance(context).setUserId(nickname);
                     PreferenceUtils.getInstance(context).setUserPw(password);
+                    PreferenceUtils.getInstance(context).setUserKey(userInfo.user_key);
                     PreferenceUtils.getInstance(context).setLoginSuccess(true);
 
                     updateFCM();
@@ -166,7 +167,7 @@ public class LoginPopup extends Dialog {
                 failedLogin();
 
             }
-        }, nickname, password);
+        }, nickname, CommonUtils.getAES256(context, password));
     }
 
 
