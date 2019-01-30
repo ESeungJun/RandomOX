@@ -1,6 +1,7 @@
 package com.seungjun.randomox.network;
 
 import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.network.data.NoticesInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 
@@ -46,4 +47,7 @@ public interface RetrofitApiService {
 
     @POST("deleteInfo")
     Call<HeaderInfo> reqDeleteInfo(@Body HashMap<String, Object> body);
+
+    @GET("getNotices")
+    Call<NoticesInfo> reqGetNotices();
 }

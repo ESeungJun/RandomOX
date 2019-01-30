@@ -19,6 +19,7 @@ import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.network.RetrofitApiCallback;
 import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.network.data.NoticesInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.D;
@@ -64,15 +65,94 @@ public class IntroActivity extends BaseActivity {
                     textData = getIntent().getStringExtra("textData");
                 }
 
-                // 로그인 되있는 상태
-                // 자동로그인 요청
-                if(preferenceUtils.isLoginSuccess()){
-                    callLogin();
 
-                }else{
+                networkClient.callGetNotices(new RetrofitApiCallback() {
+                    @Override
+                    public void onError(Throwable t) {
 
-                    moveMain();
-                }
+                        // 로그인 되있는 상태
+                        // 자동로그인 요청
+                        if(preferenceUtils.isLoginSuccess()){
+                            callLogin();
+
+                        }else{
+
+                            moveMain();
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(int code, Object resultData) {
+
+                        NoticesInfo notice = (NoticesInfo)resultData;
+
+                        if(notice.reqCode == 0 &&
+                                !TextUtils.isEmpty(notice.noti_text)){
+
+                            NormalPopup notiPoup = new NormalPopup(IntroActivity.this);
+                            notiPoup.setPopupText(notice.noti_text + "\n"+ notice.noti_date);
+                            notiPoup.setPopupTitle("공지사항");
+                            notiPoup.setCancelVisible(View.GONE);
+
+                            // 서버점검이나 강제업뎃 같이
+                            // 무조건 무언가를 해야하는 경우
+                            if(notice.noti_yn.equals("y")){
+
+                                notiPoup.setOKClick(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        // 업데이트라는 문구가 들어간 경우는 강제 업뎃으로 판단
+                                        if(notice.noti_text.contains("업데이트")){
+
+
+                                        }
+
+                                        notiPoup.dismiss();
+                                        finish();
+                                    }
+                                });
+                            }else{
+
+                                notiPoup.setOKClick(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        notiPoup.dismiss();
+
+                                        // 로그인 되있는 상태
+                                        // 자동로그인 요청
+                                        if(preferenceUtils.isLoginSuccess()){
+                                            callLogin();
+
+                                        }else{
+
+                                            moveMain();
+                                        }
+
+                                    }
+                                });
+
+                            }
+                            notiPoup.show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+
+                        // 로그인 되있는 상태
+                        // 자동로그인 요청
+                        if(preferenceUtils.isLoginSuccess()){
+                            callLogin();
+
+                        }else{
+
+                            moveMain();
+                        }
+                    }
+                });
+
             }
         }, 700);
 

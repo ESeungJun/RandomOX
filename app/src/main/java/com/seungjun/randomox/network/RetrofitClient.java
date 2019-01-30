@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.seungjun.randomox.network.data.HeaderInfo;
+import com.seungjun.randomox.network.data.NoticesInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 
@@ -327,6 +328,32 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(Call<HeaderInfo> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+
+    }
+
+    /**
+     * 공지 정보 받아오기
+     * @param callback
+     */
+    public void callGetNotices(RetrofitApiCallback callback){
+
+
+        apiService.reqGetNotices().enqueue(new Callback<NoticesInfo>() {
+            @Override
+            public void onResponse(Call<NoticesInfo> call, Response<NoticesInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NoticesInfo> call, Throwable t) {
+
                 callback.onError(t);
             }
         });
