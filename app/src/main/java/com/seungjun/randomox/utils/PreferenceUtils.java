@@ -136,7 +136,7 @@ public class PreferenceUtils {
         if(preferences != null)
             return preferences.getInt(USER_SINDEX, 1);
 
-        return 0;
+        return 1;
     }
 
 

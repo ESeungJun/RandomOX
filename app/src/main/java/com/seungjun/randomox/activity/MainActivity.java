@@ -42,6 +42,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
     @BindView(R.id.main_join)
     TextView mainJoin;
 
+    @BindView(R.id.main_myScore)
+    TextView mainMyScore;
+
     @BindView(R.id.main_start_view)
     LinearLayout mainStartView;
 
@@ -75,9 +78,16 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         if(isLogin){
             mainLogin.setText("로그아웃");
             mainJoin.setText("탈퇴하기");
+
+            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
+
+            mainMyScore.setAlpha(0f);
         }else{
             mainLogin.setText("로그인");
             mainJoin.setText("가입하기");
+
+            mainMyScore.setVisibility(View.INVISIBLE);
         }
 
 
@@ -98,11 +108,34 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             public void run() {
                 mainStartView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
                 mainStartView.setAlpha(1f);
+
+                if(isLogin){
+                    mainMyScore.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
+                    mainMyScore.setAlpha(1f);
+                }
             }
         }, 700);
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        isLogin = preferenceUtils.isLoginSuccess();
+
+        if (isLogin) {
+            mainLogin.setText("로그아웃");
+            mainJoin.setText("탈퇴하기");
+
+            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
+
+        } else {
+            setLogOut();
+        }
+    }
 
     @OnClick(R.id.main_login)
     public void clickLogin(){
@@ -342,6 +375,8 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
         mainLogin.setText("로그인");
         mainJoin.setText("가입하기");
+
+        mainMyScore.setVisibility(View.INVISIBLE);
     }
 
 
@@ -354,6 +389,8 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainLogin.setText("로그아웃");
             mainJoin.setText("탈퇴하기");
 
+            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyScore.setText("내 점수 : " + preferenceUtils.getUserScore() + "점");
         } else {
             setLogOut();
         }

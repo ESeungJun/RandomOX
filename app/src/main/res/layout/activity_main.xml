@@ -95,10 +95,18 @@
                     style="@style/commonTextStyle"/>
 
             </LinearLayout>
-
         </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/main_myScore"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/main_start_view"
+            android:text="내 점수 : 000점"
+            android:visibility="invisible"
+            android:textSize="@dimen/normal_text_size"
+            style="@style/commonTextStyle"/>
 
     </RelativeLayout>
 
