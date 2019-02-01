@@ -55,6 +55,10 @@ public class NormalPopup extends Dialog {
         btnOk.setOnClickListener(listener);
     }
 
+    public void setOkText(String text){
+        btnOk.setText(text);
+    }
+
     public void setCancelClick(View.OnClickListener listener){
         btn_cancel.setOnClickListener(listener);
     }

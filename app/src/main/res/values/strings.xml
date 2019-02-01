@@ -39,7 +39,10 @@
     <string name="invalid_character_entered">이모티콘은 입력이 불가능해요. 다른 글자로 입력해주세요.</string>
     <string name="error_send_mail">편지 전송을  실패했어요 :(\n혹시 특수문자나 이모티콘을 사용하셨나요?\n일부 특수문자나 이모티콘은 오류가 날 수 있어요!\n다시 한 번 확인해주세요 :)</string>
 
-    <string name="lnfo_glide">
-        Glide\npart MIT and Apache 2.0\nhttps://github.com/bumptech/glide
+    <string name="join_info">
+        * 이 앱은 익명성을 목표로하며\n그 어떠한 개인정보도 수집하지 않아요.\n\n
+        * 따라서, 비밀번호 분실 시 찾으실 수 없어요.\n그러니 비밀번호는 반!드!시! 기억해주세요!\n\n
+        * 개발자 판단 하에 닉네임에 비속어와\n같은 못 된 단어를 사용할 시\n예고없이 삭제조치 하겠습니다.\n\n
+        위 사항들을 읽었으며 인정하는 부분입니까?
     </string>
 </resources>

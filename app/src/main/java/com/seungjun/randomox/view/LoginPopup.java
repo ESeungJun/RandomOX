@@ -92,7 +92,9 @@ public class LoginPopup extends Dialog {
         }
 
 
-        if(!CommonUtils.isValidName(nickname)){
+        if(!CommonUtils.isValidName(nickname) ||
+                nickname.length() < 2 ||
+                nickname.length() > 12){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_nonok_name));
 

@@ -1,5 +1,6 @@
 package com.seungjun.randomox.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -224,8 +225,31 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             exitPopup.show();
 
         }else{
-            JoinPopup joinPopup = new JoinPopup(this);
-            joinPopup.show();
+
+            NormalPopup normalPopup = new NormalPopup(this);
+            normalPopup.setCancelable(true);
+            normalPopup.setCancelText("싫은데요?");
+            normalPopup.setCancelVisible(View.VISIBLE);
+            normalPopup.setCancelClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    normalPopup.dismiss();
+                }
+            });
+            normalPopup.setPopupTitle("가입 주의사항");
+            normalPopup.setOkText("인정합니다");
+            normalPopup.setPopupText(getResources().getString(R.string.join_info));
+            normalPopup.setOKClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    normalPopup.dismiss();
+
+                    JoinPopup joinPopup = new JoinPopup(MainActivity.this);
+                    joinPopup.show();
+                }
+            });
+
+            normalPopup.show();
         }
     }
 
