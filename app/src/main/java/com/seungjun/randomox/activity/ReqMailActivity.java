@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.seungjun.randomox.BaseActivity;
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.adapter.ReqMailListAdapter;
+import com.seungjun.randomox.db.LetterDBData;
 import com.seungjun.randomox.db.LetterDBUtils;
+import com.seungjun.randomox.view.LetterPopup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +43,23 @@ public class ReqMailActivity extends BaseActivity {
 
         adapter = new ReqMailListAdapter(this);
         adapter.setLetterDBData(LetterDBUtils.getInstance(this).getAllData());
+        adapter.setLetterItemClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LetterDBData date = (LetterDBData) view.getTag();
+
+                LetterDBUtils.getInstance(ReqMailActivity.this).updateLetterReadState(date.get_id(), "Y");
+                adapter.setLetterDBData(LetterDBUtils.getInstance(ReqMailActivity.this).getAllData());
+                adapter.notifyDataSetChanged();
+
+                LetterPopup letterPopup = new LetterPopup(ReqMailActivity.this);
+                letterPopup.setPopupText(date.getLetter_req_text());
+                letterPopup.show();
+            }
+        });
 
         letterListView.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
     }
 
     @Override

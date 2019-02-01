@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class RandomOxDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "randomox.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public static final String LETTER_TB_NAME = "letterTB";
 
@@ -26,14 +26,17 @@ public class RandomOxDBHelper extends SQLiteOpenHelper {
         sb.append(" CREATE TABLE letterTB (");
         sb.append(" _id INTEGER PRIMARY KEY AUTOINCREMENT, "); // 인덱스
         sb.append(" letter_req_date  DATETIME, "); // 받은 날짜
-        sb.append(" letter_req_text  TEXT) "); // 받은 내용
+        sb.append(" letter_req_text  TEXT, "); // 받은 내용
+        sb.append(" letter_read  VARCHAR(10) ) "); // 받은 내용
 
         sqLiteDatabase.execSQL(sb.toString());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldV, int newV) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS letterTB");
-        onCreate(sqLiteDatabase);
+        if (newV > oldV) {
+            sqLiteDatabase.execSQL("ALTER TABLE letterTB ADD COLUMN letter_read VARCHAR(10)");
+        }
+
     }
 }

@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.db.LetterDBData;
+import com.seungjun.randomox.db.LetterDBUtils;
 import com.seungjun.randomox.view.LetterPopup;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class ReqMailListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     private Context context;
+
+    private View.OnClickListener letterItemClick;
 
     public ReqMailListAdapter(Context context){
         this.context = context;
@@ -43,21 +47,24 @@ public class ReqMailListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         if(letterDBData.size() > i){
 
-            ((LetterViewHolder)viewHolder).title.setText("개발자의 " + i +"번째 편지");
+            ((LetterViewHolder)viewHolder).title.setText("개발자의 " + letterDBData.get(i).get_id() +"번째 편지");
             ((LetterViewHolder)viewHolder).date.setText(letterDBData.get(i).getLetter_req_date());
+            ((LetterViewHolder)viewHolder).parent.setOnClickListener(letterItemClick);
 
-            ((LetterViewHolder)viewHolder).parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if(letterDBData.get(i).getLetter_read().equalsIgnoreCase("Y")){
+                ((LetterViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.letter));
+            }else{
+                ((LetterViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.mail));
+            }
 
-                    LetterPopup letterPopup = new LetterPopup(context);
-                    letterPopup.setPopupText(letterDBData.get(i).getLetter_req_text());
-                    letterPopup.show();
+            ((LetterViewHolder)viewHolder).parent.setTag(letterDBData.get(i));
 
-                }
-            });
         }
 
+    }
+
+    public void setLetterItemClick(View.OnClickListener letterItemClick){
+        this.letterItemClick = letterItemClick;
     }
 
 
@@ -82,6 +89,9 @@ public class ReqMailListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @BindView(R.id.view_list_row)
         LinearLayout parent;
+
+        @BindView(R.id.view_list_img)
+        ImageView img;
 
         public LetterViewHolder(@NonNull View itemView) {
             super(itemView);
