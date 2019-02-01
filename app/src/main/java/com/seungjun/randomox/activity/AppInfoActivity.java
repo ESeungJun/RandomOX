@@ -85,4 +85,25 @@ public class AppInfoActivity extends BaseActivity {
     }
 
 
+
+    @OnClick(R.id.info_send_email_quiz)
+    public void clickSendEmailQuiz(){
+        Intent it = new Intent(Intent.ACTION_SEND);
+
+        it.putExtra(Intent.EXTRA_EMAIL, new String[]{"6951004@gmail.com"});
+        it.putExtra(Intent.EXTRA_TEXT, "여러분의 OX 퀴즈를 보내주세요!\n채택시 여러분의 닉네임과 함께 문제가 출제됩니다!");
+        it.setType("text/plain");
+
+        try{
+
+            it.setPackage("com.google.android.gm");
+            startActivity(it);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            startActivity(Intent.createChooser(it, "이메일을 보낼 앱을 선택해주세요."));
+        }
+    }
+
+
 }

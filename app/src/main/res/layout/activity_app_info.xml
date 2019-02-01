@@ -69,6 +69,22 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/color_bebebe"/>
 
+            <TextView
+                style="@style/commonTextStyle"
+                android:id="@+id/info_send_email_quiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:textSize="@dimen/title_text_size"
+                android:text="ㄷ. OX 퀴즈 보내기"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_bebebe"/>
+
         </LinearLayout>
 
     </ScrollView>
