@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -66,6 +67,7 @@
                     android:maxLength="12"
                     android:textColor="@color/color_282828"
                     android:textColorHint="@color/color_bebebe"
+                    android:textCursorDrawable="@null"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:paddingLeft="5dp"/>
@@ -101,6 +103,7 @@
                     android:maxLength="10"
                     android:textColor="@color/color_282828"
                     android:textColorHint="@color/color_bebebe"
+                    android:textCursorDrawable="@null"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:paddingLeft="5dp"/>
