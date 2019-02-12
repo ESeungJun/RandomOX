@@ -59,7 +59,7 @@ public class RetrofitClient {
 
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("http://13.209.214.110:6050/randomOX/")
+                .baseUrl("http://54.180.6.192:8080/randomOX/")
                 .client(client)
                 .build();
     }

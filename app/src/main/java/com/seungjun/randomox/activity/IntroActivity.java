@@ -325,6 +325,9 @@ public class IntroActivity extends BaseActivity {
             @Override
             public void run() {
 
+                if(IntroActivity.this.isFinishing())
+                    return;
+
                 introProgress.startAnimation(AnimationUtils.loadAnimation(IntroActivity.this, R.anim.fadeout));
                 introProgress.setAlpha(0f);
 
