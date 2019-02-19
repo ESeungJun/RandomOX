@@ -42,7 +42,7 @@ public class RankListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(rankInfos.size() > i){
 
             ((RankViewHolder)viewHolder).nick.setText(rankInfos.get(i).user_nick);
-            ((RankViewHolder)viewHolder).score.setText(rankInfos.get(i).user_point);
+            ((RankViewHolder)viewHolder).score.setText(rankInfos.get(i).user_point + "점");
 
 
             if(rankInfos.get(i).rank < 4){

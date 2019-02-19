@@ -94,6 +94,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainMyInfoView.setAlpha(0f);
 
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
         }else{
             mainLogin.setText("로그인");
             mainJoin.setText("가입하기");
@@ -146,6 +147,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainMyInfoView.setVisibility(View.VISIBLE);
 
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
 
         } else {
             setLogOut();
@@ -424,6 +426,7 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             mainMyInfoView.setVisibility(View.VISIBLE);
 
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
         } else {
             setLogOut();
         }
