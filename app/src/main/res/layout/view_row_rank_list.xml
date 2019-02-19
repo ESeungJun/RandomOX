@@ -16,17 +16,19 @@
 
         <ImageView
             android:id="@+id/view_list_rank_img"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
             android:visibility="gone"
-            android:src="@drawable/mail"/>
+            android:src="@drawable/rank1"/>
 
         <TextView
             android:id="@+id/view_list_rank"
             style="@style/commonTextStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_marginLeft="10dp"
             android:text="4위"/>
 

@@ -52,15 +52,15 @@ public class RankListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 switch (rankInfos.get(i).rank){
                     case 1:
-
+                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank1));
                         break;
 
                     case 2:
-
+                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank2));
                         break;
 
                     case 3:
-
+                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank3));
                         break;
                 }
 
