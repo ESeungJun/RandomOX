@@ -18,6 +18,7 @@ public class PreferenceUtils {
     private static final String USER_SINDEX = "user_sindex";
     private static final String USER_SCORE = "user_score";
     private static final String USER_FCM_KEY = "user_fcm_key";
+    private static final String USER_RANK = "user_rank";
 
     private static final String NOTI_NO_SHOW = "noti_no_show";
     private static final String NOTI_DATE = "";
@@ -218,7 +219,10 @@ public class PreferenceUtils {
         return "";
     }
 
-
+    /**
+     * 공지 다시 보기 여부 저장
+     * @param isShow
+     */
     public void setNotiNoShow(boolean isShow){
         if(preEditor != null){
             preEditor.putBoolean(NOTI_NO_SHOW, isShow);
@@ -226,6 +230,9 @@ public class PreferenceUtils {
         }
     }
 
+    /**
+     * 공지 다시보기 여부 반환
+     */
     public boolean isNotiNoShow(){
         if (preferences != null)
             return preferences.getBoolean(NOTI_NO_SHOW, false);
@@ -234,6 +241,10 @@ public class PreferenceUtils {
     }
 
 
+    /**
+     * 공지 날짜
+     * @param date
+     */
     public void setNotiDate(String date){
 
         if(preEditor != null){
@@ -244,12 +255,33 @@ public class PreferenceUtils {
 
     }
 
-
+    /**
+     * 공지 날짜 반환
+     * @return
+     */
     public String getNotiDate(){
 
         if(preferences != null)
             return preferences.getString(NOTI_DATE, "");
 
         return "";
+    }
+
+
+    public void setUserRank(int rank){
+
+        if(preEditor != null){
+            preEditor.putInt(USER_RANK, rank);
+            preEditor.commit();
+        }
+
+    }
+
+
+    public int getUserRank(){
+        if(preferences != null)
+            return preferences.getInt(USER_RANK, -1);
+
+        return -1;
     }
 }

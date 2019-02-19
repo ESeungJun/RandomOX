@@ -236,6 +236,7 @@ public class IntroActivity extends BaseActivity {
                     preferenceUtils.setUserSindex(userInfo.user_sIndex);
                     preferenceUtils.setUserScore(userInfo.user_point);
                     preferenceUtils.setUserKey(userInfo.user_key);
+                    preferenceUtils.setUserRank(userInfo.rank);
 
                     updateFCM();
 
@@ -312,6 +313,7 @@ public class IntroActivity extends BaseActivity {
         preferenceUtils.setUserSindex(1);
         preferenceUtils.setUserFcmKey("");
         preferenceUtils.setUserKey("");
+        preferenceUtils.setUserRank(-1);
         preferenceUtils.setLoginSuccess(false);
 
         moveMain();

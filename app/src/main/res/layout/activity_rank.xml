@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/view_top_bar"/>
+
+    <TextView
+        style="@style/commonTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="@dimen/title_text_size"
+        android:text="현재 내 랭킹은\n0위"
+        android:id="@+id/my_rank_info"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/commonTextStyle"
+        android:textSize="@dimen/smaill_text_size"
+        android:textColor="@color/color_ff4f60"
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        android:text="*상위 100명에 대한 랭킹입니다"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_rank">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

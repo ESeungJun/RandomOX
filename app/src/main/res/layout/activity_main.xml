@@ -84,6 +84,13 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/main_rank"
+                    android:layout_marginRight="25dp"
+                    android:text="전체 랭킹"
+                    android:visibility="gone"
+                    style="@style/commonTextStyle"/>
+
+                <TextView
                     android:id="@+id/main_login"
                     android:layout_marginRight="25dp"
                     android:text="로그인"
@@ -97,16 +104,33 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/main_myScore"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_centerHorizontal="true"
+        <LinearLayout
+            android:id="@+id/main_myInfoView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/main_start_view"
-            android:text="내 점수 : 000점"
             android:visibility="invisible"
-            android:textSize="@dimen/normal_text_size"
-            style="@style/commonTextStyle"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/main_myScore"
+                android:layout_gravity="center"
+                android:text="개발자님의 점수 : 000점"
+                android:layout_marginRight="6dp"
+                android:textSize="@dimen/normal_text_size"
+                style="@style/commonTextStyle"/>
+
+            <TextView
+                android:id="@+id/main_myRank"
+                android:layout_gravity="center"
+                android:text="(랭킹 10위)"
+                android:textSize="@dimen/normal_text_size"
+                style="@style/commonTextStyle"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

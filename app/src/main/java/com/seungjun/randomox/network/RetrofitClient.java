@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.NoticesInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.network.data.RankInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 
 import org.json.JSONObject;
@@ -353,6 +354,33 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(Call<NoticesInfo> call, Throwable t) {
+
+                callback.onError(t);
+            }
+        });
+
+    }
+
+
+    /**
+     * 랭킹 정보 받아오기
+     * @param callback
+     */
+    public void callGetRankInfo(RetrofitApiCallback callback){
+
+
+        apiService.reqGetRankInfo().enqueue(new Callback<RankInfo>() {
+            @Override
+            public void onResponse(Call<RankInfo> call, Response<RankInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RankInfo> call, Throwable t) {
 
                 callback.onError(t);
             }
