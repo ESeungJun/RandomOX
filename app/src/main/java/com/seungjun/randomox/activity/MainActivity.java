@@ -280,6 +280,11 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
     }
 
+    @OnClick(R.id.main_rank)
+    public void clickRank(){
+        startActivity(new Intent(this, RankActivity.class));
+    }
+
 
     @OnClick(R.id.main_title)
     public void clickMainTitle(){

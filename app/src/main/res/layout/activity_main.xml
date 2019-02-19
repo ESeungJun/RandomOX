@@ -126,7 +126,7 @@
             <TextView
                 android:id="@+id/main_myRank"
                 android:layout_gravity="center"
-                android:text="(랭킹 10위)"
+                android:text="(10위)"
                 android:textSize="@dimen/normal_text_size"
                 style="@style/commonTextStyle"/>
 
