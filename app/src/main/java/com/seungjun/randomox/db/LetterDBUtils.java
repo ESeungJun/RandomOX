@@ -40,6 +40,7 @@ public class LetterDBUtils {
 
         values.put("letter_req_date", dateFormat.format(date));
         values.put("letter_req_text", text);
+        values.put("letter_read", "N");
 
         D.log(TAG, "db Insert");
 
@@ -51,10 +52,24 @@ public class LetterDBUtils {
     }
 
 
+    public void updateLetterReadState(int letter_id, String read){
+
+        String where = "_id = " + letter_id;
+
+        ContentValues values = new ContentValues();
+        values.put("letter_read", read);
+
+        D.log(TAG, "db update");
+
+        db.update(RandomOxDBHelper.LETTER_TB_NAME, values, where, null);
+
+
+    }
+
     public ArrayList<LetterDBData> getAllData(){
         ArrayList<LetterDBData> list = new ArrayList<>();
 
-        String query = "SELECT * FROM " + RandomOxDBHelper.LETTER_TB_NAME;
+        String query = "SELECT * FROM " + RandomOxDBHelper.LETTER_TB_NAME + " ORDER BY letter_req_date DESC ";
 
         try{
             db.beginTransaction();
@@ -62,8 +77,10 @@ public class LetterDBUtils {
 
             while (cursor.moveToNext()){
                 LetterDBData data = new LetterDBData();
+                data.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
                 data.setLetter_req_date(cursor.getString(cursor.getColumnIndex("letter_req_date")));
                 data.setLetter_req_text(cursor.getString(cursor.getColumnIndex("letter_req_text")));
+                data.setLetter_read(cursor.getString(cursor.getColumnIndex("letter_read")));
                 list.add(data);
             }
 

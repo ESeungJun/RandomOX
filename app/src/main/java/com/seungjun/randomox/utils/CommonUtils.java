@@ -2,10 +2,13 @@ package com.seungjun.randomox.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.InputFilter;
 import android.view.View;
 
 import com.seungjun.randomox.R;
 import com.seungjun.randomox.view.NormalPopup;
+
+import java.util.regex.Pattern;
 
 public class CommonUtils {
 
@@ -34,11 +37,28 @@ public class CommonUtils {
      * @return 유효성 여부
      */
     public static boolean isValidName(String nickname) {
-        String stricterFilterString = "^[ㄱ-힣\\s]*.{2,12}$";
+        String stricterFilterString = "^[ㄱ-ㅣ가-힣\\s]*$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(stricterFilterString);
         java.util.regex.Matcher m = p.matcher(nickname);
         return m.matches();
     }
+
+//    public InputFilter textSetFilter(String lang){
+//        Pattern ps = null;
+//
+//        if(lang.equals("kor")){
+//            ps = Pattern.compile("^[ㄱ-ㅣ가-힣\\s]*$"); //한글 및 공백문자만 허용
+//        }
+//
+//        InputFilter filter = (source, start, end, dest, dstart, dend) -> {
+//            if (!ps.matcher(source).matches()) {
+//                return "";
+//            }
+//            return null;
+//        };
+//
+//        return filter;
+//    }
 
     /**
      * 에러 팝업 노출

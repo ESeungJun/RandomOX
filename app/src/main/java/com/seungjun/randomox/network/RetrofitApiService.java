@@ -3,6 +3,7 @@ package com.seungjun.randomox.network;
 import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.NoticesInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
+import com.seungjun.randomox.network.data.RankInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 
 import java.util.HashMap;
@@ -50,4 +51,7 @@ public interface RetrofitApiService {
 
     @GET("getNotices")
     Call<NoticesInfo> reqGetNotices();
+
+    @GET("getRankInfo")
+    Call<RankInfo> reqGetRankInfo();
 }

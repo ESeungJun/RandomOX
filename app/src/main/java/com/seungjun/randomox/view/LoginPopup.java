@@ -92,7 +92,9 @@ public class LoginPopup extends Dialog {
         }
 
 
-        if(!CommonUtils.isValidName(nickname)){
+        if(!CommonUtils.isValidName(nickname) ||
+                nickname.length() < 2 ||
+                nickname.length() > 12){
             errorText.setVisibility(View.VISIBLE);
             errorText.setText(context.getResources().getString(R.string.error_nonok_name));
 
@@ -146,6 +148,7 @@ public class LoginPopup extends Dialog {
                     PreferenceUtils.getInstance(context).setUserId(nickname);
                     PreferenceUtils.getInstance(context).setUserPw(CommonUtils.getAES256(context, password));
                     PreferenceUtils.getInstance(context).setUserKey(userInfo.user_key);
+                    PreferenceUtils.getInstance(context).setUserRank(userInfo.rank);
                     PreferenceUtils.getInstance(context).setLoginSuccess(true);
 
                     updateFCM();

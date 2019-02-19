@@ -51,6 +51,7 @@
             android:inputType="textMultiLine"
             android:padding="8dp"
             android:textColor="@color/color_282828"
+            android:textCursorDrawable="@null"
             android:scrollbars="vertical"
             android:textColorHint="@color/color_bebebe" />
 

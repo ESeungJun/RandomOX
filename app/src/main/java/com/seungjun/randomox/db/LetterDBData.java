@@ -2,9 +2,13 @@ package com.seungjun.randomox.db;
 
 public class LetterDBData {
 
+    private int _id = 0;
+
     private String letter_req_date = "";
 
     private String letter_req_text = "";
+
+    private String letter_read = "";
 
 
     public String getLetter_req_date() {
@@ -21,5 +25,23 @@ public class LetterDBData {
 
     public void setLetter_req_text(String letter_req_text) {
         this.letter_req_text = letter_req_text;
+    }
+
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+
+    public String getLetter_read() {
+        return letter_read;
+    }
+
+    public void setLetter_read(String letter_read) {
+        this.letter_read = letter_read;
     }
 }

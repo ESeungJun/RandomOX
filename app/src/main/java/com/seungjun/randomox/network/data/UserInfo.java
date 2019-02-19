@@ -12,4 +12,7 @@ public class UserInfo extends HeaderInfo {
 
     @SerializedName("user_sIndex")
     public int user_sIndex = 0;
+
+    @SerializedName("rank")
+    public int rank = 0;
 }

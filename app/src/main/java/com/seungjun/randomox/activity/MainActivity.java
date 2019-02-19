@@ -1,5 +1,6 @@
 package com.seungjun.randomox.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,8 +46,17 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
     @BindView(R.id.main_myScore)
     TextView mainMyScore;
 
+    @BindView(R.id.main_myRank)
+    TextView mainMyRank;
+
+    @BindView(R.id.main_rank)
+    TextView mainRank;
+
     @BindView(R.id.main_start_view)
     LinearLayout mainStartView;
+
+    @BindView(R.id.main_myInfoView)
+    LinearLayout mainMyInfoView;
 
     @BindView(R.id.hide_postbox)
     ImageView hidePostbox;
@@ -78,16 +88,20 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         if(isLogin){
             mainLogin.setText("로그아웃");
             mainJoin.setText("탈퇴하기");
+            mainRank.setVisibility(View.VISIBLE);
 
-            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyInfoView.setVisibility(View.VISIBLE);
+            mainMyInfoView.setAlpha(0f);
+
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
-
-            mainMyScore.setAlpha(0f);
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
         }else{
             mainLogin.setText("로그인");
             mainJoin.setText("가입하기");
 
-            mainMyScore.setVisibility(View.INVISIBLE);
+            mainRank.setVisibility(View.GONE);
+
+            mainMyInfoView.setVisibility(View.INVISIBLE);
         }
 
 
@@ -110,8 +124,8 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
                 mainStartView.setAlpha(1f);
 
                 if(isLogin){
-                    mainMyScore.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
-                    mainMyScore.setAlpha(1f);
+                    mainMyInfoView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
+                    mainMyInfoView.setAlpha(1f);
                 }
             }
         }, 700);
@@ -128,9 +142,12 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         if (isLogin) {
             mainLogin.setText("로그아웃");
             mainJoin.setText("탈퇴하기");
+            mainRank.setVisibility(View.VISIBLE);
 
-            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyInfoView.setVisibility(View.VISIBLE);
+
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
 
         } else {
             setLogOut();
@@ -224,8 +241,31 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             exitPopup.show();
 
         }else{
-            JoinPopup joinPopup = new JoinPopup(this);
-            joinPopup.show();
+
+            NormalPopup normalPopup = new NormalPopup(this);
+            normalPopup.setCancelable(true);
+            normalPopup.setCancelText("싫은데요?");
+            normalPopup.setCancelVisible(View.VISIBLE);
+            normalPopup.setCancelClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    normalPopup.dismiss();
+                }
+            });
+            normalPopup.setPopupTitle("가입 주의사항");
+            normalPopup.setOkText("인정합니다");
+            normalPopup.setPopupText(getResources().getString(R.string.join_info));
+            normalPopup.setOKClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    normalPopup.dismiss();
+
+                    JoinPopup joinPopup = new JoinPopup(MainActivity.this);
+                    joinPopup.show();
+                }
+            });
+
+            normalPopup.show();
         }
     }
 
@@ -240,6 +280,11 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
             Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @OnClick(R.id.main_rank)
+    public void clickRank(){
+        startActivity(new Intent(this, RankActivity.class));
     }
 
 
@@ -355,14 +400,16 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         preferenceUtils.setUserSindex(1);
         preferenceUtils.setUserFcmKey("");
         preferenceUtils.setUserKey("");
+        preferenceUtils.setUserRank(-1);
         preferenceUtils.setLoginSuccess(false);
 
         isLogin = false;
 
         mainLogin.setText("로그인");
         mainJoin.setText("가입하기");
+        mainRank.setVisibility(View.GONE);
 
-        mainMyScore.setVisibility(View.INVISIBLE);
+        mainMyInfoView.setVisibility(View.INVISIBLE);
     }
 
 
@@ -374,9 +421,12 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
         if (this.isLogin) {
             mainLogin.setText("로그아웃");
             mainJoin.setText("탈퇴하기");
+            mainRank.setVisibility(View.VISIBLE);
 
-            mainMyScore.setVisibility(View.VISIBLE);
+            mainMyInfoView.setVisibility(View.VISIBLE);
+
             mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
         } else {
             setLogOut();
         }

@@ -30,6 +30,13 @@
                 android:textSize="@dimen/title_text_size"
                 android:text="APP ver 1.0"/>
 
+            <TextView
+                style="@style/commonTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/smaill_text_size"
+                android:text="All Icon made by Freepik from www.flaticon.com"/>
 
             <View
                 android:layout_width="match_parent"
@@ -62,6 +69,22 @@
                 android:gravity="left"
                 android:textSize="@dimen/title_text_size"
                 android:text="ㄴ. 문의 및 건의하기"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_bebebe"/>
+
+            <TextView
+                style="@style/commonTextStyle"
+                android:id="@+id/info_send_email_quiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:textSize="@dimen/title_text_size"
+                android:text="ㄷ. OX 퀴즈 보내기"/>
 
             <View
                 android:layout_width="match_parent"
