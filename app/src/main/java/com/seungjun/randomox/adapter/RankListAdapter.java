@@ -43,34 +43,7 @@ public class RankListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ((RankViewHolder)viewHolder).nick.setText(rankInfos.get(i).user_nick);
             ((RankViewHolder)viewHolder).score.setText(rankInfos.get(i).user_point + "점");
-
-
-            if(rankInfos.get(i).rank < 4){
-                ((RankViewHolder)viewHolder).rank.setVisibility(View.GONE);
-                ((RankViewHolder)viewHolder).img.setVisibility(View.VISIBLE);
-
-
-                switch (rankInfos.get(i).rank){
-                    case 1:
-                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank1));
-                        break;
-
-                    case 2:
-                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank2));
-                        break;
-
-                    case 3:
-                        ((RankViewHolder)viewHolder).img.setImageDrawable(context.getResources().getDrawable(R.drawable.rank3));
-                        break;
-                }
-
-            }else{
-                ((RankViewHolder)viewHolder).rank.setVisibility(View.VISIBLE);
-                ((RankViewHolder)viewHolder).img.setVisibility(View.GONE);
-
-                ((RankViewHolder)viewHolder).rank.setText(rankInfos.get(i).rank +"위");
-            }
-
+            ((RankViewHolder)viewHolder).rank.setText(rankInfos.get(i).rank +"위");
         }
 
     }
@@ -97,9 +70,6 @@ public class RankListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @BindView(R.id.view_list_rank)
         TextView rank;
-
-        @BindView(R.id.view_list_rank_img)
-        ImageView img;
 
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);

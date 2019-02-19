@@ -86,7 +86,7 @@
                 <TextView
                     android:id="@+id/main_rank"
                     android:layout_marginRight="25dp"
-                    android:text="전체 랭킹"
+                    android:text="TOP 100"
                     android:visibility="gone"
                     style="@style/commonTextStyle"/>
 

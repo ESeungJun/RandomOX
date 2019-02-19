@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.seungjun.randomox.BaseActivity;
@@ -28,6 +29,15 @@ public class RankActivity extends BaseActivity {
     @BindView(R.id.my_rank_info)
     TextView myRank;
 
+    @BindView(R.id.rank_1_text)
+    TextView totalRank1;
+
+    @BindView(R.id.rank_2_text)
+    TextView totalRank2;
+
+    @BindView(R.id.rank_3_text)
+    TextView totalRank3;
+
     @BindView(R.id.list_rank)
     RecyclerView rankList;
 
@@ -41,7 +51,7 @@ public class RankActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        topTitle.setText("전체 랭킹");
+        topTitle.setText("TOP 100");
         myScore.setText("내 점수 : " + preferenceUtils.getUserScore() +"점");
         myRank.setText("현재 내 랭킹은\n" + preferenceUtils.getUserRank() +"위");
 
@@ -83,12 +93,20 @@ public class RankActivity extends BaseActivity {
                 RankInfo rankInfo = (RankInfo) resultData;
 
                 if(rankInfo.reqCode == 0){
+
+                    totalRank1.setText(rankInfo.ranks.get(0).user_nick +"\n" + rankInfo.ranks.get(0).user_point +"점");
+                    totalRank2.setText(rankInfo.ranks.get(1).user_nick +"\n" + rankInfo.ranks.get(1).user_point +"점");
+                    totalRank3.setText(rankInfo.ranks.get(2).user_nick +"\n" + rankInfo.ranks.get(2).user_point +"점");
+
+                    for(int i = 0; i < 3; i++){
+                        rankInfo.ranks.remove(0);
+                    }
+
                     rankListAdapter.setRankInfos(rankInfo.ranks);
                     rankListAdapter.notifyDataSetChanged();
 
                 }else{
                     CommonUtils.showErrorPopup(RankActivity.this, rankInfo.reqMsg, true);
-
                 }
 
             }

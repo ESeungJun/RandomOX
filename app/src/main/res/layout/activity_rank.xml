@@ -13,20 +13,123 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:textSize="@dimen/title_text_size"
+        android:layout_marginBottom="25dp"
+        android:textSize="@dimen/normal_text_size"
         android:text="현재 내 랭킹은\n0위"
         android:id="@+id/my_rank_info"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/commonTextStyle"
-        android:textSize="@dimen/smaill_text_size"
-        android:textColor="@color/color_ff4f60"
-        android:gravity="right"
-        android:layout_marginRight="10dp"
-        android:text="*아래는 상위 100명에 대한 랭킹입니다"/>
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/rank_2_text"
+                style="@style/commonTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textSize="24sp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <View
+                    android:id="@+id/view_rect2"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/rect_black_back"/>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/rank2"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/rank_1_text"
+                style="@style/commonTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textSize="@dimen/title_text_size"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <View
+                    android:id="@+id/view_rect1"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/rect_black_back"/>
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/rank1"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/rank_3_text"
+                style="@style/commonTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textSize="22sp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <View
+                    android:id="@+id/view_rect3"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/rect_black_back"/>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/rank3"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"

@@ -14,15 +14,6 @@
         android:focusable="false"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/view_list_rank_img"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:visibility="gone"
-            android:src="@drawable/rank1"/>
-
         <TextView
             android:id="@+id/view_list_rank"
             style="@style/commonTextStyle"
