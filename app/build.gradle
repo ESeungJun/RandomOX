@@ -120,11 +120,11 @@ apply plugin: 'com.google.gms.google-services'
 //------------ 버전 설정 ----------------------
 //현재버전 코드
 def getCurrentVersionCode(){
-    return 6;
+    return 7;
 }
 //현재버전
 def getCurrentVersionName(){
-    return "1.5";
+    return "1.6";
 }
 //업데이트용 코드
 def getPreVersionCode(){

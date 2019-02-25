@@ -1,6 +1,5 @@
 package com.seungjun.randomox.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +19,6 @@ import com.seungjun.randomox.network.data.HeaderInfo;
 import com.seungjun.randomox.network.data.OxContentInfo;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
-import com.seungjun.randomox.utils.PreferenceUtils;
 import com.seungjun.randomox.view.JoinPopup;
 import com.seungjun.randomox.view.LoginPopup;
 import com.seungjun.randomox.view.NormalPopup;
@@ -73,6 +71,9 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
     private boolean isLogin = false;
 
     private String textData = "";
+
+
+    private boolean isPause = false;
 
 
     @Override
@@ -146,13 +147,84 @@ public class MainActivity extends BaseActivity implements LoginPopup.LoginCallBa
 
             mainMyInfoView.setVisibility(View.VISIBLE);
 
-            mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
-            mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+            if(isPause){
+
+                isPause = false;
+
+                callMyInfo();
+
+            }else{
+
+                mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+                mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+            }
+
 
         } else {
             setLogOut();
         }
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        isPause = true;
+    }
+
+
+    public void callMyInfo(){
+
+        netProgress.show();
+        networkClient.callMyInfo(new RetrofitApiCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+                netProgress.dismiss();
+
+                Toast.makeText(MainActivity.this, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+
+                mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+                mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+            }
+
+            @Override
+            public void onSuccess(int code, Object resultData) {
+                netProgress.dismiss();
+
+                UserInfo userInfo = (UserInfo)resultData;
+
+                if(userInfo.reqCode == 0 ){
+
+                    preferenceUtils.setUserRank(userInfo.rank);
+                    preferenceUtils.setUserScore(userInfo.user_point);
+
+                    mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+                    mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+                }else{
+
+                    Toast.makeText(MainActivity.this, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+
+                    mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+                    mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+                }
+
+            }
+
+            @Override
+            public void onFailed(int code) {
+
+                netProgress.dismiss();
+
+                Toast.makeText(MainActivity.this, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+
+                mainMyScore.setText(preferenceUtils.getUserId()+"님의 점수 : " + preferenceUtils.getUserScore() + "점");
+                mainMyRank.setText("( " + preferenceUtils.getUserRank() +"위 )");
+            }
+        }, preferenceUtils.getUserId());
+    }
+
 
     @OnClick(R.id.main_login)
     public void clickLogin(){

@@ -8,6 +8,7 @@ import com.seungjun.randomox.network.data.UserInfo;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -48,6 +49,9 @@ public interface RetrofitApiService {
 
     @POST("deleteInfo")
     Call<HeaderInfo> reqDeleteInfo(@Body HashMap<String, Object> body);
+
+    @POST("getMyInfo")
+    Call<UserInfo> reqMyInfo(@Body HashMap<String, Object> body);
 
     @GET("getNotices")
     Call<NoticesInfo> reqGetNotices();

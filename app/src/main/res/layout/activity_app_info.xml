@@ -38,6 +38,14 @@
                 android:textSize="@dimen/smaill_text_size"
                 android:text="All Icon made by Freepik from www.flaticon.com"/>
 
+            <TextView
+                style="@style/commonTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/smaill_text_size"
+                android:text="미생체 폰트 (윤태호 작가님)"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

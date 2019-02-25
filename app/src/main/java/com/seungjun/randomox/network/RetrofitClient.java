@@ -387,4 +387,33 @@ public class RetrofitClient {
         });
 
     }
+
+
+    /**
+     * 내정보 받아오기
+     * @param callback
+     * @param user_nick
+     */
+    public void callMyInfo(RetrofitApiCallback callback,  String user_nick){
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("user_nick", user_nick);
+
+        apiService.reqMyInfo(body).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if(response.isSuccessful()){
+                    callback.onSuccess(response.code(), response.body());
+                }else{
+                    callback.onFailed(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+                callback.onError(t);
+            }
+        });
+    }
 }

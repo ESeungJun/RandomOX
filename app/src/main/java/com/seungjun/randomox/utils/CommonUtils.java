@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.InputFilter;
 import android.view.View;
 
-import com.seungjun.randomox.R;
 import com.seungjun.randomox.view.NormalPopup;
 
 import java.util.regex.Pattern;
