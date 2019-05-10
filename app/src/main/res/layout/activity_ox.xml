@@ -60,6 +60,7 @@
                     android:textSize="23sp"
                     android:gravity="center"
                     android:layout_marginTop="5dp"/>
+
             </RelativeLayout>
 
             <TextView
@@ -82,14 +83,32 @@
             android:text="#태그 #태그 #태그"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/ox_next"
-            android:visibility="invisible"
-            style="@style/commonTextStyle"
-            android:layout_centerHorizontal="true"
-            android:text="다음 문제"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_below="@+id/ox_tag"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ox_question"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                style="@style/commonTextStyle"
+                android:visibility="invisible"
+                android:layout_marginRight="20dp"
+                android:text="문제 다시 보기"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/ox_next"
+                style="@style/commonTextStyle"
+                android:visibility="invisible"
+                android:text="다음 문제"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

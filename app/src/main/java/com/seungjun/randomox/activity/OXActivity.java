@@ -1,15 +1,10 @@
 package com.seungjun.randomox.activity;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,6 +48,9 @@ public class OXActivity extends BaseActivity {
 
     @BindView(R.id.ox_next)
     TextView btnNext;
+
+    @BindView(R.id.ox_question)
+    TextView btnQuestion;
 
     @BindView(R.id.ox_tag)
     TextView oxTag;
@@ -193,6 +191,23 @@ public class OXActivity extends BaseActivity {
         myScoreView.setText("내 점수 : " + preferenceUtils.getUserScore() +"점");
     }
 
+    @OnClick(R.id.ox_question)
+    public void clickQuestion(){
+        NormalPopup normalPopup = new NormalPopup(this);
+        normalPopup.setCancelable(true);
+        normalPopup.setCancelVisible(View.GONE);
+        normalPopup.setPopupTitle("문제 다시 보기");
+        normalPopup.setOkText("확인");
+        normalPopup.setPopupText(oxContent.getText().toString());
+        normalPopup.setOKClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                normalPopup.dismiss();
+            }
+        });
+
+        normalPopup.show();
+    }
 
     @OnClick(R.id.btn_o)
     public void clickO() {
@@ -269,6 +284,7 @@ public class OXActivity extends BaseActivity {
         answerValue = "";
 
         btnNext.setVisibility(View.GONE);
+        btnQuestion.setVisibility(View.GONE);
 
         // 현재 가지고 있는 문제를 다 풀어서 더이상 가져올 게 없으면
         if (count == oxList.size()) {
@@ -356,6 +372,7 @@ public class OXActivity extends BaseActivity {
                     isError = false;
 
                     btnNext.setVisibility(View.VISIBLE);
+                    btnQuestion.setVisibility(View.VISIBLE);
                 }
             }
 
