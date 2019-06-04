@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.seungjun.randomox.R;
-import com.seungjun.randomox.activity.MainActivity;
 import com.seungjun.randomox.network.data.UserInfo;
 import com.seungjun.randomox.utils.CommonUtils;
 import com.seungjun.randomox.utils.D;

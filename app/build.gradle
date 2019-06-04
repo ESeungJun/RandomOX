@@ -17,6 +17,10 @@ android {
 
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     useLibrary 'org.apache.http.legacy'
 
     flavorDimensions "randomox"
@@ -94,7 +98,7 @@ dependencies {
 
     //  네트워크 통신
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    compile 'com.squareup.retrofit2:converter-scalars:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
