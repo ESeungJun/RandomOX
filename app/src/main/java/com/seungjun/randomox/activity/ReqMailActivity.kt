@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
@@ -28,7 +29,7 @@ class ReqMailActivity : BaseActivity() {
     private val adapter by lazy {
         ReqMailListAdapter(this).apply {
             setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
-            setLetterItemClick {
+            setLetterItemClick (View.OnClickListener{
                 val date = it.tag as LetterDBData
 
                 LetterDBUtils.getInstance(this@ReqMailActivity).updateLetterReadState(date._id, "Y")
@@ -39,9 +40,7 @@ class ReqMailActivity : BaseActivity() {
                     setPopupText(date.letter_req_text)
                     show()
                 }
-
-            }
-
+            })
         }
     }
 
