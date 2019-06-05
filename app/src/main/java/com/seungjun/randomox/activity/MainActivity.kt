@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.network.data.OxContentInfo
 import com.seungjun.randomox.network.data.UserInfo
@@ -65,7 +66,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
             clickAppInfo()
         }
 
-        isLogin = BaseActivity.preferenceUtils.isLoginSuccess
+        isLogin = preferenceUtils!!.isLoginSuccess
 
         if (isLogin) {
             main_login.text = "로그아웃"
@@ -75,8 +76,8 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
             main_myInfoView.visibility = View.VISIBLE
             main_myInfoView.alpha = 0f
 
-            main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-            main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+            main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+            main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
         } else {
             main_login.text = "로그인"
             main_join.text = "가입하기"
@@ -115,7 +116,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     override fun onResume() {
         super.onResume()
 
-        isLogin = BaseActivity.preferenceUtils.isLoginSuccess
+        isLogin = preferenceUtils!!.isLoginSuccess
 
         if (isLogin) {
             main_login.text = "로그아웃"
@@ -132,8 +133,8 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
             } else {
 
-                main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-                main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+                main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+                main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
             }
 
 
@@ -153,35 +154,33 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun callMyInfo() {
 
         netProgress.show()
-        networkClient.callMyInfo(object : RetrofitApiCallback<UserInfo> {
+        RetrofitClient.callMyInfo(object : RetrofitApiCallback<UserInfo> {
             override fun onError(t: Throwable) {
 
                 netProgress.dismiss()
 
                 Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
 
-                main_myScore.text = BaseActivity.preferenceUtils.userId + "님의 점수 : " + BaseActivity.preferenceUtils.userScore + "점"
-                main_myRank.text = "( " + BaseActivity.preferenceUtils.userRank + "위 )"
+                main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+                main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
             }
 
-            override fun onSuccess(code: Int, resultData: UserInfo) {
+            override fun onSuccess(code: Int, userInfo: UserInfo) {
                 netProgress.dismiss()
-
-                val userInfo = resultData as UserInfo
 
                 if (userInfo.reqCode == 0) {
 
-                    BaseActivity.preferenceUtils.userRank = userInfo.rank
-                    BaseActivity.preferenceUtils.userScore = userInfo.user_point
+                    preferenceUtils!!.userRank = userInfo.rank
+                    preferenceUtils!!.userScore = userInfo.user_point
 
-                    main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-                    main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+                    main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+                    main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
                 } else {
 
                     Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
 
-                    main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-                    main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+                    main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+                    main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
                 }
 
             }
@@ -192,10 +191,10 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                 Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
 
-                main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-                main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+                main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+                main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
             }
-        }, BaseActivity.preferenceUtils.userId)
+        }, preferenceUtils!!.userId!!)
     }
 
     fun clickLogin() {
@@ -219,80 +218,83 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
         // 로그인 되있는 상태 -> 탈퇴하기 눌림 (탈퇴 시키기)
         if (isLogin) {
-            val exitPopup = NormalPopup(this)
-            exitPopup.setPopupTitle("탈퇴하기")
-            exitPopup.setPopupText("탈퇴 하시겠어요?\n탈퇴 시, 받았던 편지와 모든 데이터가 삭제되며 복구는 불가능해요.")
-            exitPopup.setCancelVisible(View.VISIBLE)
-            exitPopup.setCancelClick { exitPopup.dismiss() }
-            exitPopup.setOKClick {
-                exitPopup.dismiss()
+            NormalPopup(this).apply {
+                setPopupTitle("탈퇴하기")
+                setPopupText("탈퇴 하시겠어요?\n탈퇴 시, 받았던 편지와 모든 데이터가 삭제되며 복구는 불가능해요.")
+                setCancelVisible(View.VISIBLE)
+                setCancelClick(View.OnClickListener { dismiss() })
+                setOKClick(View.OnClickListener{
+                    dismiss()
 
-                netProgress.setProgressText("탈퇴 요청 중")
-                netProgress.show()
+                    netProgress.setProgressText("탈퇴 요청 중")
+                    netProgress.show()
 
-                networkClient.callPostDeleteInfo(object : RetrofitApiCallback<HeaderInfo> {
-                    override fun onError(t: Throwable) {
+                    RetrofitClient.callPostDeleteInfo(object : RetrofitApiCallback<HeaderInfo> {
+                        override fun onError(t: Throwable) {
 
-                        netProgress.dismiss()
-                        CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
-                    }
-
-                    override fun onSuccess(code: Int, resultData: HeaderInfo) {
-
-                        netProgress.dismiss()
-
-                        val result = resultData as HeaderInfo
-
-                        if (result.reqCode == 0) {
-
-
-                            Toast.makeText(this@MainActivity, "즐거웠어요! 또 놀러오세요 ! :)", Toast.LENGTH_SHORT).show()
-
-                            setLogOut()
-
-                        } else {
-                            CommonUtils.showErrorPopup(this@MainActivity, result.reqMsg, false)
+                            netProgress.dismiss()
+                            CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
                         }
 
+                        override fun onSuccess(code: Int, resultData: HeaderInfo) {
 
-                    }
+                            netProgress.dismiss()
 
-                    override fun onFailed(code: Int) {
+                            val result = resultData as HeaderInfo
 
-                        netProgress.dismiss()
-                        CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
-                    }
+                            if (result.reqCode == 0) {
 
-                }, BaseActivity.preferenceUtils.userKey, BaseActivity.preferenceUtils.userId, BaseActivity.preferenceUtils.userPw)
+
+                                Toast.makeText(this@MainActivity, "즐거웠어요! 또 놀러오세요 ! :)", Toast.LENGTH_SHORT).show()
+
+                                setLogOut()
+
+                            } else {
+                                CommonUtils.showErrorPopup(this@MainActivity, result.reqMsg, false)
+                            }
+
+
+                        }
+
+                        override fun onFailed(code: Int) {
+
+                            netProgress.dismiss()
+                            CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
+                        }
+
+                    }, preferenceUtils!!.userKey!!, preferenceUtils!!.userId!!, preferenceUtils!!.userPw!!)
+                })
+
+                show()
             }
-
-            exitPopup.show()
+            
 
         } else {
 
-            val normalPopup = NormalPopup(this)
-            normalPopup.setCancelable(true)
-            normalPopup.setCancelText("싫은데요?")
-            normalPopup.setCancelVisible(View.VISIBLE)
-            normalPopup.setCancelClick { normalPopup.dismiss() }
-            normalPopup.setPopupTitle("가입 주의사항")
-            normalPopup.setOkText("인정합니다")
-            normalPopup.setPopupText(resources.getString(R.string.join_info))
-            normalPopup.setOKClick {
-                normalPopup.dismiss()
+            NormalPopup(this).apply {
+                setCancelable(true)
+                setCancelText("싫은데요?")
+                setCancelVisible(View.VISIBLE)
+                setCancelClick (View.OnClickListener { dismiss() })
+                setPopupTitle("가입 주의사항")
+                setOkText("인정합니다")
+                setPopupText(resources.getString(R.string.join_info))
+                setOKClick(View.OnClickListener {
+                    dismiss()
 
-                val joinPopup = JoinPopup(this@MainActivity)
-                joinPopup.show()
+                    val joinPopup = JoinPopup(this@MainActivity)
+                    joinPopup.show()
+                })
+                show()
             }
-
-            normalPopup.show()
+            
         }
     }
 
 
     fun clickStart() {
 
-        if (BaseActivity.preferenceUtils.isLoginSuccess) {
+        if (preferenceUtils!!.isLoginSuccess) {
             callOxData()
         } else {
             Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show()
@@ -362,7 +364,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun callOxData() {
         netProgress.show()
 
-        networkClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
+        RetrofitClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
             override fun onError(t: Throwable) {
 
                 netProgress.dismiss()
@@ -370,23 +372,22 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
                 CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
             }
 
-            override fun onSuccess(code: Int, resultData: OxContentInfo?) {
+            override fun onSuccess(code: Int, resultData: OxContentInfo) {
 
                 netProgress.dismiss()
 
                 if (resultData != null) {
-                    val oxContentInfo = resultData as OxContentInfo?
 
-                    if (oxContentInfo!!.reqCode == 0) {
+                    if (resultData.reqCode == 0) {
 
                         //for test
                         val intent = Intent(this@MainActivity, OXActivity::class.java)
-                        intent.putParcelableArrayListExtra("oxList", oxContentInfo.oxList)
+                        intent.putParcelableArrayListExtra("oxList", resultData.oxList)
                         startActivity(intent)
 
                     } else {
 
-                        CommonUtils.showErrorPopup(this@MainActivity, oxContentInfo.reqMsg, false)
+                        CommonUtils.showErrorPopup(this@MainActivity, resultData.reqMsg, false)
                     }
                 }
             }
@@ -397,7 +398,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                 CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
             }
-        }, BaseActivity.preferenceUtils.userSindex)
+        }, preferenceUtils!!.userSindex)
     }
 
     /**
@@ -406,14 +407,14 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun setLogOut() {
 
         // 데이터 초기화
-        BaseActivity.preferenceUtils.userPw = ""
-        BaseActivity.preferenceUtils.userId = ""
-        BaseActivity.preferenceUtils.userScore = 0
-        BaseActivity.preferenceUtils.userSindex = 1
-        BaseActivity.preferenceUtils.userFcmKey = ""
-        BaseActivity.preferenceUtils.userKey = ""
-        BaseActivity.preferenceUtils.userRank = -1
-        BaseActivity.preferenceUtils.isLoginSuccess = false
+        preferenceUtils!!.userPw = ""
+        preferenceUtils!!.userId = ""
+        preferenceUtils!!.userScore = 0
+        preferenceUtils!!.userSindex = 1
+        preferenceUtils!!.userFcmKey = ""
+        preferenceUtils!!.userKey = ""
+        preferenceUtils!!.userRank = -1
+        preferenceUtils!!.isLoginSuccess = false
 
         isLogin = false
 
@@ -436,8 +437,8 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
             main_myInfoView.visibility = View.VISIBLE
 
-            main_myScore.text = String.format("${BaseActivity.preferenceUtils.userId} 님의 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
-            main_myRank.text = String.format("( ${BaseActivity.preferenceUtils.userRank} 위 )")
+            main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
+            main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
         } else {
             setLogOut()
         }

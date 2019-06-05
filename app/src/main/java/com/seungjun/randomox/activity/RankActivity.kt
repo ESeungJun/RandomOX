@@ -15,6 +15,7 @@ import com.seungjun.randomox.utils.CommonUtils
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_rank.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 
@@ -32,8 +33,8 @@ class RankActivity : BaseActivity() {
         }
 
         top_title.text = "TOP 100"
-        my_score.text = String.format("내 점수 : ${BaseActivity.preferenceUtils.userScore}점")
-        my_rank_info.text = String.format("현재 내 랭킹은\n${BaseActivity.preferenceUtils.userRank}위")
+        my_score.text = String.format("내 점수 : ${preferenceUtils!!.userScore}점")
+        my_rank_info.text = String.format("현재 내 랭킹은\n${preferenceUtils!!.userRank}위")
 
         with(list_rank){
             layoutManager = LinearLayoutManager(this@RankActivity).apply {
@@ -53,7 +54,7 @@ class RankActivity : BaseActivity() {
             show()
         }
 
-        networkClient.callGetRankInfo(object : RetrofitApiCallback<RankInfo> {
+        RetrofitClient.callGetRankInfo(object : RetrofitApiCallback<RankInfo> {
             override fun onError(t: Throwable) {
 
                 netProgress.dismiss()

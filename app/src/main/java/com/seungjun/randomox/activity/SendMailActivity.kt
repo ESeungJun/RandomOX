@@ -18,6 +18,7 @@ import com.seungjun.randomox.utils.EmojiInputFilter
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_sendmail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 
@@ -43,7 +44,7 @@ class SendMailActivity : BaseActivity() {
                 netProgress.setProgressText("편지를 보내는 중")
                 netProgress.show()
 
-                networkClient.callPostSendLetter(object : RetrofitApiCallback<HeaderInfo> {
+                RetrofitClient.callPostSendLetter(object : RetrofitApiCallback<HeaderInfo> {
                     override fun onError(t: Throwable) {
 
                         netProgress.dismiss()
@@ -69,7 +70,7 @@ class SendMailActivity : BaseActivity() {
 
                     }
 
-                }, BaseActivity.preferenceUtils.userKey, BaseActivity.preferenceUtils.userId, story)
+                }, preferenceUtils!!.userKey!!, preferenceUtils!!.userId!!, story)
             }
         }
 

@@ -14,6 +14,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.NoticesInfo
 import com.seungjun.randomox.network.data.UserInfo
 import com.seungjun.randomox.utils.D
@@ -50,12 +51,12 @@ class IntroActivity : BaseActivity() {
 
             textData = intent.getStringExtra("textData") ?: ""
 
-            networkClient.callGetNotices(object : RetrofitApiCallback<NoticesInfo> {
+            RetrofitClient.callGetNotices(object : RetrofitApiCallback<NoticesInfo> {
                 override fun onError(t: Throwable) {
 
                     // 로그인 되있는 상태
                     // 자동로그인 요청
-                    if (BaseActivity.preferenceUtils.isLoginSuccess) {
+                    if (preferenceUtils!!.isLoginSuccess) {
                         callLogin()
 
                     } else {
@@ -71,13 +72,13 @@ class IntroActivity : BaseActivity() {
                         val transFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         try {
                             val serverDate = transFormat.parse(resultData.noti_date)
-                            val localDate = transFormat.parse(BaseActivity.preferenceUtils.notiDate)
+                            val localDate = transFormat.parse(preferenceUtils!!.notiDate)
 
                             // 서버 공지 추가 일이 로컬에 저장된 일 수 보다
                             // 더 나중인 경우
                             // 다시 보지 않기해도 노출시킨다
                             if (serverDate.compareTo(localDate) > 0) {
-                                BaseActivity.preferenceUtils.isNotiNoShow = false
+                                preferenceUtils!!.isNotiNoShow = false
                             }
 
                         } catch (e: ParseException) {
@@ -86,10 +87,10 @@ class IntroActivity : BaseActivity() {
 
 
 
-                        if (BaseActivity.preferenceUtils.isNotiNoShow) {
+                        if (preferenceUtils!!.isNotiNoShow) {
                             // 로그인 되있는 상태
                             // 자동로그인 요청
-                            if (BaseActivity.preferenceUtils.isLoginSuccess) {
+                            if (preferenceUtils!!.isLoginSuccess) {
                                 callLogin()
 
                             } else {
@@ -107,7 +108,7 @@ class IntroActivity : BaseActivity() {
                             if (resultData.noti_yn == "y") {
 
                                 notiPoup.setCancelVisible(View.GONE)
-                                notiPoup.setOKClick {
+                                notiPoup.setOKClick (View.OnClickListener{
                                     // 업데이트라는 문구가 들어간 경우는 강제 업뎃으로 판단
                                     if (resultData.noti_text.contains("업데이트")) {
 
@@ -116,44 +117,44 @@ class IntroActivity : BaseActivity() {
 
                                     notiPoup.dismiss()
                                     finish()
-                                }
+                                })
                             } else {
 
                                 notiPoup.setCancelVisible(View.VISIBLE)
                                 notiPoup.setCancelText("그만 볼래요")
-                                notiPoup.setCancelClick {
+                                notiPoup.setCancelClick(View.OnClickListener {
                                     notiPoup.dismiss()
 
-                                    BaseActivity.preferenceUtils.isNotiNoShow = true
+                                    preferenceUtils!!.isNotiNoShow = true
 
                                     // 로그인 되있는 상태
                                     // 자동로그인 요청
-                                    if (BaseActivity.preferenceUtils.isLoginSuccess) {
+                                    if (preferenceUtils!!.isLoginSuccess) {
                                         callLogin()
 
                                     } else {
 
                                         moveMain()
                                     }
-                                }
-                                notiPoup.setOKClick {
+                                })
+                                notiPoup.setOKClick(View.OnClickListener {
                                     notiPoup.dismiss()
 
                                     // 로그인 되있는 상태
                                     // 자동로그인 요청
-                                    if (BaseActivity.preferenceUtils.isLoginSuccess) {
+                                    if (preferenceUtils!!.isLoginSuccess) {
                                         callLogin()
 
                                     } else {
 
                                         moveMain()
                                     }
-                                }
+                                })
 
                             }
                             notiPoup.show()
 
-                            BaseActivity.preferenceUtils.notiDate = resultData.noti_date
+                            preferenceUtils!!.notiDate = resultData.noti_date
                         }
 
                     }
@@ -164,7 +165,7 @@ class IntroActivity : BaseActivity() {
 
                     // 로그인 되있는 상태
                     // 자동로그인 요청
-                    if (BaseActivity.preferenceUtils.isLoginSuccess) {
+                    if (preferenceUtils!!.isLoginSuccess) {
                         callLogin()
 
                     } else {
@@ -182,7 +183,7 @@ class IntroActivity : BaseActivity() {
      * 로그인 요청 함수
      */
     fun callLogin() {
-        networkClient.callPostLogin(object : RetrofitApiCallback<UserInfo> {
+        RetrofitClient.callPostLogin(object : RetrofitApiCallback<UserInfo> {
             override fun onError(t: Throwable) {
                 setLogOut()
             }
@@ -191,11 +192,11 @@ class IntroActivity : BaseActivity() {
                 val userInfo = resultData as UserInfo
 
                 if (userInfo.reqCode == 0) {
-                    BaseActivity.preferenceUtils.isLoginSuccess = true
-                    BaseActivity.preferenceUtils.userSindex = userInfo.user_sIndex
-                    BaseActivity.preferenceUtils.userScore = userInfo.user_point
-                    BaseActivity.preferenceUtils.userKey = userInfo.user_key
-                    BaseActivity.preferenceUtils.userRank = userInfo.rank
+                    preferenceUtils!!.isLoginSuccess = true
+                    preferenceUtils!!.userSindex = userInfo.user_sIndex
+                    preferenceUtils!!.userScore = userInfo.user_point
+                    preferenceUtils!!.userKey = userInfo.user_key
+                    preferenceUtils!!.userRank = userInfo.rank
 
                     updateFCM()
 
@@ -209,7 +210,7 @@ class IntroActivity : BaseActivity() {
             override fun onFailed(code: Int) {
                 setLogOut()
             }
-        }, BaseActivity.preferenceUtils.userId, BaseActivity.preferenceUtils.userPw)
+        }, preferenceUtils!!.userId!!, preferenceUtils!!.userPw!!)
     }
 
 
@@ -218,7 +219,7 @@ class IntroActivity : BaseActivity() {
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
-                        D.error(TAG, "getInstanceId failed", task.exception)
+                        D.error(TAG, "getInstanceId failed", task.exception as Throwable)
 
                         moveMain()
 
@@ -226,11 +227,11 @@ class IntroActivity : BaseActivity() {
                     }
 
                     // 보내기전에 비교해보기
-                    if (BaseActivity.preferenceUtils.userFcmKey != task.result!!.token) {
-                        BaseActivity.preferenceUtils.userFcmKey = task.result!!.token
+                    if (preferenceUtils!!.userFcmKey != task.result!!.token) {
+                        preferenceUtils!!.userFcmKey = task.result!!.token
                     }
 
-                    networkClient.callPostFcmUpdate(object : RetrofitApiCallback<HeaderInfo> {
+                    RetrofitClient.callPostFcmUpdate(object : RetrofitApiCallback<HeaderInfo> {
                         override fun onError(t: Throwable) {
                             moveMain()
                         }
@@ -244,7 +245,7 @@ class IntroActivity : BaseActivity() {
                         override fun onFailed(code: Int) {
                             moveMain()
                         }
-                    }, BaseActivity.preferenceUtils.userKey, BaseActivity.preferenceUtils.userFcmKey)
+                    }, preferenceUtils!!.userKey!!, preferenceUtils!!.userFcmKey!!)
                 })
 
     }
@@ -259,14 +260,14 @@ class IntroActivity : BaseActivity() {
         Toast.makeText(this@IntroActivity, resources.getString(R.string.auto_login_failed), Toast.LENGTH_LONG).show()
 
         // 데이터 초기화
-        BaseActivity.preferenceUtils.userPw = ""
-        BaseActivity.preferenceUtils.userId = ""
-        BaseActivity.preferenceUtils.userScore = 0
-        BaseActivity.preferenceUtils.userSindex = 1
-        BaseActivity.preferenceUtils.userFcmKey = ""
-        BaseActivity.preferenceUtils.userKey = ""
-        BaseActivity.preferenceUtils.userRank = -1
-        BaseActivity.preferenceUtils.isLoginSuccess = false
+        preferenceUtils!!.userPw = ""
+        preferenceUtils!!.userId = ""
+        preferenceUtils!!.userScore = 0
+        preferenceUtils!!.userSindex = 1
+        preferenceUtils!!.userFcmKey = ""
+        preferenceUtils!!.userKey = ""
+        preferenceUtils!!.userRank = -1
+        preferenceUtils!!.isLoginSuccess = false
 
         moveMain()
     }

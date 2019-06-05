@@ -23,6 +23,7 @@ import java.util.ArrayList
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_ox.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 
@@ -75,9 +76,9 @@ class OXActivity : BaseActivity() {
 
         setNextOX(oxList[count])
 
-        my_score.text = String.format("내 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
+        my_score.text = String.format("내 점수 : ${preferenceUtils!!.userScore} 점")
 
-        callSIndex = BaseActivity.preferenceUtils.userSindex
+        callSIndex = preferenceUtils!!.userSindex
     }
 
     /**
@@ -101,9 +102,9 @@ class OXActivity : BaseActivity() {
         answer_view.visibility = View.VISIBLE
         ox_content.visibility = View.GONE
 
-        BaseActivity.preferenceUtils.userScore += 1
+        preferenceUtils!!.userScore += 1
 
-        my_score.text = String.format("내 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
+        my_score.text = String.format("내 점수 : ${preferenceUtils!!.userScore} 점")
     }
 
     /**
@@ -137,10 +138,8 @@ class OXActivity : BaseActivity() {
     fun visibleSpecial(goodText: String, goodImage: String, badText: String, badImage: String) {
 
         if (answerValue.equals("o", ignoreCase = true)) {
-            if (TextUtils.isEmpty(goodText))
-                ox_answer.text = ""
-            else
-                ox_answer.text = goodText
+
+            ox_answer.text = if (TextUtils.isEmpty(goodText)) "" else goodText
 
             if (TextUtils.isEmpty(goodImage))
                 ox_answer_img.setImageDrawable(resources.getDrawable(R.drawable.emoji))
@@ -148,10 +147,8 @@ class OXActivity : BaseActivity() {
                 Glide.with(this).load(goodImage).into(ox_answer_img)
 
         } else {
-            if (TextUtils.isEmpty(badText))
-                ox_answer.text = ""
-            else
-                ox_answer.text = badText
+
+            ox_answer.text = if (TextUtils.isEmpty(badText)) "" else badText
 
             if (TextUtils.isEmpty(badImage))
                 ox_answer_img.setImageDrawable(resources.getDrawable(R.drawable.unhappy))
@@ -165,10 +162,10 @@ class OXActivity : BaseActivity() {
         answer_view.visibility = View.VISIBLE
         ox_content.visibility = View.GONE
 
-        BaseActivity.preferenceUtils.userScore += 1
+        preferenceUtils!!.userScore += 1
 
 
-        my_score.text = String.format("내 점수 : ${BaseActivity.preferenceUtils.userScore} 점")
+        my_score.text = String.format("내 점수 : ${preferenceUtils!!.userScore} 점")
     }
 
 
@@ -179,9 +176,9 @@ class OXActivity : BaseActivity() {
             setPopupTitle("문제 다시 보기")
             setOkText("확인")
             setPopupText(this@OXActivity.ox_content.text.toString())
-            setOKClick {
+            setOKClick(View.OnClickListener {
                 this.dismiss()
-            }
+            })
             show()
         }
     }
@@ -233,8 +230,8 @@ class OXActivity : BaseActivity() {
         // sIndex도 증가시킨다
         callSIndex += 1
 
-        BaseActivity.preferenceUtils.userSindex = callSIndex
-        D.log(TAG, "set sIndex > ${BaseActivity.preferenceUtils.userSindex} ")
+        preferenceUtils!!.userSindex = callSIndex
+        D.log(TAG, "set sIndex > ${preferenceUtils!!.userSindex} ")
 
         updateMyInfo()
     }
@@ -244,8 +241,8 @@ class OXActivity : BaseActivity() {
         // 에러 났을땐 비정상적으로 처리 됬으니 종료시
         // 점수랑 인덱스 -1 씩
         if (isError) {
-            BaseActivity.preferenceUtils.userScore =- 1
-            BaseActivity.preferenceUtils.userSindex =- 1
+            preferenceUtils!!.userScore =- 1
+            preferenceUtils!!.userSindex =- 1
         }
 
         super.onDestroy()
@@ -266,7 +263,7 @@ class OXActivity : BaseActivity() {
             netProgress.setProgressText("문제 요청 중")
             netProgress.show()
 
-            networkClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
+            RetrofitClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
                 override fun onError(t: Throwable) {
 
                     netProgress.dismiss()
@@ -277,18 +274,17 @@ class OXActivity : BaseActivity() {
                 override fun onSuccess(code: Int, resultData: OxContentInfo) {
                     netProgress.dismiss()
 
-                    val ox_contentInfo = resultData
 
-                    if (ox_contentInfo.reqCode == 0) {
+                    if (resultData.reqCode == 0) {
 
                         isError = false
 
-                        oxList.addAll(ox_contentInfo.oxList)
+                        oxList.addAll(resultData.oxList)
                         setNextOX(oxList[count])
 
                     } else {
 
-                        CommonUtils.showErrorPopup(this@OXActivity, ox_contentInfo.reqMsg, true)
+                        CommonUtils.showErrorPopup(this@OXActivity, resultData.reqMsg, true)
                     }
 
                 }
@@ -311,7 +307,7 @@ class OXActivity : BaseActivity() {
 
     fun updateMyInfo() {
 
-        networkClient.callPostUpdateUserInfo(object : RetrofitApiCallback<HeaderInfo> {
+        RetrofitClient.callPostUpdateUserInfo(object : RetrofitApiCallback<HeaderInfo> {
             override fun onError(t: Throwable) {
 
                 isError = true
@@ -346,7 +342,7 @@ class OXActivity : BaseActivity() {
 
                 CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
             }
-        }, BaseActivity.preferenceUtils.userKey, BaseActivity.preferenceUtils.userScore, BaseActivity.preferenceUtils.userSindex)
+        }, preferenceUtils!!.userKey!!, preferenceUtils!!.userScore, preferenceUtils!!.userSindex)
     }
 
 

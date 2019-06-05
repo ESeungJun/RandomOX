@@ -28,12 +28,12 @@ class ReqMailActivity : BaseActivity() {
 
     private val adapter by lazy {
         ReqMailListAdapter(this).apply {
-            setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
+            setLetterDBData(LetterDBUtils.allData)
             setLetterItemClick (View.OnClickListener{
                 val date = it.tag as LetterDBData
 
-                LetterDBUtils.getInstance(this@ReqMailActivity).updateLetterReadState(date._id, "Y")
-                this.setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
+                LetterDBUtils.updateLetterReadState(date._id, "Y")
+                this.setLetterDBData(LetterDBUtils.allData)
                 this.notifyDataSetChanged()
 
                 LetterPopup(this@ReqMailActivity).apply {
