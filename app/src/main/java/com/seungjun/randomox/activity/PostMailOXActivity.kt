@@ -34,7 +34,7 @@ class PostMailOXActivity : BaseActivity() {
         }
 
         my_score.setOnClickListener {
-            Intent(this, SendMailActivity::class.java).apply {
+            Intent(this, ReqMailActivity::class.java).apply {
                 startActivity(this)
             }
 

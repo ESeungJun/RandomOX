@@ -15,60 +15,58 @@ import com.seungjun.randomox.view.LetterPopup
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import kotlinx.android.synthetic.main.activity_req_mail.*
+import kotlinx.android.synthetic.main.activity_sendmail.*
+import kotlinx.android.synthetic.main.view_top_bar.*
 
 class ReqMailActivity : BaseActivity() {
 
-    private var adapter: ReqMailListAdapter? = null
+    companion object {
+        private val TAG = "ReqMailActivity"
+    }
 
-    @BindView(R.id.list_letter)
-    internal var letterListView: RecyclerView? = null
+    private val adapter by lazy {
+        ReqMailListAdapter(this).apply {
+            setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
+            setLetterItemClick {
+                val date = it.tag as LetterDBData
+
+                LetterDBUtils.getInstance(this@ReqMailActivity).updateLetterReadState(date._id, "Y")
+                this.setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
+                this.notifyDataSetChanged()
+
+                LetterPopup(this@ReqMailActivity).apply {
+                    setPopupText(date.letter_req_text)
+                    show()
+                }
+
+            }
+
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_req_mail)
 
-        ButterKnife.bind(this)
-
-        val manager = LinearLayoutManager(this)
-        manager.orientation = LinearLayoutManager.VERTICAL
-
-        letterListView!!.layoutManager = manager
-
-        adapter = ReqMailListAdapter(this)
-        adapter!!.setLetterDBData(LetterDBUtils.getInstance(this).allData)
-        adapter!!.setLetterItemClick { view ->
-            val date = view.tag as LetterDBData
-
-            LetterDBUtils.getInstance(this@ReqMailActivity).updateLetterReadState(date._id, "Y")
-            adapter!!.setLetterDBData(LetterDBUtils.getInstance(this@ReqMailActivity).allData)
-            adapter!!.notifyDataSetChanged()
-
-            val letterPopup = LetterPopup(this@ReqMailActivity)
-            letterPopup.setPopupText(date.letter_req_text)
-            letterPopup.show()
+        with(list_letter){
+            layoutManager = LinearLayoutManager(this@ReqMailActivity).apply {
+                orientation = LinearLayoutManager.VERTICAL
+            }
+            adapter = this@ReqMailActivity.adapter
         }
 
-        letterListView!!.adapter = adapter
+        top_back.setOnClickListener {
+            finish()
+        }
+
+        send_mail.setOnClickListener {
+            startActivity(Intent(this@ReqMailActivity, SendMailActivity::class.java))
+        }
+
     }
 
-    override fun onResume() {
-        super.onResume()
 
-    }
-
-    @OnClick(R.id.top_back)
-    fun back() {
-        finish()
-    }
-
-    @OnClick(R.id.send_mail)
-    fun clickSendMail() {
-        startActivity(Intent(this, SendMailActivity::class.java))
-    }
-
-    companion object {
-
-        private val TAG = "ReqMailActivity"
-    }
 }

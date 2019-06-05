@@ -178,7 +178,7 @@ class OXActivity : BaseActivity() {
             setCancelVisible(View.GONE)
             setPopupTitle("문제 다시 보기")
             setOkText("확인")
-            setPopupText(ox_content.text.toString())
+            setPopupText(this@OXActivity.ox_content.text.toString())
             setOKClick {
                 this.dismiss()
             }
