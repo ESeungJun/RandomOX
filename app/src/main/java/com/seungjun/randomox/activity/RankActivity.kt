@@ -36,7 +36,7 @@ class RankActivity : BaseActivity() {
         my_score.text = String.format("내 점수 : ${preferenceUtils!!.userScore}점")
         my_rank_info.text = String.format("현재 내 랭킹은\n${preferenceUtils!!.userRank}위")
 
-        with(list_rank){
+        list_rank.apply {
             layoutManager = LinearLayoutManager(this@RankActivity).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }

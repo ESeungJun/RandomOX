@@ -96,8 +96,10 @@ class OXActivity : BaseActivity() {
         else
             Glide.with(this).load(goodImage).into(ox_answer_img)
 
-        ox_answer_check.text = resources.getString(R.string.default_good_text)
-        ox_answer_check.setTextColor(resources.getColor(R.color.color_4482ff))
+        ox_answer_check.apply {
+            text = resources.getString(R.string.default_good_text)
+            setTextColor(resources.getColor(R.color.color_4482ff))
+        }
 
         answer_view.visibility = View.VISIBLE
         ox_content.visibility = View.GONE
@@ -122,8 +124,11 @@ class OXActivity : BaseActivity() {
         else
             Glide.with(this).load(badImage).into(ox_answer_img)
 
-        ox_answer_check.text = resources.getString(R.string.default_bad_text)
-        ox_answer_check.setTextColor(resources.getColor(R.color.color_ff4f60))
+
+        ox_answer_check.apply {
+            text = resources.getString(R.string.default_bad_text)
+            setTextColor(resources.getColor(R.color.color_ff4f60))
+        }
 
         answer_view.visibility = View.VISIBLE
         ox_content.visibility = View.GONE
@@ -156,8 +161,10 @@ class OXActivity : BaseActivity() {
                 Glide.with(this).load(badImage).into(ox_answer_img)
         }
 
-        ox_answer_check.text = resources.getString(R.string.default_special_text)
-        ox_answer_check.setTextColor(resources.getColor(R.color.color_8cba23))
+        ox_answer_check.apply {
+            text = resources.getString(R.string.default_special_text)
+            setTextColor(resources.getColor(R.color.color_8cba23))
+        }
 
         answer_view.visibility = View.VISIBLE
         ox_content.visibility = View.GONE
@@ -241,8 +248,10 @@ class OXActivity : BaseActivity() {
         // 에러 났을땐 비정상적으로 처리 됬으니 종료시
         // 점수랑 인덱스 -1 씩
         if (isError) {
-            preferenceUtils!!.userScore =- 1
-            preferenceUtils!!.userSindex =- 1
+            preferenceUtils?.run{
+                userScore =- 1
+                userSindex =- 1
+            }
         }
 
         super.onDestroy()
@@ -357,10 +366,15 @@ class OXActivity : BaseActivity() {
         answer_view.visibility = View.GONE
         ox_content.visibility = View.VISIBLE
 
-        btn_x.isEnabled = true
-        btn_x.isClickable = true
-        btn_o.isEnabled = true
-        btn_o.isClickable = true
+        btn_x.apply {
+            isEnabled = true
+            isClickable = true
+        }
+
+        btn_o.apply {
+            isEnabled = true
+            isClickable = true
+        }
     }
 
 }

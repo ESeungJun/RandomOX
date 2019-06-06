@@ -54,14 +54,15 @@ object LetterDBUtils {
 
 
     fun saveLetterData(text: String) {
-        val values = ContentValues()
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val date = Date()
 
-        values.put("letter_req_date", dateFormat.format(date))
-        values.put("letter_req_text", text)
-        values.put("letter_read", "N")
+        val values = ContentValues().apply {
+            put("letter_req_date", dateFormat.format(date))
+            put("letter_req_text", text)
+            put("letter_read", "N")
+        }
 
         D.log(TAG, "db Insert")
 
@@ -77,8 +78,9 @@ object LetterDBUtils {
 
         val where = "_id = $letter_id"
 
-        val values = ContentValues()
-        values.put("letter_read", read)
+        val values = ContentValues().apply {
+            put("letter_read", read)
+        }
 
         D.log(TAG, "db update")
 

@@ -50,7 +50,7 @@ class ReqMailActivity : BaseActivity() {
 
         setContentView(R.layout.activity_req_mail)
 
-        with(list_letter){
+        list_letter.apply {
             layoutManager = LinearLayoutManager(this@ReqMailActivity).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }

@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 
 import com.seungjun.randomox.network.data.HeaderInfo
 import kotlinx.android.synthetic.main.activity_intro.*
+import kotlinx.android.synthetic.main.view_normal_dialog.*
 import java.util.*
 
 class IntroActivity : BaseActivity() {
@@ -99,9 +100,10 @@ class IntroActivity : BaseActivity() {
                             }
 
                         } else {
-                            val notiPoup = NormalPopup(this@IntroActivity)
-                            notiPoup.setPopupText(resultData.noti_text)
-                            notiPoup.setPopupTitle("공지사항")
+                            val notiPoup = NormalPopup(this@IntroActivity).apply {
+                                setPopupText(resultData.noti_text)
+                                setPopupTitle("공지사항")
+                            }
 
                             // 서버점검이나 강제업뎃 같이
                             // 무조건 무언가를 해야하는 경우
@@ -188,15 +190,15 @@ class IntroActivity : BaseActivity() {
                 setLogOut()
             }
 
-            override fun onSuccess(code: Int, resultData: UserInfo) {
-                val userInfo = resultData as UserInfo
+            override fun onSuccess(code: Int, userInfo: UserInfo) {
 
                 if (userInfo.reqCode == 0) {
-                    preferenceUtils!!.isLoginSuccess = true
-                    preferenceUtils!!.userSindex = userInfo.user_sIndex
-                    preferenceUtils!!.userScore = userInfo.user_point
-                    preferenceUtils!!.userKey = userInfo.user_key
-                    preferenceUtils!!.userRank = userInfo.rank
+                    preferenceUtils?.run {
+                        isLoginSuccess = true
+                        userSindex = userInfo.user_sIndex
+                        userKey = userInfo.user_key
+                        userRank = userInfo.rank
+                    }
 
                     updateFCM()
 
@@ -259,15 +261,16 @@ class IntroActivity : BaseActivity() {
 
         Toast.makeText(this@IntroActivity, resources.getString(R.string.auto_login_failed), Toast.LENGTH_LONG).show()
 
-        // 데이터 초기화
-        preferenceUtils!!.userPw = ""
-        preferenceUtils!!.userId = ""
-        preferenceUtils!!.userScore = 0
-        preferenceUtils!!.userSindex = 1
-        preferenceUtils!!.userFcmKey = ""
-        preferenceUtils!!.userKey = ""
-        preferenceUtils!!.userRank = -1
-        preferenceUtils!!.isLoginSuccess = false
+        preferenceUtils?.run {
+            userPw = ""
+            userId = ""
+            userScore = 0
+            userSindex = 1
+            userFcmKey = ""
+            userKey = ""
+            userRank = -1
+            isLoginSuccess = false
+        }
 
         moveMain()
     }

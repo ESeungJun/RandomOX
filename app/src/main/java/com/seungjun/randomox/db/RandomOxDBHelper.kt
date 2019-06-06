@@ -6,6 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class RandomOxDBHelper(private val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
+    companion object {
+
+        private val DB_NAME = "randomox.db"
+        private val DB_VERSION = 2
+
+        val LETTER_TB_NAME = "letterTB"
+    }
+
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
 
         val sb = StringBuffer().apply {
@@ -26,11 +34,4 @@ class RandomOxDBHelper(private val context: Context) : SQLiteOpenHelper(context,
 
     }
 
-    companion object {
-
-        private val DB_NAME = "randomox.db"
-        private val DB_VERSION = 2
-
-        val LETTER_TB_NAME = "letterTB"
-    }
 }

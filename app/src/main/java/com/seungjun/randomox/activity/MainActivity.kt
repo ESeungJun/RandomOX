@@ -170,8 +170,10 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                 if (userInfo.reqCode == 0) {
 
-                    preferenceUtils!!.userRank = userInfo.rank
-                    preferenceUtils!!.userScore = userInfo.user_point
+                    preferenceUtils?.run {
+                        userRank = userInfo.rank
+                        userScore = userInfo.user_point
+                    }
 
                     main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
                     main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
@@ -407,14 +409,16 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun setLogOut() {
 
         // 데이터 초기화
-        preferenceUtils!!.userPw = ""
-        preferenceUtils!!.userId = ""
-        preferenceUtils!!.userScore = 0
-        preferenceUtils!!.userSindex = 1
-        preferenceUtils!!.userFcmKey = ""
-        preferenceUtils!!.userKey = ""
-        preferenceUtils!!.userRank = -1
-        preferenceUtils!!.isLoginSuccess = false
+        preferenceUtils?.run {
+            userPw = ""
+            userId = ""
+            userScore = 0
+            userSindex = 1
+            userFcmKey = ""
+            userKey = ""
+            userRank = -1
+            isLoginSuccess = false
+        }
 
         isLogin = false
 
