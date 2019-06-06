@@ -5,17 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.data.RankInfo
-
-import java.util.ArrayList
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.view_row_rank_list.view.*
+import java.util.*
 
 class RankListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

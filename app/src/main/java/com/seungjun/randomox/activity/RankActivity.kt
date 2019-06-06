@@ -2,20 +2,13 @@ package com.seungjun.randomox.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.widget.TextView
-
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.adapter.RankListAdapter
 import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.RankInfo
 import com.seungjun.randomox.utils.CommonUtils
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_rank.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 

@@ -3,22 +3,17 @@ package com.seungjun.randomox.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
-
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.adapter.ReqMailListAdapter
 import com.seungjun.randomox.db.LetterDBData
 import com.seungjun.randomox.db.LetterDBUtils
 import com.seungjun.randomox.view.LetterPopup
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.activity_req_mail.*
 import kotlinx.android.synthetic.main.activity_sendmail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import org.jetbrains.anko.startActivity
 
 class ReqMailActivity : BaseActivity() {
 
@@ -62,7 +57,7 @@ class ReqMailActivity : BaseActivity() {
         }
 
         send_mail.setOnClickListener {
-            startActivity(Intent(this@ReqMailActivity, SendMailActivity::class.java))
+            startActivity<SendMailActivity>()
         }
 
     }

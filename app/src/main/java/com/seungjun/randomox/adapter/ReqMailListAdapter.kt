@@ -5,20 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-
 import com.seungjun.randomox.R
 import com.seungjun.randomox.db.LetterDBData
-import com.seungjun.randomox.db.LetterDBUtils
-import com.seungjun.randomox.view.LetterPopup
-
-import java.util.ArrayList
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.view_row_letter_list.view.*
+import java.util.*
 
 class ReqMailListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

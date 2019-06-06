@@ -3,27 +3,16 @@ package com.seungjun.randomox.view
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.view.View
 import android.view.Window
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.RetrofitApiCallback
 import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
-import com.seungjun.randomox.network.data.UserInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.PreferenceUtils
-import com.wang.avi.AVLoadingIndicatorView
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.view_join_dialog.*
 
 class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {

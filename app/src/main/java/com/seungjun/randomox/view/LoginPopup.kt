@@ -6,27 +6,17 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import android.view.Window
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.seungjun.randomox.R
+import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
+import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.network.data.UserInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.utils.PreferenceUtils
-import com.seungjun.randomox.network.RetrofitApiCallback
-import com.seungjun.randomox.network.RetrofitClient
-import com.wang.avi.AVLoadingIndicatorView
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.seungjun.randomox.network.data.HeaderInfo
 import kotlinx.android.synthetic.main.view_login_dialog.*
 
 class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {

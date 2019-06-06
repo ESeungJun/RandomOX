@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat
 import com.seungjun.randomox.network.data.HeaderInfo
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.view_normal_dialog.*
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
 import java.util.*
 
 class IntroActivity : BaseActivity() {
@@ -258,8 +260,7 @@ class IntroActivity : BaseActivity() {
      */
     fun setLogOut() {
 
-
-        Toast.makeText(this@IntroActivity, resources.getString(R.string.auto_login_failed), Toast.LENGTH_LONG).show()
+        longToast(resources.getString(R.string.auto_login_failed))
 
         preferenceUtils?.run {
             userPw = ""
@@ -283,8 +284,10 @@ class IntroActivity : BaseActivity() {
             if (this@IntroActivity.isFinishing)
                 return@Runnable
 
-            intro_progress.startAnimation(AnimationUtils.loadAnimation(this@IntroActivity, R.anim.fadeout))
-            intro_progress.alpha = 0f
+            intro_progress.apply {
+                startAnimation(AnimationUtils.loadAnimation(this@IntroActivity, R.anim.fadeout))
+                alpha = 0f
+            }
 
             val intent = Intent(this@IntroActivity, MainActivity::class.java)
 

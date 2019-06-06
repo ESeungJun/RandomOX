@@ -24,6 +24,8 @@ import com.seungjun.randomox.view.LoginPopup
 import com.seungjun.randomox.view.NormalPopup
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
@@ -159,7 +161,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                 netProgress.dismiss()
 
-                Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                toast("내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요")
 
                 main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
                 main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
@@ -179,7 +181,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
                     main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
                 } else {
 
-                    Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    toast("내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요")
 
                     main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
                     main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
@@ -191,7 +193,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                 netProgress.dismiss()
 
-                Toast.makeText(this@MainActivity, "내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                toast("내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요")
 
                 main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
                 main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
@@ -206,7 +208,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
             setLogOut()
 
-            Toast.makeText(this, "로그아웃 되었어요.", Toast.LENGTH_SHORT).show()
+            toast("로그아웃 되었어요.")
 
         } else {
             val loginPopup = LoginPopup(this, this)
@@ -246,8 +248,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                             if (result.reqCode == 0) {
 
-
-                                Toast.makeText(this@MainActivity, "즐거웠어요! 또 놀러오세요 ! :)", Toast.LENGTH_SHORT).show()
+                                toast("즐거웠어요! 또 놀러오세요 ! :)")
 
                                 setLogOut()
 
@@ -299,13 +300,13 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
         if (preferenceUtils!!.isLoginSuccess) {
             callOxData()
         } else {
-            Toast.makeText(this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show()
+            toast("로그인을 해주세요.")
         }
 
     }
 
     fun clickRank() {
-        startActivity(Intent(this, RankActivity::class.java))
+        startActivity<RankActivity>()
     }
 
 
@@ -339,7 +340,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
             return
 
         if (!isLogin) {
-            Toast.makeText(this, "로그인을 하면 이용 가능합니다.", Toast.LENGTH_SHORT).show()
+            toast("로그인을 하면 이용 가능합니다.")
             return
         }
 
@@ -382,10 +383,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
                     if (resultData.reqCode == 0) {
 
-                        //for test
-                        val intent = Intent(this@MainActivity, OXActivity::class.java)
-                        intent.putParcelableArrayListExtra("oxList", resultData.oxList)
-                        startActivity(intent)
+                        startActivity<OXActivity>("oxList" to resultData.oxList)
 
                     } else {
 

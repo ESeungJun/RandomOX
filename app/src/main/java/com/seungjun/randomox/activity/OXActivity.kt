@@ -1,31 +1,21 @@
 package com.seungjun.randomox.activity
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.TextUtils
 import android.view.View
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-
 import com.bumptech.glide.Glide
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.network.data.OxContentInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.view.NormalPopup
-
-import java.util.ArrayList
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_ox.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import java.util.*
 
 class OXActivity : BaseActivity() {
 

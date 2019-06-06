@@ -1,22 +1,11 @@
 package com.seungjun.randomox.network
 
-import com.seungjun.randomox.network.data.HeaderInfo
-import com.seungjun.randomox.network.data.NoticesInfo
-import com.seungjun.randomox.network.data.OxContentInfo
-import com.seungjun.randomox.network.data.RankInfo
-import com.seungjun.randomox.network.data.UserInfo
-
-import java.util.HashMap
-
-import butterknife.BindView
+import com.seungjun.randomox.network.data.*
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Query
+import java.util.*
 
 /**
  * Retrofit 을 활용하여 요청할 api 목록 인터페이스

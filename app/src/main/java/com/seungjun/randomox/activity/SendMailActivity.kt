@@ -4,23 +4,17 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.TextUtils
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.network.RetrofitApiCallback
+import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.EmojiInputFilter
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.seungjun.randomox.network.RetrofitClient
 import kotlinx.android.synthetic.main.activity_sendmail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import org.jetbrains.anko.toast
 
 class SendMailActivity : BaseActivity() {
 
@@ -38,7 +32,7 @@ class SendMailActivity : BaseActivity() {
             val story = input_story!!.text.toString()
 
             if (TextUtils.isEmpty(story)) {
-                Toast.makeText(this, "이야기를 적어주시면 접수가 가능합니다.", Toast.LENGTH_SHORT).show()
+                toast("이야기를 적어주시면 접수가 가능합니다.")
 
             }else{
                 netProgress.setProgressText("편지를 보내는 중")

@@ -4,18 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.activity_post_mail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import org.jetbrains.anko.toast
 
 class PostMailOXActivity : BaseActivity() {
 
@@ -42,8 +36,7 @@ class PostMailOXActivity : BaseActivity() {
         }
 
         btn_x.setOnClickListener {
-
-            Toast.makeText(this, "하고픈 이야기가 있다면 상담소를 찾아주세요 :)", Toast.LENGTH_SHORT).show()
+            toast("하고픈 이야기가 있다면 상담소를 찾아주세요 :)")
             finish()
         }
 

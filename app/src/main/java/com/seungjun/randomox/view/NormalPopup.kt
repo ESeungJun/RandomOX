@@ -5,12 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.Window
-import android.widget.TextView
-
 import com.seungjun.randomox.R
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.view_normal_dialog.*
 
 class NormalPopup(context: Context) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
