@@ -25,6 +25,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 import com.seungjun.randomox.network.data.HeaderInfo
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.view_normal_dialog.*
 import org.jetbrains.anko.longToast
@@ -54,22 +56,16 @@ class IntroActivity : BaseActivity() {
 
             textData = intent.getStringExtra("textData") ?: ""
 
-            RetrofitClient.callGetNotices(object : RetrofitApiCallback<NoticesInfo> {
-                override fun onError(t: Throwable) {
+            RetrofitClient.callGetNotices(object : Observer<NoticesInfo> {
+                override fun onComplete() {
 
-                    // 로그인 되있는 상태
-                    // 자동로그인 요청
-                    if (preferenceUtils!!.isLoginSuccess) {
-                        callLogin()
-
-                    } else {
-
-                        moveMain()
-                    }
                 }
 
-                override fun onSuccess(code: Int, resultData: NoticesInfo) {
+                override fun onSubscribe(d: Disposable) {
 
+                }
+
+                override fun onNext(resultData: NoticesInfo) {
                     if (resultData.reqCode == 0 && !TextUtils.isEmpty(resultData.noti_text)) {
 
                         val transFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -165,7 +161,7 @@ class IntroActivity : BaseActivity() {
 
                 }
 
-                override fun onFailed(code: Int) {
+                override fun onError(t: Throwable) {
 
                     // 로그인 되있는 상태
                     // 자동로그인 요청
@@ -177,7 +173,9 @@ class IntroActivity : BaseActivity() {
                         moveMain()
                     }
                 }
+
             })
+
         }, 700)
 
     }

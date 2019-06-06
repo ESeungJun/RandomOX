@@ -1,6 +1,7 @@
 package com.seungjun.randomox.network
 
 import android.content.Context
+import android.text.TextUtils
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -9,10 +10,13 @@ import com.seungjun.randomox.network.data.NoticesInfo
 import com.seungjun.randomox.network.data.OxContentInfo
 import com.seungjun.randomox.network.data.RankInfo
 import com.seungjun.randomox.network.data.UserInfo
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 import org.json.JSONObject
-
-import java.util.HashMap
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,7 +24,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 
 /**
@@ -41,6 +47,7 @@ object RetrofitClient{
         
         Retrofit.Builder().apply {
             addConverterFactory(GsonConverterFactory.create(gson))
+            addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             baseUrl("http://54.180.6.192:8080/randomOX/")
             client(client)
         }.build()
@@ -263,23 +270,12 @@ object RetrofitClient{
      * 공지 정보 받아오기
      * @param callback
      */
-    fun callGetNotices(callback: RetrofitApiCallback<NoticesInfo>) {
+    fun callGetNotices(callback: Observer<NoticesInfo>) {
 
-
-        apiService.reqGetNotices().enqueue(object : Callback<NoticesInfo> {
-            override fun onResponse(call: Call<NoticesInfo>, response: Response<NoticesInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as NoticesInfo)
-                } else {
-                    callback.onFailed(response.code())
-                }
-            }
-
-            override fun onFailure(call: Call<NoticesInfo>, t: Throwable) {
-
-                callback.onError(t)
-            }
-        })
+        apiService.reqGetNotices()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 

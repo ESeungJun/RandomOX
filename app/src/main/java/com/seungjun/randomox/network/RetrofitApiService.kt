@@ -1,6 +1,7 @@
 package com.seungjun.randomox.network
 
 import com.seungjun.randomox.network.data.*
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,32 +18,32 @@ import java.util.*
 interface RetrofitApiService {
 
     @POST("getOX")
-    fun getOXContent(@Body body: HashMap<String, Any>): Call<OxContentInfo>
+    fun getOXContent(@Body body: HashMap<String, Any>): Observable<OxContentInfo>
 
     @POST("login")
-    fun reqLogin(@Body body: HashMap<String, Any>): Call<UserInfo>
+    fun reqLogin(@Body body: HashMap<String, Any>): Observable<UserInfo>
 
     @POST("join")
-    fun reqJoin(@Body body: HashMap<String, Any>): Call<HeaderInfo>
+    fun reqJoin(@Body body: HashMap<String, Any>): Observable<HeaderInfo>
 
     @POST("fcmUpdate")
-    fun reqFcmUpdate(@Body body: HashMap<String, Any>): Call<HeaderInfo>
+    fun reqFcmUpdate(@Body body: HashMap<String, Any>): Observable<HeaderInfo>
 
     @POST("updateUserInfo")
-    fun reqUpdateUserInfo(@Body body: HashMap<String, Any>): Call<HeaderInfo>
+    fun reqUpdateUserInfo(@Body body: HashMap<String, Any>): Observable<HeaderInfo>
 
     @POST("sendLetter")
-    fun reqSendLetter(@Body body: HashMap<String, Any>): Call<HeaderInfo>
+    fun reqSendLetter(@Body body: HashMap<String, Any>): Observable<HeaderInfo>
 
     @POST("deleteInfo")
-    fun reqDeleteInfo(@Body body: HashMap<String, Any>): Call<HeaderInfo>
+    fun reqDeleteInfo(@Body body: HashMap<String, Any>): Observable<HeaderInfo>
 
     @POST("getMyInfo")
-    fun reqMyInfo(@Body body: HashMap<String, Any>): Call<UserInfo>
+    fun reqMyInfo(@Body body: HashMap<String, Any>): Observable<UserInfo>
 
     @GET("getNotices")
-    fun reqGetNotices(): Call<NoticesInfo>
+    fun reqGetNotices(): Observable<NoticesInfo>
 
     @GET("getRankInfo")
-    fun reqGetRankInfo(): Call<RankInfo>
+    fun reqGetRankInfo(): Observable<RankInfo>
 }
