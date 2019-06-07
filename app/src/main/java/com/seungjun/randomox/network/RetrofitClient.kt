@@ -14,12 +14,14 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.observable.ObservableJust
 import io.reactivex.schedulers.Schedulers
 
 import org.json.JSONObject
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.jetbrains.anko.Android
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,24 +64,21 @@ object RetrofitClient{
      * 방식 : POST
      * @param callback
      */
-    fun callPostGetOX(callback: RetrofitApiCallback<OxContentInfo>, sIndex: Int) {
+    fun callPostGetOX(callback: Observer<OxContentInfo>, sIndex: Int) {
 
         val body = HashMap<String, Any>()
         body["sIndex"] = sIndex
 
-        apiService.getOXContent(body).enqueue(object : Callback<OxContentInfo> {
-            override fun onResponse(call: Call<OxContentInfo>, response: Response<OxContentInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as OxContentInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.getOXContent(body)
+                .flatMap {
+                    if(it.reqCode == 0 || it.reqCode == 6000)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<OxContentInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 
@@ -92,26 +91,22 @@ object RetrofitClient{
      * @param user_nick 닉네임
      * @param user_pw 패스워드
      */
-    fun callPostLogin(callback: RetrofitApiCallback<UserInfo>, user_nick: String, user_pw: String) {
+    fun callPostLogin(callback: Observer<UserInfo>, user_nick: String, user_pw: String) {
 
         val body = HashMap<String, Any>()
         body["user_nick"] = user_nick
         body["user_pw"] = user_pw
 
-
-        apiService.reqLogin(body).enqueue(object : Callback<UserInfo> {
-            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as UserInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqLogin(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 
@@ -125,27 +120,23 @@ object RetrofitClient{
      * @param user_pw 패스워드
      * @param user_fcm fcm 키 값
      */
-    fun callPostJoin(callback: RetrofitApiCallback<HeaderInfo>, user_nick: String, user_pw: String, user_fcm: String) {
+    fun callPostJoin(callback: Observer<HeaderInfo>, user_nick: String, user_pw: String, user_fcm: String) {
 
         val body = HashMap<String, Any>()
         body["user_nick"] = user_nick
         body["user_pw"] = user_pw
         body["user_fcm"] = user_fcm
 
-
-        apiService.reqJoin(body).enqueue(object : Callback<HeaderInfo> {
-            override fun onResponse(call: Call<HeaderInfo>, response: Response<HeaderInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as HeaderInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqJoin(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<HeaderInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 
@@ -155,23 +146,20 @@ object RetrofitClient{
      * @param user_key
      * @param user_fcm
      */
-    fun callPostFcmUpdate(callback: RetrofitApiCallback<HeaderInfo>, user_key: String, user_fcm: String) {
+    fun callPostFcmUpdate(callback: Observer<HeaderInfo>, user_key: String, user_fcm: String) {
 
         val body = hashMapOf(Pair("user_key", user_key as Any), Pair("user_fcm", user_fcm as Any))
 
-        apiService.reqFcmUpdate(body).enqueue(object : Callback<HeaderInfo> {
-            override fun onResponse(call: Call<HeaderInfo>, response: Response<HeaderInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as HeaderInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqFcmUpdate(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<HeaderInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
     }
 
 
@@ -182,26 +170,24 @@ object RetrofitClient{
      * @param user_point
      * @param user_sIndex
      */
-    fun callPostUpdateUserInfo(callback: RetrofitApiCallback<HeaderInfo>, user_key: String, user_point: Int, user_sIndex: Int) {
+    fun callPostUpdateUserInfo(callback: Observer<HeaderInfo>, user_key: String, user_point: Int, user_sIndex: Int) {
 
         val body = HashMap<String, Any>()
         body["user_key"] = user_key
         body["user_point"] = user_point
         body["user_sIndex"] = user_sIndex
 
-        apiService.reqUpdateUserInfo(body).enqueue(object : Callback<HeaderInfo> {
-            override fun onResponse(call: Call<HeaderInfo>, response: Response<HeaderInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as HeaderInfo)
-                } else {
-                    callback.onFailed(response.code())
-                }
-            }
 
-            override fun onFailure(call: Call<HeaderInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+        apiService.reqUpdateUserInfo(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
     }
 
 
@@ -212,26 +198,23 @@ object RetrofitClient{
      * @param user_nick
      * @param letter_text
      */
-    fun callPostSendLetter(callback: RetrofitApiCallback<HeaderInfo>, user_key: String, user_nick: String, letter_text: String) {
+    fun callPostSendLetter(callback: Observer<HeaderInfo>, user_key: String, user_nick: String, letter_text: String) {
 
         val body = HashMap<String, Any>()
         body["user_key"] = user_key
         body["user_nick"] = user_nick
         body["letter_text"] = letter_text
 
-        apiService.reqSendLetter(body).enqueue(object : Callback<HeaderInfo> {
-            override fun onResponse(call: Call<HeaderInfo>, response: Response<HeaderInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as HeaderInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqSendLetter(body)
+                .flatMap {
+                    if(it.reqCode == 0 || it.reqCode == 6001)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<HeaderInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
     }
 
 
@@ -242,27 +225,23 @@ object RetrofitClient{
      * @param user_nick
      * @param user_pw
      */
-    fun callPostDeleteInfo(callback: RetrofitApiCallback<HeaderInfo>, user_key: String, user_nick: String, user_pw: String) {
+    fun callPostDeleteInfo(callback: Observer<HeaderInfo>, user_key: String, user_nick: String, user_pw: String) {
 
         val body = HashMap<String, Any>()
         body["user_key"] = user_key
         body["user_nick"] = user_nick
         body["user_pw"] = user_pw
 
-
-        apiService.reqDeleteInfo(body).enqueue(object : Callback<HeaderInfo> {
-            override fun onResponse(call: Call<HeaderInfo>, response: Response<HeaderInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as HeaderInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqDeleteInfo(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<HeaderInfo>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 
@@ -273,6 +252,12 @@ object RetrofitClient{
     fun callGetNotices(callback: Observer<NoticesInfo>) {
 
         apiService.reqGetNotices()
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(callback)
@@ -284,23 +269,18 @@ object RetrofitClient{
      * 랭킹 정보 받아오기
      * @param callback
      */
-    fun callGetRankInfo(callback: RetrofitApiCallback<RankInfo>) {
+    fun callGetRankInfo(callback: Observer<RankInfo>) {
 
-
-        apiService.reqGetRankInfo().enqueue(object : Callback<RankInfo> {
-            override fun onResponse(call: Call<RankInfo>, response: Response<RankInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as RankInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqGetRankInfo()
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<RankInfo>, t: Throwable) {
-
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
 
     }
 
@@ -310,25 +290,21 @@ object RetrofitClient{
      * @param callback
      * @param user_nick
      */
-    fun callMyInfo(callback: RetrofitApiCallback<UserInfo>, user_nick: String) {
+    fun callMyInfo(callback: Observer<UserInfo>, user_nick: String) {
 
         val body = HashMap<String, Any>()
         body["user_nick"] = user_nick
 
-        apiService.reqMyInfo(body).enqueue(object : Callback<UserInfo> {
-            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                if (response.isSuccessful) {
-                    callback.onSuccess(response.code(), response.body() as UserInfo)
-                } else {
-                    callback.onFailed(response.code())
+        apiService.reqMyInfo(body)
+                .flatMap {
+                    if(it.reqCode == 0)
+                        Observable.just(it)
+                    else
+                        Observable.error(Throwable("reqCode is ${it.reqCode}"))
                 }
-            }
-
-            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-
-                callback.onError(t)
-            }
-        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback)
     }
     
 }

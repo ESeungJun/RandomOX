@@ -22,6 +22,9 @@ import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.view.JoinPopup
 import com.seungjun.randomox.view.LoginPopup
 import com.seungjun.randomox.view.NormalPopup
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
@@ -156,7 +159,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun callMyInfo() {
 
         netProgress.show()
-        RetrofitClient.callMyInfo(object : RetrofitApiCallback<UserInfo> {
+        RetrofitClient.callMyInfo(object : Observer<UserInfo> {
             override fun onError(t: Throwable) {
 
                 netProgress.dismiss()
@@ -167,33 +170,20 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
                 main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
             }
 
-            override fun onSuccess(code: Int, userInfo: UserInfo) {
+            override fun onComplete() {
                 netProgress.dismiss()
+            }
 
-                if (userInfo.reqCode == 0) {
-
-                    preferenceUtils?.run {
-                        userRank = userInfo.rank
-                        userScore = userInfo.user_point
-                    }
-
-                    main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
-                    main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
-                } else {
-
-                    toast("내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요")
-
-                    main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
-                    main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
-                }
+            override fun onSubscribe(d: Disposable) {
 
             }
 
-            override fun onFailed(code: Int) {
+            override fun onNext(userInfo: UserInfo) {
 
-                netProgress.dismiss()
-
-                toast("내 정보 업데이트 실패했어요. 잠시 후에 다시 시도해주세요")
+                preferenceUtils?.run {
+                    userRank = userInfo.rank
+                    userScore = userInfo.user_point
+                }
 
                 main_myScore.text = String.format("${preferenceUtils!!.userId} 님의 점수 : ${preferenceUtils!!.userScore} 점")
                 main_myRank.text = String.format("( ${preferenceUtils!!.userRank} 위 )")
@@ -233,36 +223,27 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
                     netProgress.setProgressText("탈퇴 요청 중")
                     netProgress.show()
 
-                    RetrofitClient.callPostDeleteInfo(object : RetrofitApiCallback<HeaderInfo> {
+                    RetrofitClient.callPostDeleteInfo(object : Observer<HeaderInfo> {
                         override fun onError(t: Throwable) {
 
                             netProgress.dismiss()
                             CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
                         }
 
-                        override fun onSuccess(code: Int, resultData: HeaderInfo) {
-
+                        override fun onComplete() {
                             netProgress.dismiss()
 
-                            val result = resultData as HeaderInfo
+                            toast("즐거웠어요! 또 놀러오세요 ! :)")
 
-                            if (result.reqCode == 0) {
+                            setLogOut()
+                        }
 
-                                toast("즐거웠어요! 또 놀러오세요 ! :)")
-
-                                setLogOut()
-
-                            } else {
-                                CommonUtils.showErrorPopup(this@MainActivity, result.reqMsg, false)
-                            }
-
+                        override fun onSubscribe(d: Disposable) {
 
                         }
 
-                        override fun onFailed(code: Int) {
+                        override fun onNext(t: HeaderInfo) {
 
-                            netProgress.dismiss()
-                            CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
                         }
 
                     }, preferenceUtils!!.userKey!!, preferenceUtils!!.userId!!, preferenceUtils!!.userPw!!)
@@ -367,32 +348,31 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
     fun callOxData() {
         netProgress.show()
 
-        RetrofitClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
-            override fun onError(t: Throwable) {
+        RetrofitClient.callPostGetOX(object : Observer<OxContentInfo> {
 
-                netProgress.dismiss()
-
-                CommonUtils.showErrorPopup(this@MainActivity, resources.getString(R.string.error_network_unkonw), false)
+            override fun onComplete() {
             }
 
-            override fun onSuccess(code: Int, resultData: OxContentInfo) {
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onNext(resultData: OxContentInfo) {
 
                 netProgress.dismiss()
 
-                if (resultData != null) {
+                if (resultData.reqCode == 0) {
 
-                    if (resultData.reqCode == 0) {
+                    startActivity<OXActivity>("oxList" to resultData.oxList)
 
-                        startActivity<OXActivity>("oxList" to resultData.oxList)
+                } else {
 
-                    } else {
-
-                        CommonUtils.showErrorPopup(this@MainActivity, resultData.reqMsg, false)
-                    }
+                    CommonUtils.showErrorPopup(this@MainActivity, resultData.reqMsg, false)
                 }
             }
 
-            override fun onFailed(code: Int) {
+            override fun onError(t: Throwable) {
 
                 netProgress.dismiss()
 

@@ -19,6 +19,8 @@ import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.utils.PreferenceUtils
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 class FCMMessageService : FirebaseMessagingService() {
 
@@ -74,23 +76,25 @@ class FCMMessageService : FirebaseMessagingService() {
 
         if (PreferenceUtils.getInstance(applicationContext).isLoginSuccess) {
 
-            RetrofitClient.callPostFcmUpdate(object : RetrofitApiCallback<HeaderInfo> {
-                        override fun onError(t: Throwable) {
-                            D.log(TAG, "FCM TOKEN UPDATE FAIL > " + t.message)
-                        }
+            RetrofitClient.callPostFcmUpdate(object : Observer<HeaderInfo> {
+                override fun onError(t: Throwable) {
+                    D.log(TAG, "FCM TOKEN UPDATE FAIL > " + t.message)
+                }
 
-                        override fun onSuccess(code: Int, resultData: HeaderInfo) {
+                override fun onComplete() {
+                    D.log(TAG, "FCM TOKEN UPDATE")
 
-                            if (resultData.reqCode == 0)
-                                D.log(TAG, "FCM TOKEN UPDATE")
-                            else
-                                D.log(TAG, "FCM TOKEN UPDATE FAIL > " + resultData.reqCode)
-                        }
+                }
 
-                        override fun onFailed(code: Int) {
-                            D.log(TAG, "FCM TOKEN UPDATE FAIL > $code")
-                        }
-                    }, PreferenceUtils.getInstance(applicationContext).userKey!!, s)
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onNext(resultData: HeaderInfo) {
+
+                }
+
+            }, PreferenceUtils.getInstance(applicationContext).userKey!!, s)
 
         }
 

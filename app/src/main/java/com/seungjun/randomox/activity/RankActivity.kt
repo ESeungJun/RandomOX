@@ -9,6 +9,8 @@ import com.seungjun.randomox.network.RetrofitApiCallback
 import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.RankInfo
 import com.seungjun.randomox.utils.CommonUtils
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_rank.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 
@@ -47,44 +49,35 @@ class RankActivity : BaseActivity() {
             show()
         }
 
-        RetrofitClient.callGetRankInfo(object : RetrofitApiCallback<RankInfo> {
+        RetrofitClient.callGetRankInfo(object : Observer<RankInfo> {
             override fun onError(t: Throwable) {
 
                 netProgress.dismiss()
                 CommonUtils.showErrorPopup(this@RankActivity, resources.getString(R.string.error_network_unkonw), true)
             }
 
-            override fun onSuccess(code: Int, resultData: RankInfo) {
+            override fun onComplete() {
 
                 netProgress.dismiss()
+            }
 
-                if (resultData.reqCode == 0) {
-
-                    rank_1_text.text = String.format("${resultData.ranks[0].user_nick}\n ${resultData.ranks[0].user_point} 점")
-                    rank_2_text.text = String.format("${resultData.ranks[1].user_nick}\n ${resultData.ranks[1].user_point} 점")
-                    rank_3_text.text = String.format("${resultData.ranks[2].user_nick}\n ${resultData.ranks[2].user_point} 점")
-
-                    for (i in 0..2) {
-                        resultData.ranks.removeAt(0)
-                    }
-
-                    with(rankListAdapter){
-                        setRankInfos(resultData.ranks)
-                        notifyDataSetChanged()
-                    }
-
-                } else {
-                    CommonUtils.showErrorPopup(this@RankActivity, resultData.reqMsg, true)
-                }
+            override fun onSubscribe(d: Disposable) {
 
             }
 
-            override fun onFailed(code: Int) {
+            override fun onNext(resultData: RankInfo) {
+                rank_1_text.text = String.format("${resultData.ranks[0].user_nick}\n ${resultData.ranks[0].user_point} 점")
+                rank_2_text.text = String.format("${resultData.ranks[1].user_nick}\n ${resultData.ranks[1].user_point} 점")
+                rank_3_text.text = String.format("${resultData.ranks[2].user_nick}\n ${resultData.ranks[2].user_point} 점")
 
+                for (i in 0..2) {
+                    resultData.ranks.removeAt(0)
+                }
 
-                netProgress.dismiss()
-
-                CommonUtils.showErrorPopup(this@RankActivity, resources.getString(R.string.error_network_unkonw), true)
+                with(rankListAdapter){
+                    setRankInfos(resultData.ranks)
+                    notifyDataSetChanged()
+                }
             }
         })
     }

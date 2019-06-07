@@ -4,19 +4,20 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import com.seungjun.randomox.RandomOXApplication
 
 import com.seungjun.randomox.utils.D
 
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 object LetterDBUtils {
 
     val TAG = "LetterDBUtils"
 
-    var db: SQLiteDatabase? = null
+    val db: SQLiteDatabase by lazy {
+        RandomOxDBHelper(RandomOXApplication.appContext!!).writableDatabase
+    }
 
 
     val allData: ArrayList<LetterDBData>

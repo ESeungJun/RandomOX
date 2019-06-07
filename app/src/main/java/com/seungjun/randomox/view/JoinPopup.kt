@@ -13,7 +13,10 @@ import com.seungjun.randomox.network.RetrofitClient
 import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.PreferenceUtils
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_join_dialog.*
+import org.jetbrains.anko.toast
 
 class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
 
@@ -88,26 +91,23 @@ class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Transl
         this.setCancelable(false)
 
 
-        RetrofitClient.callPostJoin(object : RetrofitApiCallback<HeaderInfo> {
+        RetrofitClient.callPostJoin(object : Observer<HeaderInfo> {
             override fun onError(t: Throwable) {
 
                 failedJoin(context.resources.getString(R.string.error_network_unkonw))
             }
 
-            override fun onSuccess(code: Int, resultData: HeaderInfo) {
+            override fun onComplete() {
+                mContext!!.toast("가입 성공! 로그인 해주세요!")
 
-                if (resultData.reqCode == 0) {
-                    Toast.makeText(context, "가입 성공! 로그인 해주세요!", Toast.LENGTH_SHORT).show()
-
-                    this@JoinPopup.dismiss()
-                } else {
-                    failedJoin(resultData.reqMsg)
-                }
+                this@JoinPopup.dismiss()
             }
 
-            override fun onFailed(code: Int) {
+            override fun onSubscribe(d: Disposable) {
 
-                failedJoin(context.resources.getString(R.string.error_network_unkonw))
+            }
+
+            override fun onNext(t: HeaderInfo) {
 
             }
         }, nickname, CommonUtils.getAES256(context, password), PreferenceUtils.getInstance(context).userFcmKey!!)

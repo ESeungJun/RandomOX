@@ -13,6 +13,8 @@ import com.seungjun.randomox.network.data.OxContentInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.view.NormalPopup
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_ox.*
 import kotlinx.android.synthetic.main.view_top_bar.*
 import java.util.*
@@ -262,7 +264,7 @@ class OXActivity : BaseActivity() {
             netProgress.setProgressText("문제 요청 중")
             netProgress.show()
 
-            RetrofitClient.callPostGetOX(object : RetrofitApiCallback<OxContentInfo> {
+            RetrofitClient.callPostGetOX(object : Observer<OxContentInfo> {
                 override fun onError(t: Throwable) {
 
                     netProgress.dismiss()
@@ -270,29 +272,21 @@ class OXActivity : BaseActivity() {
                     CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
                 }
 
-                override fun onSuccess(code: Int, resultData: OxContentInfo) {
+                override fun onComplete() {
                     netProgress.dismiss()
+                }
 
-
-                    if (resultData.reqCode == 0) {
-
-                        isError = false
-
-                        oxList.addAll(resultData.oxList)
-                        setNextOX(oxList[count])
-
-                    } else {
-
-                        CommonUtils.showErrorPopup(this@OXActivity, resultData.reqMsg, true)
-                    }
+                override fun onSubscribe(d: Disposable) {
 
                 }
 
-                override fun onFailed(code: Int) {
-                    netProgress.dismiss()
+                override fun onNext(resultData: OxContentInfo) {
+                    isError = false
 
-                    CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
+                    oxList.addAll(resultData.oxList)
+                    setNextOX(oxList[count])
                 }
+
             }, callSIndex)
 
 
@@ -306,41 +300,33 @@ class OXActivity : BaseActivity() {
 
     fun updateMyInfo() {
 
-        RetrofitClient.callPostUpdateUserInfo(object : RetrofitApiCallback<HeaderInfo> {
+        RetrofitClient.callPostUpdateUserInfo(object : Observer<HeaderInfo> {
             override fun onError(t: Throwable) {
-
-                isError = true
-
-                CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
-            }
-
-            override fun onSuccess(code: Int, resultData: HeaderInfo) {
 
                 netProgress.dismiss()
 
-                val headerInfo = resultData as HeaderInfo
-
-                if (headerInfo.reqCode != 0) {
-
-                    isError = true
-
-                    CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
-
-                } else {
-
-                    isError = false
-
-                    ox_next.visibility = View.VISIBLE
-                    ox_question.visibility = View.VISIBLE
-                }
-            }
-
-            override fun onFailed(code: Int) {
-
                 isError = true
 
                 CommonUtils.showErrorPopup(this@OXActivity, resources.getString(R.string.error_network_unkonw), true)
             }
+
+            override fun onComplete() {
+                netProgress.dismiss()
+
+                isError = false
+
+                ox_next.visibility = View.VISIBLE
+                ox_question.visibility = View.VISIBLE
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onNext(headerInfo: HeaderInfo) {
+
+            }
+
         }, preferenceUtils!!.userKey!!, preferenceUtils!!.userScore, preferenceUtils!!.userSindex)
     }
 

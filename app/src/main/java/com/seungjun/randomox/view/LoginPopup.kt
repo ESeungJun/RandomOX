@@ -17,7 +17,10 @@ import com.seungjun.randomox.network.data.UserInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.utils.PreferenceUtils
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_login_dialog.*
+import org.jetbrains.anko.toast
 
 class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
 
@@ -101,41 +104,32 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
         this.setCancelable(false)
 
 
-        RetrofitClient.callPostLogin(object : RetrofitApiCallback<UserInfo> {
+        RetrofitClient.callPostLogin(object : Observer<UserInfo> {
             override fun onError(t: Throwable) {
                 failedLogin(context.resources.getString(R.string.error_network_unkonw))
             }
 
-            override fun onSuccess(code: Int, resultData: UserInfo) {
+            override fun onComplete() {
+                updateFCM()
+            }
 
-                if (resultData.reqCode == 0) {
+            override fun onSubscribe(d: Disposable) {
 
-                    PreferenceUtils.getInstance(context).apply {
-                        userSindex = resultData.user_sIndex
-                        userScore = resultData.user_point
-                        userId = nickname
-                        userPw = CommonUtils.getAES256(context, password)
-                        userKey = resultData.user_key
-                        userRank = resultData.rank
-                        isLoginSuccess = true
-                    }
+            }
 
+            override fun onNext(resultData: UserInfo) {
 
-                    updateFCM()
-
-                } else {
-
-                    failedLogin(resultData.reqMsg)
+                PreferenceUtils.getInstance(context).run {
+                    userSindex = resultData.user_sIndex
+                    userScore = resultData.user_point
+                    userId = nickname
+                    userPw = CommonUtils.getAES256(context, password)
+                    userKey = resultData.user_key
+                    userRank = resultData.rank
+                    isLoginSuccess = true
                 }
-
-
             }
 
-            override fun onFailed(code: Int) {
-
-                failedLogin(context.resources.getString(R.string.error_network_unkonw))
-
-            }
         }, nickname, CommonUtils.getAES256(context, password))
     }
 
@@ -195,22 +189,25 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
                         PreferenceUtils.getInstance(context).userFcmKey = task.result!!.token
                     }
 
-                    RetrofitClient.callPostFcmUpdate(object : RetrofitApiCallback<HeaderInfo> {
+                    RetrofitClient.callPostFcmUpdate(object : Observer<HeaderInfo> {
                         override fun onError(t: Throwable) {
                             failedLogin(context.resources.getString(R.string.error_network_unkonw))
                         }
 
-                        override fun onSuccess(code: Int, resultData: HeaderInfo) {
-
-                            Toast.makeText(context, "로그인 성공! 앞으로 자동 로그인이 됩니다.", Toast.LENGTH_SHORT).show()
+                        override fun onComplete() {
+                            mContext!!.toast("로그인 성공! 앞으로 자동 로그인이 됩니다.")
                             callBack.onLogin(true)
                             this@LoginPopup.dismiss()
+                        }
+
+                        override fun onSubscribe(d: Disposable) {
 
                         }
 
-                        override fun onFailed(code: Int) {
-                            failedLogin(context.resources.getString(R.string.error_network_unkonw))
+                        override fun onNext(t: HeaderInfo) {
+
                         }
+
                     }, PreferenceUtils.getInstance(context).userKey!!, PreferenceUtils.getInstance(context).userFcmKey!!)
                 })
 

@@ -66,7 +66,7 @@ class IntroActivity : BaseActivity() {
                 }
 
                 override fun onNext(resultData: NoticesInfo) {
-                    if (resultData.reqCode == 0 && !TextUtils.isEmpty(resultData.noti_text)) {
+                    if (!TextUtils.isEmpty(resultData.noti_text)) {
 
                         val transFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         try {
@@ -185,33 +185,28 @@ class IntroActivity : BaseActivity() {
      * 로그인 요청 함수
      */
     fun callLogin() {
-        RetrofitClient.callPostLogin(object : RetrofitApiCallback<UserInfo> {
+        RetrofitClient.callPostLogin(object : Observer<UserInfo> {
             override fun onError(t: Throwable) {
                 setLogOut()
             }
 
-            override fun onSuccess(code: Int, userInfo: UserInfo) {
+            override fun onComplete() {
+                updateFCM()
+            }
 
-                if (userInfo.reqCode == 0) {
-                    preferenceUtils?.run {
-                        isLoginSuccess = true
-                        userSindex = userInfo.user_sIndex
-                        userKey = userInfo.user_key
-                        userRank = userInfo.rank
-                    }
+            override fun onSubscribe(d: Disposable) {
 
-                    updateFCM()
+            }
 
-                } else {
-                    setLogOut()
+            override fun onNext(userInfo: UserInfo) {
+                preferenceUtils?.run {
+                    isLoginSuccess = true
+                    userSindex = userInfo.user_sIndex
+                    userKey = userInfo.user_key
+                    userRank = userInfo.rank
                 }
-
-
             }
 
-            override fun onFailed(code: Int) {
-                setLogOut()
-            }
         }, preferenceUtils!!.userId!!, preferenceUtils!!.userPw!!)
     }
 
@@ -233,20 +228,23 @@ class IntroActivity : BaseActivity() {
                         preferenceUtils!!.userFcmKey = task.result!!.token
                     }
 
-                    RetrofitClient.callPostFcmUpdate(object : RetrofitApiCallback<HeaderInfo> {
+                    RetrofitClient.callPostFcmUpdate(object : Observer<HeaderInfo> {
                         override fun onError(t: Throwable) {
                             moveMain()
                         }
 
-                        override fun onSuccess(code: Int, resultData: HeaderInfo) {
-
+                        override fun onComplete() {
                             moveMain()
+                        }
+
+                        override fun onSubscribe(d: Disposable) {
 
                         }
 
-                        override fun onFailed(code: Int) {
-                            moveMain()
+                        override fun onNext(t: HeaderInfo) {
+
                         }
+
                     }, preferenceUtils!!.userKey!!, preferenceUtils!!.userFcmKey!!)
                 })
 
