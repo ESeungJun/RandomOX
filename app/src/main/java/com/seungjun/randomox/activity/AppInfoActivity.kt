@@ -9,6 +9,8 @@ import com.seungjun.randomox.R
 import com.seungjun.randomox.view.WebViewPopup
 import kotlinx.android.synthetic.main.activity_app_info.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import org.jetbrains.anko.email
+import org.jetbrains.anko.startActivity
 
 class AppInfoActivity : BaseActivity() {
 
@@ -53,42 +55,12 @@ class AppInfoActivity : BaseActivity() {
 
 
     fun clickSendEmail() {
-        val it = Intent(Intent.ACTION_SEND).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("6951004@gmail.com"))
-            putExtra(Intent.EXTRA_TEXT, "문의나 건의사항을 보내주세요")
-            type = "text/plain"
-        }
-
-        try {
-
-            it.setPackage("com.google.android.gm")
-            startActivity(it)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            startActivity(Intent.createChooser(it, "이메일을 보낼 앱을 선택해주세요."))
-        }
-
+        email("6951004@gmail.com", "[문의 및 건의]", "문의나 건의사항을 보내주세요!\n문의 및 건의 내용 : ")
     }
 
 
     fun clickSendEmailQuiz() {
-        val it = Intent(Intent.ACTION_SEND).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("6951004@gmail.com"))
-            putExtra(Intent.EXTRA_TEXT, "여러분의 OX 퀴즈를 보내주세요!\n채택시 여러분의 닉네임과 함께 문제가 출제됩니다!")
-            type = "text/plain"
-        }
-
-        try {
-
-            it.setPackage("com.google.android.gm")
-            startActivity(it)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            startActivity(Intent.createChooser(it, "이메일을 보낼 앱을 선택해주세요."))
-        }
-
+        email("6951004@gmail.com", "[문제 제의]", "여러분의 OX 퀴즈를 보내주세요! 채택시 여러분의 닉네임과 함께 문제가 출제됩니다!\n닉네임 : \n문제 내용 : \n답(o / x) : ")
     }
 
 

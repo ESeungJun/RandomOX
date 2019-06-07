@@ -10,6 +10,10 @@ import com.seungjun.randomox.adapter.ReqMailListAdapter
 import com.seungjun.randomox.db.LetterDBData
 import com.seungjun.randomox.db.LetterDBUtils
 import com.seungjun.randomox.view.LetterPopup
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_req_mail.*
 import kotlinx.android.synthetic.main.activity_sendmail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
@@ -25,16 +29,24 @@ class ReqMailActivity : BaseActivity() {
         ReqMailListAdapter(this).apply {
             setLetterDBData(LetterDBUtils.allData)
             setLetterItemClick (View.OnClickListener{
-                val date = it.tag as LetterDBData
+                val data = it.tag as LetterDBData
 
-                LetterDBUtils.updateLetterReadState(date._id, "Y")
-                this.setLetterDBData(LetterDBUtils.allData)
-                this.notifyDataSetChanged()
+                Observable.just(data)
+                        .filter {
+                            it.letter_read == "N"
+                        }
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            LetterDBUtils.updateLetterReadState(it._id, "Y")
+                            this.setLetterDBData(LetterDBUtils.allData)
+                            this.notifyDataSetChanged()
+                        })
 
                 LetterPopup(this@ReqMailActivity).apply {
-                    setPopupText(date.letter_req_text)
+                    setPopupText(data.letter_req_text)
                     show()
                 }
+
             })
         }
     }

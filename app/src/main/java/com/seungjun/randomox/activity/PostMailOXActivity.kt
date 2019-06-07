@@ -9,6 +9,7 @@ import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import kotlinx.android.synthetic.main.activity_post_mail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 class PostMailOXActivity : BaseActivity() {
@@ -20,18 +21,12 @@ class PostMailOXActivity : BaseActivity() {
         setContentView(R.layout.activity_post_mail)
 
         btn_o.setOnClickListener {
-            Intent(this, SendMailActivity::class.java).apply {
-                startActivity(this)
-            }
-
+            startActivity<SendMailActivity>()
             finish()
         }
 
         my_score.setOnClickListener {
-            Intent(this, ReqMailActivity::class.java).apply {
-                startActivity(this)
-            }
-
+            startActivity<ReqMailActivity>()
             finish()
         }
 

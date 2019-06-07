@@ -48,7 +48,7 @@ class RankActivity : BaseActivity() {
 
     private fun callRankData() {
 
-        with(netProgress){
+        netProgress.run {
             setProgressText("랭킹 요청 중")
             show()
         }
@@ -78,7 +78,7 @@ class RankActivity : BaseActivity() {
                     resultData.ranks.removeAt(0)
                 }
 
-                with(rankListAdapter){
+                rankListAdapter.run {
                     setRankInfos(resultData.ranks)
                     notifyDataSetChanged()
                 }

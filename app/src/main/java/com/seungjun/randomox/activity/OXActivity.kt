@@ -64,7 +64,7 @@ class OXActivity : BaseActivity() {
             finish()
         }
 
-        oxList = intent.getParcelableArrayListExtra<OxContentInfo.OxData>("oxList") ?: ArrayList<OxContentInfo.OxData>()
+        oxList = intent.getParcelableArrayListExtra<OxContentInfo.OxData>("oxList") ?: arrayListOf()
 
         setNextOX(oxList[count])
 
