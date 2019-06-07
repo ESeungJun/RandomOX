@@ -235,6 +235,10 @@ class OXActivity : BaseActivity() {
         updateMyInfo()
     }
 
+    override fun onStop() {
+        super.onStop()
+        baseDisPosable.clear()
+    }
 
     override fun onDestroy() {
         // 에러 났을땐 비정상적으로 처리 됬으니 종료시
@@ -277,7 +281,7 @@ class OXActivity : BaseActivity() {
                 }
 
                 override fun onSubscribe(d: Disposable) {
-
+                    baseDisPosable.add(d)
                 }
 
                 override fun onNext(resultData: OxContentInfo) {
@@ -320,7 +324,7 @@ class OXActivity : BaseActivity() {
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                baseDisPosable.add(d)
             }
 
             override fun onNext(headerInfo: HeaderInfo) {

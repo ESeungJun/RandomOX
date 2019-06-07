@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat
 import com.seungjun.randomox.network.data.HeaderInfo
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.view_normal_dialog.*
 import org.jetbrains.anko.longToast
@@ -62,7 +63,7 @@ class IntroActivity : BaseActivity() {
                 }
 
                 override fun onSubscribe(d: Disposable) {
-
+                    baseDisPosable.add(d)
                 }
 
                 override fun onNext(resultData: NoticesInfo) {
@@ -180,6 +181,10 @@ class IntroActivity : BaseActivity() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        baseDisPosable.clear()
+    }
 
     /**
      * 로그인 요청 함수
@@ -195,7 +200,7 @@ class IntroActivity : BaseActivity() {
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                baseDisPosable.add(d)
             }
 
             override fun onNext(userInfo: UserInfo) {
@@ -238,7 +243,7 @@ class IntroActivity : BaseActivity() {
                         }
 
                         override fun onSubscribe(d: Disposable) {
-
+                            baseDisPosable.add(d)
                         }
 
                         override fun onNext(t: HeaderInfo) {

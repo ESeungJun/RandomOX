@@ -14,6 +14,7 @@ import com.seungjun.randomox.network.data.HeaderInfo
 import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.PreferenceUtils
 import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_join_dialog.*
 import org.jetbrains.anko.toast
@@ -21,6 +22,7 @@ import org.jetbrains.anko.toast
 class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
 
     var mContext: Context? = null
+    var disposable = CompositeDisposable()
 
     init {
 
@@ -104,7 +106,7 @@ class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Transl
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                disposable.add(d)
             }
 
             override fun onNext(t: HeaderInfo) {
@@ -149,5 +151,6 @@ class JoinPopup(context: Context) : Dialog(context, android.R.style.Theme_Transl
 
     override fun dismiss() {
         super.dismiss()
+        disposable.clear()
     }
 }

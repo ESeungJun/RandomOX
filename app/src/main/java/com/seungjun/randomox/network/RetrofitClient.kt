@@ -14,7 +14,11 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.internal.observers.LambdaObserver
 import io.reactivex.internal.operators.observable.ObservableJust
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
 import org.json.JSONObject

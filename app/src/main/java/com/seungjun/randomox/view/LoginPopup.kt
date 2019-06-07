@@ -18,6 +18,7 @@ import com.seungjun.randomox.utils.CommonUtils
 import com.seungjun.randomox.utils.D
 import com.seungjun.randomox.utils.PreferenceUtils
 import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_login_dialog.*
 import org.jetbrains.anko.toast
@@ -25,6 +26,7 @@ import org.jetbrains.anko.toast
 class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
 
     var mContext: Context? = null
+    var disposable = CompositeDisposable()
 
     interface LoginCallBack {
         fun onLogin(isLogin: Boolean)
@@ -114,7 +116,7 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                disposable.add(d)
             }
 
             override fun onNext(resultData: UserInfo) {
@@ -169,6 +171,7 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
 
     override fun dismiss() {
         super.dismiss()
+        disposable.clear()
     }
 
 
@@ -201,7 +204,7 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
                         }
 
                         override fun onSubscribe(d: Disposable) {
-
+                            disposable.add(d)
                         }
 
                         override fun onNext(t: HeaderInfo) {

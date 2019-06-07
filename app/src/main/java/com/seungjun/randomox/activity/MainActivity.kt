@@ -155,6 +155,10 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
         isPause = true
     }
 
+    override fun onStop() {
+        super.onStop()
+        baseDisPosable.clear()
+    }
 
     fun callMyInfo() {
 
@@ -175,7 +179,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                baseDisPosable.add(d)
             }
 
             override fun onNext(userInfo: UserInfo) {
@@ -239,7 +243,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
                         }
 
                         override fun onSubscribe(d: Disposable) {
-
+                            baseDisPosable.add(d)
                         }
 
                         override fun onNext(t: HeaderInfo) {
@@ -355,7 +359,7 @@ class MainActivity : BaseActivity(), LoginPopup.LoginCallBack {
 
 
             override fun onSubscribe(d: Disposable) {
-
+                baseDisPosable.add(d)
             }
 
             override fun onNext(resultData: OxContentInfo) {

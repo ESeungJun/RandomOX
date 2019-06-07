@@ -20,7 +20,8 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     protected var preferenceUtils: PreferenceUtils? = null
-    protected var baseDisPosable: CompositeDisposable? = null
+
+    protected var baseDisPosable = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +29,6 @@ open class BaseActivity : AppCompatActivity() {
 
         if (preferenceUtils == null)
             preferenceUtils = PreferenceUtils.getInstance(this)
-
-        if(baseDisPosable == null)
-            baseDisPosable = CompositeDisposable()
 
     }
 }

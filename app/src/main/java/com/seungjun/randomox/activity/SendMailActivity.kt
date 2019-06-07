@@ -54,7 +54,7 @@ class SendMailActivity : BaseActivity() {
                     }
 
                     override fun onSubscribe(d: Disposable) {
-
+                        baseDisPosable.add(d)
                     }
 
                     override fun onNext(resultData: HeaderInfo) {
@@ -75,4 +75,8 @@ class SendMailActivity : BaseActivity() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        baseDisPosable.clear()
+    }
 }

@@ -41,6 +41,10 @@ class RankActivity : BaseActivity() {
         callRankData()
     }
 
+    override fun onStop() {
+        super.onStop()
+        baseDisPosable.clear()
+    }
 
     private fun callRankData() {
 
@@ -62,7 +66,7 @@ class RankActivity : BaseActivity() {
             }
 
             override fun onSubscribe(d: Disposable) {
-
+                baseDisPosable.add(d)
             }
 
             override fun onNext(resultData: RankInfo) {
