@@ -4,13 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 import java.util.ArrayList
 
-class RankInfo : HeaderInfo() {
-
-    @SerializedName("ranks")
-    var ranks = ArrayList<RankData>()
+data class RankInfo(@SerializedName("ranks") var ranks: ArrayList<RankData> = arrayListOf()) : HeaderInfo() {
 
     inner class RankData {
-
 
         @SerializedName("user_nick")
         var user_nick = ""
