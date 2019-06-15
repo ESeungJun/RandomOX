@@ -1,7 +1,8 @@
 package com.seungjun.randomox.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.adapter.RankListAdapter
@@ -18,6 +19,7 @@ class RankActivity : BaseActivity() {
 
     private val rankListAdapter by lazy { RankListAdapter(this) }
 
+    @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

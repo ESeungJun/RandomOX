@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/content_view"
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -34,7 +34,7 @@
                 android:layout_margin="10dp"
                 android:text="@string/post_mail_ox_content"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 

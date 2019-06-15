@@ -1,19 +1,17 @@
 package com.seungjun.randomox.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.seungjun.randomox.BaseActivity
 import com.seungjun.randomox.R
 import com.seungjun.randomox.adapter.ReqMailListAdapter
 import com.seungjun.randomox.db.LetterDBData
-import com.seungjun.randomox.db.LetterDBUtils
 import com.seungjun.randomox.view.LetterPopup
+import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_req_mail.*
 import kotlinx.android.synthetic.main.activity_sendmail.*
 import kotlinx.android.synthetic.main.view_top_bar.*
@@ -27,20 +25,35 @@ class ReqMailActivity : BaseActivity() {
 
     private val adapter by lazy {
         ReqMailListAdapter(this).apply {
-            setLetterDBData(LetterDBUtils.allData)
-            setLetterItemClick (View.OnClickListener{
+            baseDisPosable.add(
+                    letterDao.getAllData()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            setLetterDBData(it)
+                            notifyDataSetChanged()
+                        })
+            )
+
+            setLetterItemClick(View.OnClickListener {
                 val data = it.tag as LetterDBData
 
-                Observable.just(data)
-                        .filter {
-                            it.letter_read == "N"
-                        }
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            LetterDBUtils.updateLetterReadState(it._id, "Y")
-                            this.setLetterDBData(LetterDBUtils.allData)
-                            this.notifyDataSetChanged()
-                        })
+                if(data.letter_read == "N"){
+                    data.letter_read = "Y"
+                    baseDisPosable.add(
+                            Completable.fromCallable { letterDao.changeReadState(data) }
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe({
+                                        letterDao.getAllData()
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe({
+                                                    setLetterDBData(it)
+                                                    notifyDataSetChanged()
+                                                })
+                                    })
+                    )
+                }
 
                 LetterPopup(this@ReqMailActivity).apply {
                     setPopupText(data.letter_req_text)

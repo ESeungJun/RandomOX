@@ -1,18 +1,19 @@
 package com.seungjun.randomox.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.seungjun.randomox.R
 import com.seungjun.randomox.db.LetterDBData
+import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.view_row_letter_list.view.*
 import java.util.*
 
 class ReqMailListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var letterDBData = ArrayList<LetterDBData>()
+    private var letterDBData : List<LetterDBData> = listOf()
 
     private var letterItemClick: View.OnClickListener? = null
 
@@ -50,7 +51,7 @@ class ReqMailListAdapter(private val context: Context) : RecyclerView.Adapter<Re
     }
 
 
-    fun setLetterDBData(list: ArrayList<LetterDBData>) {
+    fun setLetterDBData(list: List<LetterDBData>) {
         letterDBData = list
     }
 

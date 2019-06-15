@@ -103,7 +103,7 @@ object RetrofitClient{
 
         apiService.reqLogin(body)
                 .flatMap {
-                    if(it.reqCode == 0)
+                    if(it.reqCode == 0 || it.reqCode == 5001)
                         Observable.just(it)
                     else
                         Observable.error(Throwable("reqCode is ${it.reqCode}"))

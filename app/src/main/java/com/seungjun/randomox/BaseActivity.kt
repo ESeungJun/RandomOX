@@ -1,7 +1,8 @@
 package com.seungjun.randomox
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.seungjun.randomox.db.LetterDatabase
 
 import com.seungjun.randomox.utils.PreferenceUtils
 import com.seungjun.randomox.network.RetrofitClient
@@ -18,6 +19,8 @@ open class BaseActivity : AppCompatActivity() {
     protected val netProgress: NetworkProgressDialog by lazy {
         NetworkProgressDialog(this@BaseActivity)
     }
+
+    protected val letterDao by lazy { LetterDatabase.getDBInstance(this) }
 
     protected var preferenceUtils: PreferenceUtils? = null
 

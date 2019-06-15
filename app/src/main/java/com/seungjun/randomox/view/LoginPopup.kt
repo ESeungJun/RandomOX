@@ -121,15 +121,20 @@ class LoginPopup(context: Context, private val callBack: LoginCallBack) : Dialog
 
             override fun onNext(resultData: UserInfo) {
 
-                PreferenceUtils.getInstance(context).run {
-                    userSindex = resultData.user_sIndex
-                    userScore = resultData.user_point
-                    userId = nickname
-                    userPw = CommonUtils.getAES256(context, password)
-                    userKey = resultData.user_key
-                    userRank = resultData.rank
-                    isLoginSuccess = true
+                if(resultData.reqCode == 0){
+                    PreferenceUtils.getInstance(context).run {
+                        userSindex = resultData.user_sIndex
+                        userScore = resultData.user_point
+                        userId = nickname
+                        userPw = CommonUtils.getAES256(context, password)
+                        userKey = resultData.user_key
+                        userRank = resultData.rank
+                        isLoginSuccess = true
+                    }
+                }else{
+                    failedLogin(resultData.reqMsg)
                 }
+
             }
 
         }, nickname, CommonUtils.getAES256(context, password))
